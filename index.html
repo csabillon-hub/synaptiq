@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
     />
-    <title>SYNAPTIQ | v50.1 LAYOUT FIXED</title>
+    <title>SYNAPTIQ | v59.0 MOBILE READY</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
       rel="stylesheet"
@@ -17,7 +17,7 @@
     />
 
     <style>
-      /* --- CORE CSS --- */
+      /* --- CORE CSS (v44 Original) --- */
       :root {
         --bg: #050505;
         --panel: #0a0a0a;
@@ -32,19 +32,18 @@
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
-
       body {
         margin: 0;
         background-color: var(--bg);
         color: var(--text);
         font-family: "Rajdhani", sans-serif;
-        height: 100dvh; /* Dynamic Height for Mobile Browsers */
+        height: 100dvh; /* Mobile viewport fix */
         overflow: hidden;
         display: flex;
-        flex-direction: row; /* Default Desktop Layout */
+        flex-direction: row; /* Default Desktop */
       }
 
-      /* SCROLLBAR HIDING */
+      /* SCROLLBAR */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -56,7 +55,20 @@
         border-radius: 4px;
       }
 
-      /* --- WELCOME SCREEN FIXES --- */
+      .logo-welcome {
+        max-width: 600px;
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
+      }
+      .logo-sidebar {
+        width: 100%;
+        height: auto;
+        margin-bottom: 5px;
+        filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.2));
+      }
+
       #welcome-view {
         position: fixed;
         top: 0;
@@ -68,55 +80,82 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        padding: 20px;
-        overflow-y: auto; /* ALLOW SCROLL */
-        -webkit-overflow-scrolling: touch;
+        padding: 40px;
+        overflow-y: auto;
+        transition: opacity 0.5s;
+        touch-action: pan-y;
       }
       #welcome-view.hidden {
         opacity: 0;
         pointer-events: none;
       }
-
       .welcome-content {
+        max-width: 1200px;
         width: 100%;
-        max-width: 600px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-bottom: 100px; /* Space for scrolling */
-      }
-
-      /* LOGO CONSTRAINT - FIXES "TAKING UP ENTIRE SCREEN" */
-      .logo-welcome {
-        max-width: 60%;
-        max-height: 20vh; /* Never take more than 20% of vertical height */
-        height: auto;
-        margin-bottom: 20px;
-        filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
+        text-align: center;
+        padding-bottom: 100px; /* Space for mobile scroll */
       }
 
       .module-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
         text-align: left;
-        margin-bottom: 30px;
+        margin-bottom: 50px;
         width: 100%;
       }
       .module-card {
         background: #0a0a0a;
         border: 1px solid #333;
-        padding: 15px;
-        border-radius: 8px;
+        padding: 25px;
+        border-radius: 12px;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .module-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+      .module-card:hover::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--gold);
+        box-shadow: 0 0 15px var(--gold);
+      }
+
+      .mc-icon {
+        font-size: 2rem;
+        color: var(--stable);
+        margin-bottom: 15px;
       }
       .mc-title {
-        font-size: 1.1rem;
+        font-size: 1.5rem;
         font-weight: bold;
         color: #fff;
+        margin-bottom: 5px;
       }
       .mc-desc {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: #ccc;
+        line-height: 1.4;
+        margin-bottom: 15px;
+        flex-grow: 1;
+      }
+      .mc-benefit {
+        font-size: 0.8rem;
+        color: var(--gold);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: auto;
       }
 
       .start-btn {
@@ -126,11 +165,11 @@
         font-family: "Rajdhani";
         font-size: 1.5rem;
         font-weight: bold;
-        padding: 20px 40px;
+        padding: 20px 60px;
         cursor: pointer;
         border-radius: 4px;
-        width: 100%;
-        margin-top: 20px;
+        transition: 0.3s;
+        letter-spacing: 2px;
       }
       .start-btn:hover {
         background: var(--stable);
@@ -155,14 +194,8 @@
         flex-direction: column;
         align-items: center;
         margin-bottom: 30px;
+        text-align: center;
       }
-      .logo-sidebar {
-        width: 100%;
-        max-width: 150px;
-        height: auto;
-        margin-bottom: 5px;
-      }
-
       .nav-label {
         font-size: 0.7rem;
         color: #666;
@@ -190,73 +223,95 @@
         gap: 10px;
         margin-bottom: 5px;
       }
+      .nav-btn:hover {
+        background: rgba(0, 229, 255, 0.05);
+        color: #fff;
+        text-shadow: 0 0 5px var(--stable);
+      }
       .nav-btn.active {
         background: rgba(0, 229, 255, 0.1);
         color: var(--stable);
         border-left: 3px solid var(--stable);
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+      }
+      .nav-btn.blitz {
+        border: 1px solid rgba(255, 215, 0, 0.2);
+        color: var(--gold);
+      }
+      .nav-btn.blitz:hover {
+        background: rgba(255, 215, 0, 0.1);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
       }
 
       /* --- GAME AREA --- */
       #viewport {
         flex-grow: 1;
         position: relative;
+        background: radial-gradient(circle at center, #111 0%, #000 100%);
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 100%;
         overflow: hidden;
-        background: radial-gradient(circle at center, #111 0%, #000 100%);
       }
-
       #game-hud {
         display: flex;
         justify-content: space-between;
-        padding: 10px 20px;
-        background: rgba(0, 0, 0, 0.8);
+        padding: 15px 40px;
         border-bottom: 1px solid #222;
+        background: rgba(0, 0, 0, 0.5);
         z-index: 10;
-        flex-shrink: 0; /* Prevent HUD from shrinking */
+        flex-shrink: 0;
       }
       .hud-val {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
         font-weight: bold;
         color: var(--stable);
+        transition: transform 0.1s;
       }
       .hud-lbl {
         font-size: 0.7rem;
         color: #666;
         display: block;
       }
+      .hud-flow {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: var(--gold);
+        letter-spacing: 1px;
+      }
 
-      /* --- CANVAS CONTAINER FIX --- */
+      /* --- RESPONSIVE CANVAS WRAPPER (NEW) --- */
       #canvas-wrapper {
-        flex: 1; /* Take remaining height */
+        flex-grow: 1;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 10px;
-        overflow: hidden;
         position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
       }
       canvas {
         background: #000;
-        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         border: 1px solid #333;
         border-radius: 8px;
-        /* Responsive Magic */
+        /* Force responsive scaling */
         max-width: 100%;
         max-height: 100%;
+        width: auto;
+        height: auto;
         object-fit: contain;
       }
 
-      /* --- OVERLAYS --- */
       .overlay {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.95);
+        background: rgba(0, 0, 0, 0.9);
         z-index: 50;
         display: none;
         flex-direction: column;
@@ -269,25 +324,90 @@
       .modal {
         background: #111;
         border: 1px solid #444;
-        padding: 30px;
+        padding: 40px;
         border-radius: 12px;
         text-align: center;
-        width: 90%;
-        max-width: 400px;
+        width: 400px;
+        max-width: 90%;
       }
       .btn-primary {
         background: transparent;
         border: 1px solid var(--stable);
         color: var(--stable);
-        padding: 15px 30px;
+        padding: 10px 30px;
         font-family: "Rajdhani";
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         cursor: pointer;
         margin-top: 20px;
-        width: 100%;
+      }
+      .btn-primary:hover {
+        background: var(--stable);
+        color: #000;
+        box-shadow: 0 0 20px var(--stable);
       }
 
+      /* DASHBOARD */
+      #dashboard-view {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #050505;
+        z-index: 20;
+        display: none;
+        padding: 40px;
+        overflow-y: auto;
+        touch-action: pan-y;
+      }
+      #dashboard-view.active {
+        display: block;
+      }
+
+      .dash-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        border-bottom: 1px solid #333;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+      }
+      .dash-grid {
+        display: grid;
+        grid-template-columns: 350px 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+      }
+      .player-card {
+        background: linear-gradient(135deg, #111, #0a0a0a);
+        border: 1px solid #333;
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+      .pc-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 2px solid var(--stable);
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: var(--stable);
+        background: rgba(0, 229, 255, 0.1);
+      }
+      .pc-rank {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: var(--gold);
+        margin-bottom: 5px;
+      }
+
+      /* Login/Audio Buttons */
       .login-box {
         margin-top: auto;
         background: #111;
@@ -315,7 +435,6 @@
         cursor: pointer;
         font-family: "Rajdhani";
       }
-
       .audio-btn {
         width: 100%;
         background: transparent;
@@ -338,56 +457,30 @@
         background: rgba(0, 229, 255, 0.05);
       }
 
-      /* DASHBOARD */
-      #dashboard-view {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #050505;
-        z-index: 20;
-        display: none;
-        padding: 20px;
-        overflow-y: auto;
-        touch-action: pan-y;
+      .synapse-container {
+        background: #0f0f0f;
+        border: 1px solid #222;
+        border-radius: 12px;
+        padding: 25px;
+        display: flex;
+        flex-direction: column;
       }
-      #dashboard-view.active {
-        display: block;
-      }
-      .dash-header {
+      .synapse-header {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #333;
-        padding-bottom: 20px;
-        margin-bottom: 30px;
-      }
-      .dash-grid {
-        display: grid;
-        grid-template-columns: 350px 1fr;
-        gap: 30px;
-        margin-bottom: 30px;
-      }
-      .player-card {
-        background: linear-gradient(135deg, #111, #0a0a0a);
-        border: 1px solid #333;
-        border-radius: 12px;
-        padding: 30px;
-        text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      }
-      .streak-box {
-        background: rgba(255, 215, 0, 0.05);
-        border: 1px solid rgba(255, 215, 0, 0.2);
-        border-radius: 8px;
-        padding: 15px;
         margin-bottom: 20px;
+        border-bottom: 1px solid #222;
+        padding-bottom: 10px;
+      }
+      .synapse-points {
+        font-size: 1.2rem;
+        color: var(--focus);
+        font-weight: bold;
       }
       .perk-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-        gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
       }
       .perk-node {
         background: #1a1a1a;
@@ -396,10 +489,74 @@
         padding: 15px;
         text-align: center;
         cursor: pointer;
+        transition: 0.2s;
+        position: relative;
+        overflow: hidden;
       }
+      .perk-node.maxed {
+        border-color: var(--gold);
+      }
+      .perk-icon {
+        font-size: 1.5rem;
+        color: var(--focus);
+        margin-bottom: 10px;
+      }
+      .perk-cost {
+        font-size: 0.7rem;
+        color: var(--stable);
+        font-weight: bold;
+        display: block;
+        margin-top: 5px;
+        border-top: 1px solid #333;
+        padding-top: 5px;
+      }
+
+      .mastery-container {
+        background: #0f0f0f;
+        border: 1px solid #222;
+        border-radius: 12px;
+        padding: 25px;
+      }
+      .mastery-item {
+        margin-bottom: 15px;
+      }
+      .mi-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+        font-weight: bold;
+      }
+      .mi-bar-bg {
+        width: 100%;
+        height: 8px;
+        background: #222;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      .mi-bar-fill {
+        height: 100%;
+        background: var(--stable);
+        width: 0%;
+        box-shadow: 0 0 10px var(--stable);
+        transition: width 1s ease-out;
+      }
+      .mi-logic .mi-bar-fill {
+        background: var(--stable);
+        box-shadow: 0 0 10px var(--stable);
+      }
+      .mi-speed .mi-bar-fill {
+        background: var(--gold);
+        box-shadow: 0 0 10px var(--gold);
+      }
+      .mi-focus .mi-bar-fill {
+        background: var(--focus);
+        box-shadow: 0 0 10px var(--focus);
+      }
+
       .badge-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
         gap: 15px;
         margin-top: 30px;
       }
@@ -407,14 +564,24 @@
         background: #111;
         border: 1px solid #333;
         border-radius: 8px;
-        padding: 15px;
+        padding: 20px;
         text-align: center;
         opacity: 0.3;
+        transition: 0.3s;
+        position: relative;
       }
       .badge.unlocked {
         opacity: 1;
         border-color: var(--gold);
+        background: rgba(255, 215, 0, 0.05);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
       }
+      .badge i {
+        font-size: 1.8rem;
+        margin-bottom: 10px;
+        display: block;
+      }
+
       .wipe-btn {
         background: #200;
         color: #f55;
@@ -425,8 +592,66 @@
         cursor: pointer;
         border-radius: 6px;
         margin-top: 20px;
+        transition: 0.2s;
+      }
+      .wipe-btn:hover {
+        background: #400;
+        color: #fff;
       }
 
+      #stat-box {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid #333;
+        padding: 10px 30px;
+        border-radius: 20px;
+        text-align: center;
+        pointer-events: none;
+      }
+      #instr-btn {
+        position: absolute;
+        bottom: 30px;
+        right: 30px;
+        width: 40px;
+        height: 40px;
+        background: #111;
+        border: 1px solid #333;
+        border-radius: 50%;
+        color: #666;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .end-stat-grid {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+        margin: 20px 0;
+        border-top: 1px solid #333;
+        border-bottom: 1px solid #333;
+        padding: 15px 0;
+      }
+      .end-stat {
+        text-align: center;
+      }
+      .end-stat label {
+        display: block;
+        font-size: 0.7rem;
+        color: #666;
+        margin-bottom: 5px;
+      }
+      .end-stat div {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+      }
+
+      /* --- MOBILE MENU BUTTON (NEW) --- */
       .mobile-menu-btn {
         display: none;
         position: absolute;
@@ -443,11 +668,11 @@
         cursor: pointer;
       }
 
-      /* --- MOBILE MEDIA QUERIES (THE CRITICAL PART) --- */
+      /* --- MOBILE CSS (MODIFIED) --- */
       @media (max-width: 800px) {
         body {
           flex-direction: column;
-        } /* Stack vertically if needed, but mainly we use absolute sidebar */
+        } /* STACK LAYOUT */
 
         .mobile-menu-btn {
           display: flex;
@@ -462,38 +687,15 @@
           height: 100%;
           width: 280px;
           transform: translateX(-100%);
-          background: rgba(10, 10, 10, 0.98);
+          background: rgba(10, 10, 10, 0.95);
           z-index: 500;
+          border-right: 1px solid var(--stable);
           box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
         }
         #sidebar.open {
           transform: translateX(0);
         }
 
-        /* Ensure main viewport takes full screen */
-        #viewport {
-          width: 100vw;
-          height: 100dvh;
-        }
-
-        /* Push HUD down slightly so menu button doesn't cover it */
-        #game-hud {
-          padding-top: 15px;
-          padding-left: 60px;
-        }
-
-        /* Maximize canvas on mobile */
-        #canvas-wrapper {
-          padding: 0;
-        }
-        canvas {
-          width: 100%;
-          border-radius: 0;
-          border-left: none;
-          border-right: none;
-        }
-
-        /* Dashboard mobile adjustment */
         .dash-grid {
           grid-template-columns: 1fr;
         }
@@ -501,6 +703,25 @@
           flex-direction: column;
           align-items: flex-start;
           gap: 10px;
+        }
+
+        #game-hud {
+          margin-top: 60px;
+          padding: 10px 15px;
+        } /* Push down for hamburger */
+
+        #canvas-wrapper {
+          padding: 0;
+        } /* Maximize canvas space */
+        canvas {
+          width: 100%;
+          height: auto;
+          border: none;
+          border-bottom: 1px solid #333;
+        }
+
+        .module-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -515,43 +736,50 @@
 
     <div id="welcome-view">
       <div class="welcome-content">
-        <img src="logo.png" alt="SYNAPTIQ" class="logo-welcome" />
+        <img src="logo.png" alt="SYNAPTIQ LOGO" class="logo-welcome" />
 
         <div class="module-grid">
           <div class="module-card">
             <i class="fa-solid fa-microchip mc-icon"></i>
             <div class="mc-title">LOGIC SHIFT</div>
-            <div class="mc-desc">Cognitive Flexibility</div>
+            <div class="mc-desc">Rapidly filter objects.</div>
+            <div class="mc-benefit">COGNITIVE FLEXIBILITY</div>
           </div>
           <div class="module-card">
             <i class="fa-solid fa-share-nodes mc-icon"></i>
             <div class="mc-title">NODE PATH</div>
-            <div class="mc-desc">Spatial Memory</div>
+            <div class="mc-desc">Spatial memory grid.</div>
+            <div class="mc-benefit">VISUAL MEMORY</div>
           </div>
           <div class="module-card">
             <i class="fa-solid fa-palette mc-icon"></i>
             <div class="mc-title">CHROMA CLASH</div>
-            <div class="mc-desc">Focus Control</div>
+            <div class="mc-desc">Stroop test inhibition.</div>
+            <div class="mc-benefit">FOCUS CONTROL</div>
           </div>
           <div class="module-card">
             <i class="fa-solid fa-border-all mc-icon"></i>
             <div class="mc-title">CYPHER GRID</div>
-            <div class="mc-desc">Pattern Recognition</div>
+            <div class="mc-desc">Logic deduction.</div>
+            <div class="mc-benefit">PATTERN RECOGNITION</div>
           </div>
           <div class="module-card">
             <i class="fa-solid fa-clone mc-icon"></i>
             <div class="mc-title">MEMORY MATCH</div>
-            <div class="mc-desc">Short-term Memory</div>
+            <div class="mc-desc">Holographic pairs.</div>
+            <div class="mc-benefit">SHORT-TERM MEMORY</div>
           </div>
           <div class="module-card">
             <i class="fa-solid fa-calculator mc-icon"></i>
             <div class="mc-title">QUANTUM CALC</div>
-            <div class="mc-desc">Processing Speed</div>
+            <div class="mc-desc">Rapid arithmetic.</div>
+            <div class="mc-benefit">PROCESSING SPEED</div>
           </div>
           <div class="module-card">
             <i class="fa-solid fa-layer-group mc-icon"></i>
             <div class="mc-title">FLASH ORDER</div>
-            <div class="mc-desc">Working Memory</div>
+            <div class="mc-desc">Sequential recall.</div>
+            <div class="mc-benefit">WORKING MEMORY</div>
           </div>
         </div>
 
@@ -564,7 +792,9 @@
     <nav id="sidebar">
       <div class="brand">
         <img src="logo.png" alt="SYNAPTIQ" class="logo-sidebar" />
-        <div style="font-size: 0.6rem; color: #666">v50.1 LAYOUT FIXED</div>
+        <div>
+          <span style="font-size: 0.6rem; color: #666">v59.0 MOBILE</span>
+        </div>
       </div>
       <div class="nav-label">DAILY OPERATIONS</div>
       <button class="nav-btn blitz" onclick="window.App.startBlitz()">
@@ -611,7 +841,6 @@
       <button class="nav-btn" id="btn-FLASH" onclick="window.App.load('FLASH')">
         <i class="fa-solid fa-layer-group"></i> FLASH ORDER
       </button>
-
       <div class="login-box" id="login-ui">
         <label
           style="
@@ -637,26 +866,94 @@
     </nav>
 
     <main id="viewport">
+      <div id="dashboard-view">
+        <div class="dash-header">
+          <div>
+            <h1>COMMAND CENTER</h1>
+            <span style="color: #666; font-size: 0.8rem"
+              >NEURAL PERFORMANCE ANALYTICS</span
+            >
+          </div>
+          <div style="text-align: right">
+            <h3 id="dash-user" style="margin: 0; color: var(--stable)">
+              GUEST
+            </h3>
+            <span id="dash-status" style="color: #444; font-size: 0.7rem"
+              >UNREGISTERED</span
+            >
+          </div>
+        </div>
+        <div class="dash-grid">
+          <div class="player-card">
+            <div class="pc-avatar">
+              <i class="fa-solid fa-user-astronaut"></i>
+            </div>
+            <div class="pc-rank" id="dash-rank">NOVICE</div>
+            <span class="pc-sub" id="dash-total-level">TOTAL LEVEL 0</span>
+            <div class="streak-box">
+              <div class="streak-val" id="dash-streak">0</div>
+              <div class="streak-lbl">DAY STREAK</div>
+            </div>
+            <button class="wipe-btn" onclick="window.App.wipeData()">
+              [ DANGER ] WIPE DATA
+            </button>
+          </div>
+          <div class="synapse-container">
+            <div class="synapse-header">
+              <h3 style="margin: 0; color: #fff">SYNAPSE NETWORK</h3>
+              <div class="synapse-points">
+                <i class="fa-solid fa-dna"></i> <span id="dash-sp">0</span> SP
+              </div>
+            </div>
+            <div class="perk-grid" id="perk-list"></div>
+          </div>
+        </div>
+        <div class="mastery-container">
+          <h3
+            style="
+              color: #fff;
+              border-bottom: 1px solid #333;
+              padding-bottom: 10px;
+              margin-top: 0;
+            "
+          >
+            MODULE MASTERY
+          </h3>
+          <div id="mastery-list"></div>
+        </div>
+        <h3
+          style="
+            color: #fff;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            margin-top: 30px;
+          "
+        >
+          BADGE COLLECTION
+        </h3>
+        <div class="badge-grid" id="badge-container"></div>
+      </div>
+
       <div id="game-hud">
         <div>
-          <span class="hud-lbl">SCORE</span>
-          <div class="hud-val" id="score-val">0</div>
+          <span class="hud-lbl">SCORE</span
+          ><span class="hud-val" id="score-val">0</span>
         </div>
         <div>
-          <span class="hud-lbl">TIMER</span>
-          <div class="hud-val" id="timer-val">60</div>
+          <span class="hud-lbl">TIMER</span
+          ><span class="hud-val" id="timer-val">60</span>
         </div>
         <div>
-          <span class="hud-lbl">LEVEL</span>
-          <div class="hud-val" id="level-val">1</div>
+          <span class="hud-lbl">LEVEL</span
+          ><span class="hud-val" id="level-val">1</span>
         </div>
         <div>
-          <span class="hud-lbl">FLOW</span>
-          <div class="hud-flow" id="flow-val">CALIBRATING</div>
+          <span class="hud-lbl">FLOW</span
+          ><span class="hud-flow" id="flow-val">CALIBRATING</span>
         </div>
         <div id="blitz-hud" style="display: none">
-          <span class="hud-lbl">BLITZ</span>
-          <div class="hud-val" id="blitz-stage">1/7</div>
+          <span class="hud-lbl">BLITZ STAGE</span
+          ><span class="hud-val" id="blitz-stage">1/7</span>
         </div>
       </div>
 
@@ -679,7 +976,7 @@
             id="instr-text"
             style="color: #ccc; line-height: 1.5; margin-bottom: 20px"
           >
-            Instructions...
+            Select the object that matches the target rule.
           </p>
           <button class="btn-primary" onclick="window.App.startGame()">
             INITIALIZE
@@ -713,67 +1010,10 @@
           </button>
         </div>
       </div>
-
-      <div id="dashboard-view">
-        <div class="dash-header">
-          <div>
-            <h1>COMMAND CENTER</h1>
-            <span style="color: #666">NEURAL PERFORMANCE ANALYTICS</span>
-          </div>
-          <button
-            onclick="
-              document
-                .getElementById('dashboard-view')
-                .classList.remove('active')
-            "
-            style="background: none; border: none; color: #fff; font-size: 2rem"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-        <div class="dash-grid">
-          <div class="player-card">
-            <div class="pc-avatar">
-              <i class="fa-solid fa-user-astronaut"></i>
-            </div>
-            <div class="pc-rank" id="dash-rank">NOVICE</div>
-            <span class="pc-sub" id="dash-total-level">TOTAL LEVEL 0</span>
-            <div class="streak-box">
-              <div class="streak-val" id="dash-streak">0</div>
-              <div class="streak-lbl">DAY STREAK</div>
-            </div>
-            <button class="wipe-btn" onclick="window.App.wipeData()">
-              [ DANGER ] WIPE DATA
-            </button>
-          </div>
-          <div class="synapse-container">
-            <div class="synapse-header">
-              <h3>SYNAPSE NETWORK</h3>
-              <div class="synapse-points">
-                <i class="fa-solid fa-dna"></i> <span id="dash-sp">0</span> SP
-              </div>
-            </div>
-            <div class="perk-grid" id="perk-list"></div>
-          </div>
-        </div>
-        <div class="mastery-container">
-          <h3
-            style="
-              color: #fff;
-              border-bottom: 1px solid #333;
-              padding-bottom: 10px;
-            "
-          >
-            MODULE MASTERY
-          </h3>
-          <div id="mastery-list"></div>
-        </div>
-        <div class="badge-grid" id="badge-container"></div>
-      </div>
     </main>
 
     <script>
-      /** SYNAPTIQ v50.1 - FIXED LAYOUT & TOUCH **/
+      /** SYNAPTIQ v59.0 - MOBILE READY **/
 
       const canvas = document.getElementById("gameCanvas");
       const ctx = canvas.getContext("2d");
@@ -805,45 +1045,6 @@
         combo: "\uf0e7",
         penalty: "\uf05e",
         xp: "\uf091",
-      };
-
-      const FX = {
-        particles: [],
-        shake: 0,
-        burst(x, y, color) {
-          for (let i = 0; i < 15; i++) {
-            const a = Math.random() * Math.PI * 2,
-              s = Math.random() * 5 + 2;
-            this.particles.push({
-              x: x,
-              y: y,
-              vx: Math.cos(a) * s,
-              vy: Math.sin(a) * s,
-              life: 1.0,
-              color: color,
-            });
-          }
-        },
-        update(dt) {
-          if (this.shake > 0) this.shake = Math.max(0, this.shake - dt * 60);
-          for (let i = this.particles.length - 1; i >= 0; i--) {
-            let p = this.particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life -= dt * 2;
-            if (p.life <= 0) this.particles.splice(i, 1);
-          }
-        },
-        draw() {
-          this.particles.forEach((p) => {
-            ctx.globalAlpha = p.life;
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-            ctx.fill();
-          });
-          ctx.globalAlpha = 1.0;
-        },
       };
 
       const SFX = {
@@ -900,6 +1101,45 @@
         },
       };
 
+      const FX = {
+        particles: [],
+        shake: 0,
+        burst(x, y, color) {
+          for (let i = 0; i < 15; i++) {
+            const a = Math.random() * Math.PI * 2,
+              s = Math.random() * 5 + 2;
+            this.particles.push({
+              x: x,
+              y: y,
+              vx: Math.cos(a) * s,
+              vy: Math.sin(a) * s,
+              life: 1.0,
+              color: color,
+            });
+          }
+        },
+        update(dt) {
+          if (this.shake > 0) this.shake = Math.max(0, this.shake - dt * 60);
+          for (let i = this.particles.length - 1; i >= 0; i--) {
+            let p = this.particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            p.life -= dt * 2;
+            if (p.life <= 0) this.particles.splice(i, 1);
+          }
+        },
+        draw() {
+          this.particles.forEach((p) => {
+            ctx.globalAlpha = p.life;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+          });
+          ctx.globalAlpha = 1.0;
+        },
+      };
+
       const Mouse = {
         x: 0,
         y: 0,
@@ -907,27 +1147,45 @@
         rightClick: false,
         handled: false,
       };
+      const isMobile = window.matchMedia("(pointer: coarse)").matches; // MOBILE DETECT
 
-      // --- CRITICAL: INPUT MAPPING THAT HANDLES CSS SCALING AUTOMATICALLY ---
+      // --- NEW: RESIZE OBSERVER (Responsive Canvas) ---
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          const { width, height } = entry.contentRect;
+          // Maintain aspect ratio in CSS, keep logical 800x600 in JS
+          // We rely on object-fit: contain in CSS to do the visual lifting
+          // So we just ensure resolution matches
+          // Note: The original code used 800x600 fixed. To make it sharp on HiDPI, we scale.
+          const dpr = window.devicePixelRatio || 1;
+          canvas.width = 800 * dpr;
+          canvas.height = 600 * dpr;
+          ctx.scale(dpr, dpr);
+
+          // If idle, redraw
+          if (
+            window.App &&
+            !window.App.active &&
+            window.Games &&
+            window.Games[window.App.mode]
+          ) {
+            window.Games[window.App.mode].draw();
+          }
+        }
+      });
+      // Start observing wrapper
+      setTimeout(
+        () => resizeObserver.observe(document.getElementById("canvas-wrapper")),
+        100,
+      );
+
+      // --- NEW: INPUT MAPPING (Screen -> 800x600) ---
       function getMousePos(evt) {
         const rect = canvas.getBoundingClientRect();
-        // Determine CSS scaling factor
-        const scaleX = canvas.width / rect.width;
-        const scaleY = canvas.height / rect.height;
-
-        // Zoom logic
-        const zoomFactor = window.App && window.App.isMobile ? 1.3 : 1.0;
-
-        // 1. Get raw coord within canvas
-        let rawX = (evt.clientX - rect.left) * scaleX;
-        let rawY = (evt.clientY - rect.top) * scaleY;
-
-        // 2. Apply inverse zoom if mobile (because we zoom drawing in loop)
-        // Formula: unzoomed = (zoomed - center) / zoom + center
-        const x = (rawX - 400) / zoomFactor + 400;
-        const y = (rawY - 300) / zoomFactor + 300;
-
-        return { x, y };
+        return {
+          x: (evt.clientX - rect.left) * (800 / rect.width),
+          y: (evt.clientY - rect.top) * (600 / rect.height),
+        };
       }
 
       canvas.addEventListener("mousemove", (e) => {
@@ -936,11 +1194,8 @@
         Mouse.y = p.y;
       });
       canvas.addEventListener("mousedown", (e) => {
-        if (e.button === 2) {
-          Mouse.rightClick = true;
-        } else {
-          Mouse.click = true;
-        }
+        if (e.button === 2) Mouse.rightClick = true;
+        else Mouse.click = true;
         Mouse.handled = false;
         SFX.init();
       });
@@ -952,12 +1207,13 @@
         e.preventDefault();
       });
 
+      // TOUCH SUPPORT
       canvas.addEventListener(
         "touchstart",
         (e) => {
           e.preventDefault();
-          const touch = e.touches[0];
-          const p = getMousePos(touch);
+          const t = e.touches[0];
+          const p = getMousePos(t);
           Mouse.x = p.x;
           Mouse.y = p.y;
           Mouse.click = true;
@@ -966,7 +1222,6 @@
         },
         { passive: false },
       );
-
       canvas.addEventListener(
         "touchend",
         (e) => {
@@ -975,6 +1230,32 @@
         },
         { passive: false },
       );
+
+      // --- NEW: FAT FINGER BUTTON ---
+      function btn(x, y, w, h, col, fill) {
+        // Add 30px invisible padding on mobile
+        const pad = isMobile ? 30 : 0;
+        const hover =
+          Mouse.x > x - pad &&
+          Mouse.x < x + w + pad &&
+          Mouse.y > y - pad &&
+          Mouse.y < y + h + pad;
+
+        ctx.strokeStyle = col;
+        ctx.lineWidth = 2;
+        ctx.strokeRect(x, y, w, h);
+        if (hover || fill) {
+          ctx.fillStyle = col;
+          ctx.globalAlpha = fill ? 1.0 : 0.2;
+          ctx.fillRect(x, y, w, h);
+          ctx.globalAlpha = 1.0;
+        }
+        if (hover && Mouse.click && !Mouse.handled) {
+          SFX.play("click");
+          return true;
+        }
+        return false;
+      }
 
       window.App = {
         mode: "SHIFT",
@@ -1009,16 +1290,8 @@
         currentMod: 1.0,
         shieldCount: 0,
 
-        isMobile: false,
-
         init() {
           this.active = false;
-
-          // Detect Mobile for scaling logic
-          this.isMobile = window.matchMedia(
-            "(hover: none) and (pointer: coarse)",
-          ).matches;
-
           const modes = [
             "SHIFT",
             "PATH",
@@ -1029,41 +1302,36 @@
             "FLASH",
           ];
           modes.forEach((m) => (this.progress[m] = { lvl: 1, xp: 0 }));
-          try {
-            if (localStorage.getItem("synaptiq_data_v50")) {
-              const data = JSON.parse(
-                localStorage.getItem("synaptiq_data_v50"),
-              );
-              this.user = data.user;
-              this.totalScore = data.totalScore;
-              this.sessionsPlayed = data.sessionsPlayed;
-              this.stats = data.stats;
-              if (data.history) this.history = data.history;
-              if (data.progress) this.progress = data.progress;
-              this.streak = data.streak || 0;
-              this.lastPlayed = data.lastPlayed || 0;
-              this.synapsePoints = data.synapsePoints || 0;
-              this.perks = data.perks || {
-                timer: 0,
-                combo: 0,
-                penalty: 0,
-                xp: 0,
-                shield: 0,
-              };
-              for (let key in this.progress) {
-                this.progress[key].lvl =
-                  1 + Math.floor(this.progress[key].xp / 3000);
-              }
-              if (this.user) {
-                document.getElementById("login-ui").innerHTML =
-                  `<div style="color:var(--stable); font-weight:bold; text-align:center">COMMANDER ${this.user}</div>`;
-                document.getElementById("dash-user").innerText = this.user;
-                document.getElementById("dash-status").innerText =
-                  "FULL ACCESS";
-                document.getElementById("dash-status").style.color = C.green;
-              }
+          if (localStorage.getItem("synaptiq_data_v44")) {
+            const data = JSON.parse(localStorage.getItem("synaptiq_data_v44"));
+            this.user = data.user;
+            this.totalScore = data.totalScore;
+            this.sessionsPlayed = data.sessionsPlayed;
+            this.stats = data.stats;
+            if (data.history) this.history = data.history;
+            if (data.progress) this.progress = data.progress;
+            this.streak = data.streak || 0;
+            this.lastPlayed = data.lastPlayed || 0;
+            this.synapsePoints = data.synapsePoints || 0;
+            this.perks = data.perks || {
+              timer: 0,
+              combo: 0,
+              penalty: 0,
+              xp: 0,
+              shield: 0,
+            };
+            for (let key in this.progress) {
+              this.progress[key].lvl =
+                1 + Math.floor(this.progress[key].xp / 3000);
             }
-          } catch (e) {}
+            if (this.user) {
+              document.getElementById("login-ui").innerHTML =
+                `<div style="color:var(--stable); font-weight:bold; text-align:center">COMMANDER ${this.user}</div>`;
+              document.getElementById("dash-user").innerText = this.user;
+              document.getElementById("dash-status").innerText = "FULL ACCESS";
+              document.getElementById("dash-status").style.color = C.green;
+            }
+          }
           this.updateBadges();
           if (window.Games && window.Games["SHIFT"])
             window.Games["SHIFT"].init();
@@ -1131,13 +1399,13 @@
             synapsePoints: this.synapsePoints,
             perks: this.perks,
           };
-          localStorage.setItem("synaptiq_data_v50", JSON.stringify(data));
+          localStorage.setItem("synaptiq_data_v44", JSON.stringify(data));
         },
         wipeData() {
           if (
             confirm("WARNING: THIS WILL DELETE ALL PROGRESS. ARE YOU SURE?")
           ) {
-            localStorage.removeItem("synaptiq_data_v50");
+            localStorage.removeItem("synaptiq_data_v44");
             location.reload();
           }
         },
@@ -1165,7 +1433,7 @@
           document.getElementById("welcome-view").classList.add("hidden");
           document.getElementById("overlay-instr").classList.remove("active");
           document.getElementById("overlay-end").classList.remove("active");
-          document.getElementById("sidebar").classList.remove("open");
+          document.getElementById("sidebar").classList.remove("open"); // Close on mobile
           this.updateStats();
         },
 
@@ -1227,14 +1495,7 @@
               : this.synapsePoints >= cost
                 ? "perk-node"
                 : "perk-node locked";
-            perkList.innerHTML += `
-                <div class="${cls}" onclick="window.App.buyPerk('${p.id}')">
-                    <div class="perk-icon"><i class="fa-solid fa-${p.icon}"></i></div>
-                    <span class="perk-name">${p.name}</span>
-                    <span class="perk-lvl">LVL ${lvl}/5</span>
-                    <span class="perk-cost">${cost} SP</span>
-                </div>
-            `;
+            perkList.innerHTML += `<div class="${cls}" onclick="window.App.buyPerk('${p.id}')"><div class="perk-icon"><i class="fa-solid fa-${p.icon}"></i></div><span class="perk-name">${p.name}</span><span class="perk-lvl">LVL ${lvl}/5</span><span class="perk-cost">${cost} SP</span></div>`;
           });
 
           const list = document.getElementById("mastery-list");
@@ -1260,7 +1521,6 @@
           const badgeContainer = document.getElementById("badge-container");
           if (!badgeContainer) return;
           badgeContainer.innerHTML = "";
-
           const badges = [
             {
               id: "badge-logic",
@@ -1331,16 +1591,8 @@
               cls += " bronze";
               tier = "BRONZE";
             }
-
             if (b.score >= 10) cls += " unlocked";
-
-            badgeContainer.innerHTML += `
-                <div class="${cls}">
-                    <i class="fa-solid fa-${b.icon}"></i>
-                    <span>${b.label}</span>
-                    <div class="badge-tier">${tier}</div>
-                </div>
-            `;
+            badgeContainer.innerHTML += `<div class="${cls}"><i class="fa-solid fa-${b.icon}"></i><span>${b.label}</span><div class="badge-tier">${tier}</div></div>`;
           });
         },
 
@@ -1356,8 +1608,8 @@
             "FLASH",
           ];
           document.getElementById("blitz-hud").style.display = "block";
-          this.nextBlitz();
           document.getElementById("sidebar").classList.remove("open");
+          this.nextBlitz();
         },
         nextBlitz() {
           if (this.blitzQueue.length === 0) {
@@ -1378,9 +1630,7 @@
             .querySelectorAll(".nav-btn")
             .forEach((b) => b.classList.remove("active"));
           document.getElementById(`btn-${mode}`).classList.add("active");
-
           document.getElementById("sidebar").classList.remove("open");
-
           this.mode = mode;
           this.active = false;
 
@@ -1423,10 +1673,8 @@
           document.getElementById("level-val").innerText =
             this.progress[this.mode].lvl;
           this.updateLiveAcc();
-
           const sBoosts = [0, 1, 2, 3, 5, 999];
           this.shieldCount = sBoosts[this.perks.shield];
-
           if (window.Games[this.mode]) window.Games[this.mode].init();
           SFX.play("start");
           this.lastTime = performance.now();
@@ -1478,7 +1726,6 @@
             const xMults = [1.0, 1.1, 1.25, 1.5, 2.0, 2.5];
             xpGain = Math.floor(xpGain * xMults[this.perks.xp]);
           }
-
           this.totalScore += xpGain;
           const acc =
             this.correct + this.wrong === 0
@@ -1486,10 +1733,8 @@
               : this.correct / (this.correct + this.wrong);
           const sBonus = this.streak >= 10 ? 2.0 : this.streak >= 5 ? 1.5 : 1.0;
           const spGain = Math.floor((10 + acc * 20) * sBonus);
-
           this.synapsePoints += spGain;
           document.getElementById("end-sp").innerText = "+" + spGain + " SP";
-
           const now = Date.now();
           const hoursSince = (now - this.lastPlayed) / (1000 * 60 * 60);
           if (hoursSince > 24 && hoursSince < 48) {
@@ -1498,7 +1743,6 @@
             this.streak = 1;
           }
           this.lastPlayed = now;
-
           if (this.progress[this.mode]) {
             this.progress[this.mode].xp += xpGain;
             this.progress[this.mode].lvl =
@@ -1531,11 +1775,9 @@
             requestAnimationFrame(this.loop.bind(this));
             return;
           }
-
           const isEnded = document
             .getElementById("overlay-end")
             .classList.contains("active");
-          // If not active and instruction overlay is up, run loop with 0 dt to draw static
           if (
             !this.active &&
             !document
@@ -1545,25 +1787,12 @@
           ) {
             ctx.fillStyle = C.bg;
             ctx.fillRect(0, 0, 800, 600);
-
-            // --- DRAW LOOP (WITH SMART ZOOM) ---
-            ctx.save();
-            if (this.isMobile) {
-              // Zoom 1.3x from center
-              ctx.translate(400, 300);
-              ctx.scale(1.3, 1.3);
-              ctx.translate(-400, -300);
-            }
             if (window.Games[this.mode]) window.Games[this.mode].draw();
-            ctx.restore();
-
             requestAnimationFrame(this.loop.bind(this));
             return;
           }
-
           const dt = (timestamp - this.lastTime) / 1000;
           this.lastTime = timestamp;
-
           ctx.fillStyle = C.bg;
           ctx.fillRect(0, 0, 800, 600);
           FX.update(dt);
@@ -1587,8 +1816,6 @@
             ctx.lineTo(800, i);
             ctx.stroke();
           }
-
-          // Timer Logic
           if (this.active) {
             this.timer -= dt;
             if (this.timer <= 0) {
@@ -1608,27 +1835,14 @@
               document.getElementById("overlay-end").classList.add("active");
             }
           }
-
           document.getElementById("score-val").innerText = this.score;
           document.getElementById("timer-val").innerText = Math.ceil(
             this.timer,
           );
-
-          // --- SEPARATE UPDATE & DRAW WITH ZOOM ---
           if (window.Games[this.mode]) {
             if (this.active && !isEnded) window.Games[this.mode].update(dt);
-
-            ctx.save();
-            if (this.isMobile) {
-              // Zoom 1.3x from center
-              ctx.translate(400, 300);
-              ctx.scale(1.3, 1.3);
-              ctx.translate(-400, -300);
-            }
             window.Games[this.mode].draw();
-            ctx.restore();
           }
-
           FX.draw();
           ctx.restore();
           Mouse.click = false;
@@ -1636,31 +1850,6 @@
           requestAnimationFrame(this.loop.bind(this));
         },
       };
-
-      function btn(x, y, w, h, col, fill) {
-        // --- FAT FINGER FIX: ADD PADDING ON MOBILE ---
-        const pad = window.App.isMobile ? 30 : 0;
-        const hover =
-          Mouse.x > x - pad &&
-          Mouse.x < x + w + pad &&
-          Mouse.y > y - pad &&
-          Mouse.y < y + h + pad;
-
-        ctx.strokeStyle = col;
-        ctx.lineWidth = 2;
-        ctx.strokeRect(x, y, w, h);
-        if (hover || fill) {
-          ctx.fillStyle = col;
-          ctx.globalAlpha = fill ? 1.0 : 0.2;
-          ctx.fillRect(x, y, w, h);
-          ctx.globalAlpha = 1.0;
-        }
-        if (hover && Mouse.click && !Mouse.handled) {
-          SFX.play("click");
-          return true;
-        }
-        return false;
-      }
 
       function drawTimerBar(x, y, w, maxT, curT) {
         const pct = Math.max(0, curT / maxT);
@@ -1670,7 +1859,6 @@
         ctx.fillRect(x, y, w * pct, 6);
       }
 
-      // --- GLOBAL GAMES OBJECT ---
       window.Games = {
         SHIFT: {
           init: function () {
@@ -1765,7 +1953,6 @@
         PATH: {
           init: function () {
             const l = window.App.progress.PATH.lvl;
-            const mod = window.App.currentMod;
             const steps = 2;
             this.seq = [];
             for (let i = 0; i < steps; i++)
@@ -1868,28 +2055,18 @@
               for (let i = 0; i < 9; i++) {
                 const vx = 250 + (i % 3) * 100,
                   vy = 150 + Math.floor(i / 3) * 100;
-                if (
-                  Mouse.x > vx &&
-                  Mouse.x < vx + 100 &&
-                  Mouse.y > vy &&
-                  Mouse.y < vy + 100
-                ) {
-                  ctx.strokeStyle = C.stable;
-                  ctx.lineWidth = 3;
-                  ctx.strokeRect(vx + 5, vy + 5, 90, 90);
-                  if (Mouse.click && !Mouse.handled) {
-                    Mouse.handled = true;
-                    SFX.play("click");
-                    if (map[i] === this.seq[this.step]) {
-                      this.step++;
-                      if (this.step >= this.seq.length) {
-                        this.winDelay = 0.5;
-                      }
-                    } else {
-                      window.App.score -= 50;
-                      window.App.logResult(false);
-                      this.init();
+                if (window.App.active && btn(vx, vy, 100, 100, C.dim, false)) {
+                  // Using btn for hitbox logic
+                  Mouse.handled = true;
+                  if (map[i] === this.seq[this.step]) {
+                    this.step++;
+                    if (this.step >= this.seq.length) {
+                      this.winDelay = 0.5;
                     }
+                  } else {
+                    window.App.score -= 50;
+                    window.App.logResult(false);
+                    this.init();
                   }
                 }
               }
@@ -2041,10 +2218,14 @@
 
               if (
                 window.App.active &&
-                Mouse.x > x &&
-                Mouse.x < x + 48 &&
-                Mouse.y > y &&
-                Mouse.y < y + 48 &&
+                btn(
+                  x,
+                  y,
+                  48,
+                  48,
+                  this.rev[i] ? (m ? C.chaos : "#111") : "#222",
+                  false,
+                ) &&
                 !this.rev[i]
               ) {
                 if (Mouse.rightClick && !Mouse.handled) {
@@ -2287,7 +2468,6 @@
               ctx.textAlign = "center";
               ctx.fillText("MEMORIZE", 400, 100);
             }
-
             for (let i = 0; i < 16; i++) {
               const x = 300 + (i % 4) * 52,
                 y = 150 + Math.floor(i / 4) * 52,
@@ -2295,7 +2475,6 @@
               if (v > 0) {
                 let show = !this.hide || v < this.nxt;
                 let col = show ? (v < this.nxt ? C.stable : "#222") : "#333";
-
                 if (
                   window.App.active &&
                   btn(x, y, 48, 48, col, show) &&
