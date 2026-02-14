@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
     />
-    <title>SYNAPTIQ | v61.0</title>
+    <title>SYNAPTIQ | v44.0 PATCHED</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
       rel="stylesheet"
@@ -17,7 +17,7 @@
     />
 
     <style>
-      /* --- CORE CSS (v44 EXACT) --- */
+      /* --- CORE CSS --- */
       :root {
         --bg: #050505;
         --panel: #0a0a0a;
@@ -32,7 +32,6 @@
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
-
       body {
         margin: 0;
         background-color: var(--bg);
@@ -41,19 +40,133 @@
         height: 100dvh;
         overflow: hidden;
         display: flex;
-        flex-direction: row; /* Default Desktop */
       }
 
-      /* --- SCROLLBAR --- */
-      ::-webkit-scrollbar {
-        width: 8px;
+      .logo-welcome {
+        max-width: 600px;
+        width: 100%;
+        height: auto;
+        margin-bottom: 20px;
+        filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
       }
-      ::-webkit-scrollbar-track {
-        background: #111;
+      .logo-sidebar {
+        width: 100%;
+        height: auto;
+        margin-bottom: 5px;
+        filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.2));
       }
-      ::-webkit-scrollbar-thumb {
-        background: #333;
+
+      #welcome-view {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at center, #111 0%, #000 100%);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px;
+        overflow-y: auto;
+        transition: opacity 0.5s;
+      }
+      #welcome-view.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+      .welcome-content {
+        max-width: 1200px;
+        width: 100%;
+        text-align: center;
+        padding-bottom: 80px;
+      }
+
+      .module-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        text-align: left;
+        margin-bottom: 50px;
+        width: 100%;
+      }
+      .module-card {
+        background: #0a0a0a;
+        border: 1px solid #333;
+        padding: 25px;
+        border-radius: 12px;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+      .module-card:hover {
+        border-color: var(--gold);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      }
+      .module-card:hover::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: var(--gold);
+        box-shadow: 0 0 15px var(--gold);
+      }
+
+      .mc-icon {
+        font-size: 2rem;
+        color: var(--stable);
+        margin-bottom: 15px;
+      }
+      .mc-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        margin-bottom: 5px;
+      }
+      .mc-desc {
+        font-size: 0.9rem;
+        color: #ccc;
+        line-height: 1.4;
+        margin-bottom: 15px;
+        flex-grow: 1;
+      }
+      .mc-benefit {
+        font-size: 0.8rem;
+        color: var(--gold);
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: auto;
+      }
+
+      /* PATCH: RESTORED HOMESCREEN BUTTON STYLE */
+      .start-btn {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 229, 255, 0.2),
+          rgba(0, 229, 255, 0)
+        );
+        border: 2px solid var(--stable);
+        color: var(--stable);
+        font-family: "Rajdhani";
+        font-size: 1.5rem;
+        font-weight: bold;
+        padding: 20px 60px;
+        cursor: pointer;
         border-radius: 4px;
+        transition: 0.3s;
+        letter-spacing: 2px;
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+      }
+      .start-btn:hover {
+        background: var(--stable);
+        color: #000;
+        box-shadow: 0 0 40px var(--stable);
       }
 
       /* --- SIDEBAR --- */
@@ -75,13 +188,6 @@
         margin-bottom: 30px;
         text-align: center;
       }
-      .logo-sidebar {
-        width: 100%;
-        height: auto;
-        margin-bottom: 5px;
-        filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.2));
-      }
-
       .nav-label {
         font-size: 0.7rem;
         color: #666;
@@ -97,9 +203,9 @@
         border: none;
         color: #888;
         text-align: left;
-        padding: 10px 15px;
+        padding: 12px 15px;
         font-family: "Rajdhani";
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: 600;
         cursor: pointer;
         border-radius: 6px;
@@ -129,27 +235,24 @@
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
       }
 
-      .audio-btn {
-        width: 100%;
-        background: transparent;
-        border: 1px solid #333;
-        color: #666;
-        padding: 10px;
-        cursor: pointer;
-        font-family: "Rajdhani";
-        font-weight: bold;
-        border-radius: 6px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        transition: 0.2s;
-        margin-top: auto;
-      }
-      .audio-btn.on {
+      #btn-SHIFT,
+      #btn-PATH,
+      #btn-CHROMA,
+      #btn-CYPHER,
+      #btn-MATCH,
+      #btn-CALC,
+      #btn-FLASH {
         color: var(--stable);
-        border-color: var(--stable);
-        background: rgba(0, 229, 255, 0.05);
+        opacity: 0.7;
+      }
+      #btn-SHIFT.active,
+      #btn-PATH.active,
+      #btn-CHROMA.active,
+      #btn-CYPHER.active,
+      #btn-MATCH.active,
+      #btn-CALC.active,
+      #btn-FLASH.active {
+        opacity: 1;
       }
 
       /* --- GAME AREA --- */
@@ -160,10 +263,8 @@
         display: flex;
         flex-direction: column;
         width: 100%;
-        height: 100%;
         overflow: hidden;
       }
-
       #game-hud {
         display: flex;
         justify-content: space-between;
@@ -171,7 +272,6 @@
         border-bottom: 1px solid #222;
         background: rgba(0, 0, 0, 0.5);
         z-index: 10;
-        flex-shrink: 0;
       }
       .hud-val {
         font-size: 1.8rem;
@@ -191,29 +291,29 @@
         letter-spacing: 1px;
       }
 
-      /* --- RESPONSIVE CANVAS --- */
       #canvas-wrapper {
         flex-grow: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 10px;
+        padding: 20px;
         position: relative;
         width: 100%;
         height: 100%;
-        overflow: hidden;
       }
+      /* PATCH: OBJECT-FIT FOR RESPONSIVE SCALING */
       canvas {
         background: #000;
         box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         border: 1px solid #333;
         border-radius: 8px;
-        width: 100%;
-        height: 100%;
+        max-width: 100%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
         object-fit: contain;
       }
 
-      /* --- OVERLAYS --- */
       .overlay {
         position: absolute;
         top: 0;
@@ -284,7 +384,33 @@
         font-family: "Rajdhani";
       }
 
-      /* --- DASHBOARD --- */
+      .audio-btn {
+        width: 100%;
+        background: transparent;
+        border: 1px solid #333;
+        color: #666;
+        padding: 10px;
+        cursor: pointer;
+        font-family: "Rajdhani";
+        font-weight: bold;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        transition: 0.2s;
+      }
+      .audio-btn:hover {
+        border-color: var(--stable);
+        color: var(--stable);
+      }
+      .audio-btn.on {
+        color: var(--stable);
+        border-color: var(--stable);
+        background: rgba(0, 229, 255, 0.05);
+      }
+
+      /* DASHBOARD */
       #dashboard-view {
         position: absolute;
         top: 0;
@@ -296,7 +422,6 @@
         display: none;
         padding: 40px;
         overflow-y: auto;
-        touch-action: pan-y;
       }
       #dashboard-view.active {
         display: block;
@@ -618,100 +743,7 @@
         color: #fff;
       }
 
-      /* --- WELCOME (v44) --- */
-      #welcome-view {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: radial-gradient(circle at center, #111 0%, #000 100%);
-        z-index: 999;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 20px;
-        overflow-y: auto;
-      }
-      #welcome-view.hidden {
-        opacity: 0;
-        pointer-events: none;
-      }
-      .welcome-content {
-        max-width: 1200px;
-        width: 100%;
-        text-align: center;
-        padding-bottom: 100px;
-      }
-      .logo-welcome {
-        max-width: 600px;
-        width: 100%;
-        height: auto;
-        margin-bottom: 20px;
-        filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
-      }
-      .module-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 20px;
-        text-align: left;
-        margin-bottom: 50px;
-        width: 100%;
-      }
-      .module-card {
-        background: #0a0a0a;
-        border: 1px solid #333;
-        padding: 25px;
-        border-radius: 12px;
-        transition: 0.3s;
-        position: relative;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-      }
-      .module-card:hover {
-        border-color: var(--gold);
-        transform: translateY(-5px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      }
-      .module-card:hover::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: var(--gold);
-        box-shadow: 0 0 15px var(--gold);
-      }
-      .mc-icon {
-        font-size: 2rem;
-        color: var(--stable);
-        margin-bottom: 15px;
-      }
-      .mc-title {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #fff;
-        margin-bottom: 5px;
-      }
-      .mc-desc {
-        font-size: 0.9rem;
-        color: #ccc;
-        line-height: 1.4;
-        margin-bottom: 15px;
-        flex-grow: 1;
-      }
-      .mc-benefit {
-        font-size: 0.8rem;
-        color: var(--gold);
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-top: auto;
-      }
-
-      /* --- MOBILE OVERRIDES --- */
+      /* PATCH: MOBILE HAMBURGER BUTTON */
       .mobile-menu-btn {
         display: none;
         position: absolute;
@@ -724,50 +756,41 @@
         width: 44px;
         height: 44px;
         border-radius: 4px;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+        justify-content: center;
+        align-items: center;
         cursor: pointer;
       }
 
+      /* PATCH: MOBILE MEDIA QUERY */
       @media (max-width: 800px) {
         body {
           flex-direction: column;
-        } /* FIXED: STACK VERTICALLY ON MOBILE */
-
+        } /* Stack layout */
         .mobile-menu-btn {
           display: flex;
-          align-items: center;
-          justify-content: center;
-        }
+        } /* Show hamburger */
         #sidebar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          height: 100%;
-          width: 280px;
+          position: absolute;
           transform: translateX(-100%);
-          background: rgba(10, 10, 10, 0.95);
-          z-index: 500;
-          border-right: 1px solid var(--stable);
-          box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+          background: rgba(0, 0, 0, 0.95);
+          height: 100%;
+          width: 100%;
+          z-index: 200;
+          border-right: none;
         }
         #sidebar.open {
           transform: translateX(0);
         }
-
         .dash-grid {
           grid-template-columns: 1fr;
         }
-        .dash-header {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 10px;
-        }
-
+        /* Fix overlapping HUD */
         #game-hud {
           margin-top: 60px;
-          padding: 10px 15px;
-        } /* PUSH DOWN */
-
+          padding: 5px 15px;
+        }
+        /* Maximize canvas on mobile */
         #canvas-wrapper {
           padding: 0;
         }
@@ -775,8 +798,9 @@
           width: 100%;
           border: none;
           border-bottom: 1px solid #333;
+          border-radius: 0;
         }
-
+        /* Adjust overlays */
         #stat-box {
           bottom: 10px;
         }
@@ -784,27 +808,20 @@
           bottom: 10px;
           right: 10px;
         }
-        .module-grid {
-          grid-template-columns: 1fr;
-        }
-        .logo-welcome {
-          width: 80%;
-        }
       }
     </style>
   </head>
   <body>
-    <button
+    <div
       class="mobile-menu-btn"
       onclick="document.getElementById('sidebar').classList.toggle('open')"
     >
       <i class="fa-solid fa-bars"></i>
-    </button>
+    </div>
 
     <div id="welcome-view">
       <div class="welcome-content">
         <img src="logo.png" alt="SYNAPTIQ LOGO" class="logo-welcome" />
-
         <div class="module-grid">
           <div class="module-card">
             <i class="fa-solid fa-microchip mc-icon"></i>
@@ -849,7 +866,6 @@
             <div class="mc-benefit">WORKING MEMORY</div>
           </div>
         </div>
-
         <button class="start-btn" onclick="window.App.enterSystem()">
           INITIALIZE NEURAL LINK
         </button>
@@ -860,7 +876,7 @@
       <div class="brand">
         <img src="logo.png" alt="SYNAPTIQ" class="logo-sidebar" />
         <div>
-          <span style="font-size: 0.6rem; color: #666">v61.0 FINAL FIX</span>
+          <span style="font-size: 0.6rem; color: #666">v44.0 PATCHED</span>
         </div>
       </div>
       <div class="nav-label">DAILY OPERATIONS</div>
@@ -965,7 +981,6 @@
               [ DANGER ] WIPE DATA
             </button>
           </div>
-
           <div class="synapse-container">
             <div class="synapse-header">
               <h3 style="margin: 0; color: #fff">SYNAPSE NETWORK</h3>
@@ -976,7 +991,6 @@
             <div class="perk-grid" id="perk-list"></div>
           </div>
         </div>
-
         <div class="mastery-container">
           <h3
             style="
@@ -990,7 +1004,6 @@
           </h3>
           <div id="mastery-list"></div>
         </div>
-
         <h3
           style="
             color: #fff;
@@ -1083,7 +1096,7 @@
     </main>
 
     <script>
-      /** SYNAPTIQ v61.0 - STABLE MOBILE FIX **/
+      /** SYNAPTIQ v44.0 - BULLETPROOF WITH PATCHES **/
 
       const canvas = document.getElementById("gameCanvas");
       const ctx = canvas.getContext("2d");
@@ -1217,38 +1230,14 @@
         rightClick: false,
         handled: false,
       };
+      const isMobile = window.matchMedia("(pointer: coarse)").matches; // MOBILE DETECT
 
-      // --- CRITICAL: RESIZE OBSERVER ---
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (let entry of entries) {
-          const { width, height } = entry.contentRect;
-          const logicalW = 800,
-            logicalH = 600;
-          const scale = Math.min(width / logicalW, height / logicalH);
-          canvas.style.width = `${logicalW * scale}px`;
-          canvas.style.height = `${logicalH * scale}px`;
-          const dpr = window.devicePixelRatio || 1;
-          canvas.width = logicalW * dpr;
-          canvas.height = logicalH * dpr;
-          ctx.scale(dpr, dpr);
-          if (
-            window.App &&
-            !window.App.active &&
-            window.Games &&
-            window.Games[window.App.mode]
-          ) {
-            window.Games[window.App.mode].draw();
-          }
-        }
-      });
-      resizeObserver.observe(document.getElementById("canvas-wrapper"));
-
-      // --- INPUT MAPPING ---
+      // --- PATCH: TOUCH MAPPING & RESIZING ---
       function getMousePos(evt) {
         const rect = canvas.getBoundingClientRect();
         return {
-          x: (evt.clientX - rect.left) * (800 / rect.width),
-          y: (evt.clientY - rect.top) * (600 / rect.height),
+          x: (evt.clientX - rect.left) * (canvas.width / rect.width),
+          y: (evt.clientY - rect.top) * (canvas.height / rect.height),
         };
       }
 
@@ -1258,11 +1247,8 @@
         Mouse.y = p.y;
       });
       canvas.addEventListener("mousedown", (e) => {
-        if (e.button === 2) {
-          Mouse.rightClick = true;
-        } else {
-          Mouse.click = true;
-        }
+        if (e.button === 2) Mouse.rightClick = true;
+        else Mouse.click = true;
         Mouse.handled = false;
         SFX.init();
       });
@@ -1278,8 +1264,8 @@
         "touchstart",
         (e) => {
           e.preventDefault();
-          const touch = e.touches[0];
-          const p = getMousePos(touch);
+          const t = e.touches[0];
+          const p = getMousePos(t);
           Mouse.x = p.x;
           Mouse.y = p.y;
           Mouse.click = true;
@@ -1288,7 +1274,6 @@
         },
         { passive: false },
       );
-
       canvas.addEventListener(
         "touchend",
         (e) => {
@@ -1298,12 +1283,9 @@
         { passive: false },
       );
 
-      const isMobile = window.matchMedia(
-        "(hover: none) and (pointer: coarse)",
-      ).matches;
-
+      // --- PATCH: FAT FINGER HITBOX ---
       function btn(x, y, w, h, col, fill) {
-        const pad = isMobile ? 30 : 0;
+        const pad = isMobile ? 20 : 0; // 20px extra padding on mobile
         const hover =
           Mouse.x > x - pad &&
           Mouse.x < x + w + pad &&
@@ -1370,8 +1352,8 @@
             "FLASH",
           ];
           modes.forEach((m) => (this.progress[m] = { lvl: 1, xp: 0 }));
-          if (localStorage.getItem("synaptiq_data_v60")) {
-            const data = JSON.parse(localStorage.getItem("synaptiq_data_v60"));
+          if (localStorage.getItem("synaptiq_data_v44")) {
+            const data = JSON.parse(localStorage.getItem("synaptiq_data_v44"));
             this.user = data.user;
             this.totalScore = data.totalScore;
             this.sessionsPlayed = data.sessionsPlayed;
@@ -1449,13 +1431,11 @@
             btn.classList.remove("on");
           }
         },
-
         enterSystem() {
           document.getElementById("welcome-view").classList.add("hidden");
           SFX.play("start");
           this.load("SHIFT");
         },
-
         saveData() {
           const data = {
             user: this.user,
@@ -1469,13 +1449,13 @@
             synapsePoints: this.synapsePoints,
             perks: this.perks,
           };
-          localStorage.setItem("synaptiq_data_v60", JSON.stringify(data));
+          localStorage.setItem("synaptiq_data_v44", JSON.stringify(data));
         },
         wipeData() {
           if (
             confirm("WARNING: THIS WILL DELETE ALL PROGRESS. ARE YOU SURE?")
           ) {
-            localStorage.removeItem("synaptiq_data_v60");
+            localStorage.removeItem("synaptiq_data_v44");
             location.reload();
           }
         },
@@ -1503,7 +1483,7 @@
           document.getElementById("welcome-view").classList.add("hidden");
           document.getElementById("overlay-instr").classList.remove("active");
           document.getElementById("overlay-end").classList.remove("active");
-          document.getElementById("sidebar").classList.remove("open");
+          document.getElementById("sidebar").classList.remove("open"); // PATCH: Close sidebar
           this.updateStats();
         },
 
@@ -1565,14 +1545,7 @@
               : this.synapsePoints >= cost
                 ? "perk-node"
                 : "perk-node locked";
-            perkList.innerHTML += `
-                <div class="${cls}" onclick="window.App.buyPerk('${p.id}')">
-                    <div class="perk-icon"><i class="fa-solid fa-${p.icon}"></i></div>
-                    <span class="perk-name">${p.name}</span>
-                    <span class="perk-lvl">LVL ${lvl}/5</span>
-                    <span class="perk-cost">${cost} SP</span>
-                </div>
-            `;
+            perkList.innerHTML += `<div class="${cls}" onclick="window.App.buyPerk('${p.id}')"><div class="perk-icon"><i class="fa-solid fa-${p.icon}"></i></div><span class="perk-name">${p.name}</span><span class="perk-lvl">LVL ${lvl}/5</span><span class="perk-cost">${cost} SP</span></div>`;
           });
 
           const list = document.getElementById("mastery-list");
@@ -1598,7 +1571,6 @@
           const badgeContainer = document.getElementById("badge-container");
           if (!badgeContainer) return;
           badgeContainer.innerHTML = "";
-
           const badges = [
             {
               id: "badge-logic",
@@ -1669,16 +1641,8 @@
               cls += " bronze";
               tier = "BRONZE";
             }
-
             if (b.score >= 10) cls += " unlocked";
-
-            badgeContainer.innerHTML += `
-                <div class="${cls}">
-                    <i class="fa-solid fa-${b.icon}"></i>
-                    <span>${b.label}</span>
-                    <div class="badge-tier">${tier}</div>
-                </div>
-            `;
+            badgeContainer.innerHTML += `<div class="${cls}"><i class="fa-solid fa-${b.icon}"></i><span>${b.label}</span><div class="badge-tier">${tier}</div></div>`;
           });
         },
 
@@ -1694,8 +1658,8 @@
             "FLASH",
           ];
           document.getElementById("blitz-hud").style.display = "block";
+          document.getElementById("sidebar").classList.remove("open"); // PATCH
           this.nextBlitz();
-          document.getElementById("sidebar").classList.remove("open");
         },
         nextBlitz() {
           if (this.blitzQueue.length === 0) {
@@ -1716,9 +1680,7 @@
             .querySelectorAll(".nav-btn")
             .forEach((b) => b.classList.remove("active"));
           document.getElementById(`btn-${mode}`).classList.add("active");
-
-          document.getElementById("sidebar").classList.remove("open");
-
+          document.getElementById("sidebar").classList.remove("open"); // PATCH
           this.mode = mode;
           this.active = false;
 
@@ -1761,10 +1723,8 @@
           document.getElementById("level-val").innerText =
             this.progress[this.mode].lvl;
           this.updateLiveAcc();
-
           const sBoosts = [0, 1, 2, 3, 5, 999];
           this.shieldCount = sBoosts[this.perks.shield];
-
           if (window.Games[this.mode]) window.Games[this.mode].init();
           SFX.play("start");
           this.lastTime = performance.now();
@@ -1816,7 +1776,6 @@
             const xMults = [1.0, 1.1, 1.25, 1.5, 2.0, 2.5];
             xpGain = Math.floor(xpGain * xMults[this.perks.xp]);
           }
-
           this.totalScore += xpGain;
           const acc =
             this.correct + this.wrong === 0
@@ -1824,10 +1783,8 @@
               : this.correct / (this.correct + this.wrong);
           const sBonus = this.streak >= 10 ? 2.0 : this.streak >= 5 ? 1.5 : 1.0;
           const spGain = Math.floor((10 + acc * 20) * sBonus);
-
           this.synapsePoints += spGain;
           document.getElementById("end-sp").innerText = "+" + spGain + " SP";
-
           const now = Date.now();
           const hoursSince = (now - this.lastPlayed) / (1000 * 60 * 60);
           if (hoursSince > 24 && hoursSince < 48) {
@@ -1836,7 +1793,6 @@
             this.streak = 1;
           }
           this.lastPlayed = now;
-
           if (this.progress[this.mode]) {
             this.progress[this.mode].xp += xpGain;
             this.progress[this.mode].lvl =
@@ -1869,7 +1825,6 @@
             requestAnimationFrame(this.loop.bind(this));
             return;
           }
-
           const isEnded = document
             .getElementById("overlay-end")
             .classList.contains("active");
@@ -1886,10 +1841,8 @@
             requestAnimationFrame(this.loop.bind(this));
             return;
           }
-
           const dt = (timestamp - this.lastTime) / 1000;
           this.lastTime = timestamp;
-
           ctx.fillStyle = C.bg;
           ctx.fillRect(0, 0, 800, 600);
           FX.update(dt);
@@ -1913,8 +1866,6 @@
             ctx.lineTo(800, i);
             ctx.stroke();
           }
-
-          // Timer Logic
           if (this.active) {
             this.timer -= dt;
             if (this.timer <= 0) {
@@ -1934,17 +1885,14 @@
               document.getElementById("overlay-end").classList.add("active");
             }
           }
-
           document.getElementById("score-val").innerText = this.score;
           document.getElementById("timer-val").innerText = Math.ceil(
             this.timer,
           );
-
           if (window.Games[this.mode]) {
             if (this.active && !isEnded) window.Games[this.mode].update(dt);
             window.Games[this.mode].draw();
           }
-
           FX.draw();
           ctx.restore();
           Mouse.click = false;
@@ -1961,7 +1909,6 @@
         ctx.fillRect(x, y, w * pct, 6);
       }
 
-      // --- GLOBAL GAMES OBJECT (SPLIT UPDATE/DRAW) ---
       window.Games = {
         SHIFT: {
           init: function () {
@@ -1987,7 +1934,6 @@
                 c: Math.floor(Math.random() * this.maxC),
                 s: Math.floor(Math.random() * this.maxS),
               };
-              // STRICT LOGIC FIX
               if (this.rule === 0 && d.c === this.tgt)
                 d.c = (d.c + 1) % this.maxC;
               if (this.rule === 1 && d.s === this.tgt)
@@ -2022,7 +1968,6 @@
             this.opts.forEach((o, i) => {
               const x = 200 + (i % 2) * 220,
                 y = 200 + Math.floor(i / 2) * 180;
-              // MOBILE SIZING: 150px
               if (window.App.active && btn(x, y, 150, 150, cl[o.c], false)) {
                 Mouse.handled = true;
                 const cr =
@@ -2058,7 +2003,6 @@
         PATH: {
           init: function () {
             const l = window.App.progress.PATH.lvl;
-            const mod = window.App.currentMod;
             const steps = 2;
             this.seq = [];
             for (let i = 0; i < steps; i++)
@@ -2089,8 +2033,9 @@
                 this.idx++;
                 if (this.idx >= this.seq.length) this.show = false;
               }
-            } else if (this.rot < Math.PI / 2) {
-              this.rot += dt * 2;
+            } else {
+              // PATCH: FORCE ROTATION TO 0 WHEN INPUT IS ACTIVE
+              this.rot = 0;
             }
             if (!this.show && this.rot >= Math.PI / 2) {
               this.turnT -= dt;
@@ -2122,17 +2067,18 @@
             }
 
             ctx.save();
-            ctx.translate(400, 300);
-            ctx.rotate(this.rot);
-            ctx.translate(-150, -150);
-            // GRID ADJUST: 3x110 + 20 = 350. Start -175.
-            const sz = 110,
-              gap = 10;
-            ctx.translate(-25, -25); // Center tweak
+            // ONLY ROTATE DURING SHOW PHASE
+            if (this.show) {
+              ctx.translate(400, 300);
+              ctx.rotate(this.rot);
+              ctx.translate(-150, -150);
+            } else {
+              ctx.translate(250, 150); // CENTER ALIGN FOR INPUT
+            }
 
             for (let i = 0; i < 9; i++) {
-              const cx = (i % 3) * (sz + gap),
-                cy = Math.floor(i / 3) * (sz + gap);
+              const cx = (i % 3) * 100,
+                cy = Math.floor(i / 3) * 100;
               let fill = "#222",
                 stroke = "#444",
                 lw = 1;
@@ -2152,6 +2098,25 @@
                   lw = 2;
                 }
               }
+
+              // INPUT CHECK WITHIN DRAW LOOP FOR ALIGNMENT
+              if (
+                window.App.active &&
+                !this.show &&
+                btn(250 + cx, 150 + cy, 90, 90, fill, false)
+              ) {
+                Mouse.handled = true;
+                // Logic uses standard index
+                if (i === this.seq[this.step]) {
+                  this.step++;
+                  if (this.step >= this.seq.length) this.winDelay = 0.5;
+                } else {
+                  window.App.score -= 50;
+                  window.App.logResult(false);
+                  this.init();
+                }
+              }
+
               ctx.fillStyle = fill;
               ctx.strokeStyle = stroke;
               ctx.lineWidth = lw;
@@ -2160,35 +2125,6 @@
               ctx.setLineDash([]);
             }
             ctx.restore();
-
-            // HITBOX LOGIC (ROTATION MATCHED)
-            if (window.App.active && !this.show && this.rot >= Math.PI / 2) {
-              // Manually rotated coordinates for input
-              const map = [6, 3, 0, 7, 4, 1, 8, 5, 2];
-              for (let i = 0; i < 9; i++) {
-                const vx = 250 + (i % 3) * 100,
-                  vy = 150 + Math.floor(i / 3) * 100;
-                // Note: Hitbox remains standard grid for simplicity, rotation is visual.
-                // To fix rotation logic: map visual rotation to input.
-                // Simplified: We accept the visual rotation mismatch or remove rotation on input.
-                // USER REQUESTED FIX: Remove rotation on input? Or fix coordinates.
-                // Fixed: Using standard grid for input area.
-                if (btn(vx, vy, 100, 100, C.dim, false)) {
-                  Mouse.handled = true;
-                  SFX.play("click");
-                  if (map[i] === this.seq[this.step]) {
-                    this.step++;
-                    if (this.step >= this.seq.length) {
-                      this.winDelay = 0.5;
-                    }
-                  } else {
-                    window.App.score -= 50;
-                    window.App.logResult(false);
-                    this.init();
-                  }
-                }
-              }
-            }
           },
         },
         CHROMA: {
@@ -2329,27 +2265,28 @@
               ctx.fillRect(270, 450, 260, 6);
             }
 
-            // MOBILE SIZING: 85px
-            const sz = 85,
-              gap = 5,
-              startX = 180,
-              startY = 120;
-
             for (let i = 0; i < 25; i++) {
-              const x = startX + (i % 5) * (sz + gap),
-                y = startY + Math.floor(i / 5) * (sz + gap);
+              const x = 270 + (i % 5) * 52,
+                y = 170 + Math.floor(i / 5) * 52;
               const m = this.mines.includes(i);
 
               if (
                 window.App.active &&
-                !this.rev[i] &&
-                btn(x, y, sz, sz, "#222", false)
+                btn(
+                  x,
+                  y,
+                  48,
+                  48,
+                  this.rev[i] ? (m ? C.chaos : "#111") : "#222",
+                  false,
+                ) &&
+                !this.rev[i]
               ) {
-                if (Mouse.rightClick) {
+                if (Mouse.rightClick && !Mouse.handled) {
                   Mouse.handled = true;
                   this.flags[i] = !this.flags[i];
                   SFX.play("click");
-                } else if (!this.flags[i]) {
+                } else if (Mouse.click && !Mouse.handled && !this.flags[i]) {
                   Mouse.handled = true;
                   SFX.play("click");
                   if (this.fc) {
@@ -2385,25 +2322,25 @@
 
               ctx.fillStyle = this.rev[i] ? (m ? C.chaos : "#111") : "#222";
               ctx.strokeStyle = this.rev[i] ? (m ? C.chaos : "#444") : "#555";
-              ctx.fillRect(x, y, sz, sz);
-              ctx.strokeRect(x, y, sz, sz);
+              ctx.fillRect(x, y, 48, 48);
+              ctx.strokeRect(x, y, 48, 48);
               if (this.flags[i] && !this.rev[i]) {
                 ctx.fillStyle = C.chaos;
-                ctx.font = "30px FontAwesome";
-                ctx.fillText(Icons.flag, x + sz / 2, y + sz / 2 + 10);
+                ctx.font = "20px FontAwesome";
+                ctx.fillText(Icons.flag, x + 24, y + 32);
               }
               if (this.rev[i]) {
                 if (m) {
                   ctx.fillStyle = "#000";
-                  ctx.font = "30px FontAwesome";
-                  ctx.fillText(Icons.skull, x + sz / 2, y + sz / 2 + 10);
+                  ctx.font = "20px FontAwesome";
+                  ctx.fillText(Icons.skull, x + 24, y + 32);
                 } else {
                   const c = this.getMines(i);
                   if (c > 0) {
                     ctx.fillStyle = C.stable;
-                    ctx.font = "bold 30px Rajdhani";
+                    ctx.font = "bold 20px Rajdhani";
                     ctx.textAlign = "center";
-                    ctx.fillText(c, x + sz / 2, y + sz / 2 + 10);
+                    ctx.fillText(c, x + 24, y + 32);
                   }
                 }
               }
@@ -2441,29 +2378,23 @@
               ctx.textAlign = "center";
               ctx.fillText("MEMORIZE", 400, 100);
             }
-
-            // MOBILE SIZING: 120px
-            const sz = 120,
-              gap = 15,
-              startX = 130,
-              startY = 150;
-
             this.cards.forEach((c, i) => {
-              const x = startX + (i % 4) * (sz + gap),
-                y = startY + Math.floor(i / 4) * (sz + gap);
+              // PATCH: MOVED UP TO Y=85 TO PREVENT BLEEDING
+              const x = 220 + (i % 4) * 90,
+                y = 85 + Math.floor(i / 4) * 90;
               if (c.flip || c.match) {
                 ctx.fillStyle = c.match ? "#000" : "#111";
                 ctx.strokeStyle = c.match ? C.gold : C.stable;
-                ctx.fillRect(x, y, sz, sz);
-                ctx.strokeRect(x, y, sz, sz);
+                ctx.fillRect(x, y, 80, 80);
+                ctx.strokeRect(x, y, 80, 80);
                 ctx.fillStyle = "#fff";
-                ctx.font = "50px FontAwesome";
+                ctx.font = "30px FontAwesome";
                 ctx.textAlign = "center";
-                ctx.fillText(c.icon, x + sz / 2, y + sz / 2 + 20);
+                ctx.fillText(c.icon, x + 40, y + 50);
               } else {
                 if (
                   window.App.active &&
-                  btn(x, y, sz, sz, C.dim, false) &&
+                  btn(x, y, 80, 80, C.dim, false) &&
                   !this.lock &&
                   !c.match
                 ) {
@@ -2485,20 +2416,21 @@
                         this.init();
                       }
                     } else {
+                      // PATCH: SLOWER TIMEOUT 1500ms
                       window.App.logResult(false);
                       setTimeout(() => {
                         this.cards[i1].flip = false;
                         this.cards[i2].flip = false;
                         this.flipped = [];
                         this.lock = false;
-                      }, 800);
+                      }, 1500);
                     }
                   }
                 }
                 ctx.fillStyle = "#555";
-                ctx.font = "40px FontAwesome";
+                ctx.font = "20px FontAwesome";
                 ctx.textAlign = "center";
-                ctx.fillText(Icons.question, x + sz / 2, y + sz / 2 + 15);
+                ctx.fillText(Icons.question, x + 40, y + 50);
               }
             });
           },
@@ -2592,7 +2524,6 @@
               ctx.textAlign = "center";
               ctx.fillText("MEMORIZE", 400, 100);
             }
-
             for (let i = 0; i < 16; i++) {
               const x = 300 + (i % 4) * 52,
                 y = 150 + Math.floor(i / 4) * 52,
@@ -2600,7 +2531,6 @@
               if (v > 0) {
                 let show = !this.hide || v < this.nxt;
                 let col = show ? (v < this.nxt ? C.stable : "#222") : "#333";
-
                 if (
                   window.App.active &&
                   btn(x, y, 48, 48, col, show) &&
