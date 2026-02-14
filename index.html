@@ -4,9 +4,9 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>SYNAPTIQ | v46.1 SENIOR READY</title>
+    <title>SYNAPTIQ | v49.0 STABLE RECOVERY</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
       rel="stylesheet"
@@ -17,7 +17,7 @@
     />
 
     <style>
-      /* --- CORE CSS --- */
+      /* --- CORE CSS (v44 STABLE) --- */
       :root {
         --bg: #050505;
         --panel: #0a0a0a;
@@ -32,7 +32,6 @@
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
       }
-
       body {
         margin: 0;
         background-color: var(--bg);
@@ -41,21 +40,6 @@
         height: 100vh;
         overflow: hidden;
         display: flex;
-      }
-
-      /* SCROLLBAR HIDING */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: #111;
-      }
-      ::-webkit-scrollbar-thumb {
-        background: #333;
-        border-radius: 4px;
-      }
-      ::-webkit-scrollbar-thumb:hover {
-        background: #555;
       }
 
       .logo-welcome {
@@ -72,7 +56,6 @@
         filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.2));
       }
 
-      /* --- WELCOME SCREEN --- */
       #welcome-view {
         position: fixed;
         top: 0;
@@ -87,7 +70,6 @@
         padding: 40px;
         overflow-y: auto;
         transition: opacity 0.5s;
-        touch-action: pan-y;
       }
       #welcome-view.hidden {
         opacity: 0;
@@ -181,7 +163,6 @@
         box-shadow: 0 0 40px var(--stable);
       }
 
-      /* --- SIDEBAR --- */
       #sidebar {
         width: 260px;
         min-width: 260px;
@@ -267,7 +248,6 @@
         opacity: 1;
       }
 
-      /* --- GAME AREA --- */
       #viewport {
         flex-grow: 1;
         position: relative;
@@ -276,7 +256,6 @@
         flex-direction: column;
         width: 100%;
         overflow: hidden;
-        touch-action: none;
       }
       #game-hud {
         display: flex;
@@ -285,7 +264,6 @@
         border-bottom: 1px solid #222;
         background: rgba(0, 0, 0, 0.5);
         z-index: 10;
-        transition: margin-top 0.3s;
       }
       .hud-val {
         font-size: 1.8rem;
@@ -305,12 +283,13 @@
         letter-spacing: 1px;
       }
 
+      /* --- MOBILE RESPONSIVE CANVAS --- */
       #canvas-wrapper {
         flex-grow: 1;
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 10px; /* Reduced padding for mobile */
         position: relative;
         width: 100%;
         height: 100%;
@@ -320,8 +299,11 @@
         box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
         border: 1px solid #333;
         border-radius: 8px;
+        /* FORCE FIT TO SCREEN */
         max-width: 100%;
         max-height: 100%;
+        width: auto;
+        height: auto;
         object-fit: contain;
       }
 
@@ -441,15 +423,10 @@
       .dash-header {
         display: flex;
         justify-content: space-between;
-        align-items: flex-end;
+        align-items: center;
         border-bottom: 1px solid #333;
         padding-bottom: 20px;
         margin-bottom: 30px;
-      }
-      .dash-header h1 {
-        font-size: 2rem;
-        margin: 0;
-        color: #fff;
       }
       .dash-grid {
         display: grid;
@@ -755,7 +732,7 @@
         color: #fff;
       }
 
-      /* --- MOBILE TOGGLE BUTTON --- */
+      /* MOBILE MENU TOGGLE */
       .mobile-menu-btn {
         display: none;
         position: absolute;
@@ -772,7 +749,7 @@
         cursor: pointer;
       }
 
-      /* --- MOBILE MEDIA QUERIES --- */
+      /* MOBILE MEDIA QUERIES */
       @media (max-width: 800px) {
         .mobile-menu-btn {
           display: flex;
@@ -795,7 +772,6 @@
         #sidebar.open {
           transform: translateX(0);
         }
-
         .dash-grid {
           grid-template-columns: 1fr;
         }
@@ -807,39 +783,22 @@
         .dash-header div {
           text-align: left;
         }
-
-        /* MOBILE HUD ADJUSTMENT */
         #game-hud {
-          margin-top: 60px;
-          padding: 5px 10px;
+          padding: 10px 15px;
+          margin-top: 50px;
           font-size: 0.7rem;
-        }
+        } /* PUSHED DOWN FOR MENU BTN */
         .hud-val {
-          font-size: 1.2rem;
+          font-size: 1.4rem;
         }
-
-        /* MOBILE CANVAS MAXIMIZATION - ZERO PADDING */
-        #canvas-wrapper {
-          padding: 0;
-        }
-        canvas {
-          width: 98vw;
-          height: auto;
-          border-radius: 0;
-          border: none;
-          border-bottom: 1px solid #333;
-        }
-
         #stat-box {
-          bottom: 10px;
-          padding: 5px 15px;
-          font-size: 0.8rem;
+          bottom: 20px;
+          padding: 8px 20px;
         }
         #instr-btn {
-          bottom: 10px;
-          right: 10px;
+          bottom: 20px;
+          right: 20px;
         }
-
         .module-grid {
           grid-template-columns: 1fr;
         }
@@ -916,7 +875,9 @@
       <div class="brand">
         <img src="logo.png" alt="SYNAPTIQ" class="logo-sidebar" />
         <div>
-          <span style="font-size: 0.6rem; color: #666">v46.1 SENIOR READY</span>
+          <span style="font-size: 0.6rem; color: #666"
+            >v49.0 STABLE RECOVERY</span
+          >
         </div>
       </div>
       <div class="nav-label">DAILY OPERATIONS</div>
@@ -1139,7 +1100,7 @@
     </main>
 
     <script>
-      /** SYNAPTIQ v46.1 - SENIOR READY MOBILE **/
+      /** SYNAPTIQ v49.0 - STABLE RECOVERY WITH TOUCH **/
 
       const canvas = document.getElementById("gameCanvas");
       const ctx = canvas.getContext("2d");
@@ -1274,14 +1235,12 @@
         handled: false,
       };
 
-      // --- CRITICAL: MOUSE/TOUCH COORDINATE MAPPING WITH MOBILE SCALE ---
+      // --- CRITICAL: INPUT MAPPING THAT HANDLES CSS SCALING AUTOMATICALLY ---
       function getMousePos(evt) {
         const rect = canvas.getBoundingClientRect();
-        // Divide by zoomScale to map clicks correctly on zoomed canvas
-        const scale = window.App ? window.App.zoomScale : 1.0;
         return {
-          x: ((evt.clientX - rect.left) * (canvas.width / rect.width)) / scale,
-          y: ((evt.clientY - rect.top) * (canvas.height / rect.height)) / scale,
+          x: (evt.clientX - rect.left) * (canvas.width / rect.width),
+          y: (evt.clientY - rect.top) * (canvas.height / rect.height),
         };
       }
 
@@ -1307,18 +1266,15 @@
         e.preventDefault();
       });
 
+      // ADDING TOUCH SUPPORT (MAPPED TO MOUSE EMULATION)
       canvas.addEventListener(
         "touchstart",
         (e) => {
           e.preventDefault();
           const touch = e.touches[0];
           const rect = canvas.getBoundingClientRect();
-          const scale = window.App ? window.App.zoomScale : 1.0;
-          Mouse.x =
-            ((touch.clientX - rect.left) * (canvas.width / rect.width)) / scale;
-          Mouse.y =
-            ((touch.clientY - rect.top) * (canvas.height / rect.height)) /
-            scale;
+          Mouse.x = (touch.clientX - rect.left) * (canvas.width / rect.width);
+          Mouse.y = (touch.clientY - rect.top) * (canvas.height / rect.height);
           Mouse.click = true;
           Mouse.handled = false;
           SFX.init();
@@ -1368,16 +1324,8 @@
         currentMod: 1.0,
         shieldCount: 0,
 
-        // SCALE FACTOR FOR MOBILE
-        zoomScale: 1.0,
-
         init() {
           this.active = false;
-
-          // DETECT MOBILE
-          this.isMobile = window.innerWidth < 800;
-          this.zoomScale = this.isMobile ? 1.6 : 1.0; // 1.6x Zoom on mobile
-
           const modes = [
             "SHIFT",
             "PATH",
@@ -1388,8 +1336,8 @@
             "FLASH",
           ];
           modes.forEach((m) => (this.progress[m] = { lvl: 1, xp: 0 }));
-          if (localStorage.getItem("synaptiq_data_v46")) {
-            const data = JSON.parse(localStorage.getItem("synaptiq_data_v46"));
+          if (localStorage.getItem("synaptiq_data_v49")) {
+            const data = JSON.parse(localStorage.getItem("synaptiq_data_v49"));
             this.user = data.user;
             this.totalScore = data.totalScore;
             this.sessionsPlayed = data.sessionsPlayed;
@@ -1467,13 +1415,11 @@
             btn.classList.remove("on");
           }
         },
-
         enterSystem() {
           document.getElementById("welcome-view").classList.add("hidden");
           SFX.play("start");
           this.load("SHIFT");
         },
-
         saveData() {
           const data = {
             user: this.user,
@@ -1487,13 +1433,13 @@
             synapsePoints: this.synapsePoints,
             perks: this.perks,
           };
-          localStorage.setItem("synaptiq_data_v46", JSON.stringify(data));
+          localStorage.setItem("synaptiq_data_v49", JSON.stringify(data));
         },
         wipeData() {
           if (
             confirm("WARNING: THIS WILL DELETE ALL PROGRESS. ARE YOU SURE?")
           ) {
-            localStorage.removeItem("synaptiq_data_v46");
+            localStorage.removeItem("synaptiq_data_v49");
             location.reload();
           }
         },
@@ -1891,7 +1837,6 @@
           const isEnded = document
             .getElementById("overlay-end")
             .classList.contains("active");
-          // If not active and instruction overlay is up, run loop with 0 dt to draw static
           if (
             !this.active &&
             !document
@@ -1901,19 +1846,7 @@
           ) {
             ctx.fillStyle = C.bg;
             ctx.fillRect(0, 0, 800, 600);
-
-            // --- DRAW LOOP (WITH ZOOM) ---
-            ctx.save();
-            if (this.isMobile) {
-              // Zoom in on center
-              ctx.translate(400, 300);
-              ctx.scale(this.zoomScale, this.zoomScale);
-              ctx.translate(-400, -300);
-            }
             if (window.Games[this.mode]) window.Games[this.mode].draw();
-            ctx.restore();
-            // -----------------------------
-
             requestAnimationFrame(this.loop.bind(this));
             return;
           }
@@ -1945,7 +1878,6 @@
             ctx.stroke();
           }
 
-          // Timer Logic
           if (this.active) {
             this.timer -= dt;
             if (this.timer <= 0) {
@@ -1973,18 +1905,7 @@
 
           if (window.Games[this.mode]) {
             if (this.active && !isEnded) window.Games[this.mode].update(dt);
-
-            // --- DRAW LOOP (WITH ZOOM) ---
-            ctx.save();
-            if (this.isMobile) {
-              // Zoom in on center
-              ctx.translate(400, 300);
-              ctx.scale(this.zoomScale, this.zoomScale);
-              ctx.translate(-400, -300);
-            }
             window.Games[this.mode].draw();
-            ctx.restore();
-            // -----------------------------
           }
 
           FX.draw();
@@ -2022,7 +1943,6 @@
         ctx.fillRect(x, y, w * pct, 6);
       }
 
-      // --- GLOBAL GAMES OBJECT (SPLIT UPDATE/DRAW) ---
       window.Games = {
         SHIFT: {
           init: function () {
@@ -2118,7 +2038,7 @@
           init: function () {
             const l = window.App.progress.PATH.lvl;
             const mod = window.App.currentMod;
-            const steps = 2; // HARDCODED 2
+            const steps = 2;
             this.seq = [];
             for (let i = 0; i < steps; i++)
               this.seq.push(Math.floor(Math.random() * 9));
