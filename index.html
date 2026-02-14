@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
     />
-    <title>SYNAPTIQ | v45.1 MOBILE SCROLL FIX</title>
+    <title>SYNAPTIQ | v45.2 MOBILE MAX</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
       rel="stylesheet"
@@ -28,8 +28,6 @@
         --text: #fff;
         --dim: #333;
       }
-
-      /* FIXED: Removed 'touch-action: none' from global so scrolling works */
       * {
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
@@ -75,7 +73,6 @@
       }
 
       /* --- WELCOME SCREEN --- */
-      /* FIXED: Added 'touch-action: pan-y' to explicitly allow vertical scrolling */
       #welcome-view {
         position: fixed;
         top: 0;
@@ -90,14 +87,12 @@
         padding: 40px;
         overflow-y: auto;
         transition: opacity 0.5s;
-        touch-action: pan-y;
+        touch-action: pan-y; /* Allow Scroll */
       }
       #welcome-view.hidden {
         opacity: 0;
         pointer-events: none;
       }
-
-      /* Added extra padding bottom for mobile safetey */
       .welcome-content {
         max-width: 1200px;
         width: 100%;
@@ -281,7 +276,6 @@
         flex-direction: column;
         width: 100%;
         overflow: hidden;
-        /* FIXED: Lock touch action here to prevent game board dragging */
         touch-action: none;
       }
       #game-hud {
@@ -315,7 +309,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 20px;
+        padding: 20px; /* Default desktop padding */
         position: relative;
         width: 100%;
         height: 100%;
@@ -438,7 +432,7 @@
         display: none;
         padding: 40px;
         overflow-y: auto;
-        touch-action: pan-y; /* Enable Scroll */
+        touch-action: pan-y;
       }
       #dashboard-view.active {
         display: block;
@@ -813,21 +807,35 @@
           text-align: left;
         }
 
+        /* MOBILE HUD COMPACT */
         #game-hud {
-          padding: 10px 15px;
-          font-size: 0.8rem;
+          padding: 5px 10px;
+          font-size: 0.7rem;
         }
         .hud-val {
-          font-size: 1.4rem;
+          font-size: 1.2rem;
+        }
+
+        /* MOBILE CANVAS MAXIMIZATION - ZERO PADDING */
+        #canvas-wrapper {
+          padding: 0;
+        }
+        canvas {
+          width: 100%;
+          height: auto;
+          border-radius: 0;
+          border: none;
+          border-bottom: 1px solid #333;
         }
 
         #stat-box {
-          bottom: 20px;
-          padding: 8px 20px;
+          bottom: 10px;
+          padding: 5px 15px;
+          font-size: 0.8rem;
         }
         #instr-btn {
-          bottom: 20px;
-          right: 20px;
+          bottom: 10px;
+          right: 10px;
         }
 
         .module-grid {
@@ -906,7 +914,7 @@
       <div class="brand">
         <img src="logo.png" alt="SYNAPTIQ" class="logo-sidebar" />
         <div>
-          <span style="font-size: 0.6rem; color: #666">v45.1 MOBILE FIX</span>
+          <span style="font-size: 0.6rem; color: #666">v45.2 MOBILE MAX</span>
         </div>
       </div>
       <div class="nav-label">DAILY OPERATIONS</div>
@@ -1129,7 +1137,7 @@
     </main>
 
     <script>
-      /** SYNAPTIQ v45.1 - MOBILE FIX **/
+      /** SYNAPTIQ v45.2 - MOBILE MAX **/
 
       const canvas = document.getElementById("gameCanvas");
       const ctx = canvas.getContext("2d");
@@ -1866,6 +1874,7 @@
           const isEnded = document
             .getElementById("overlay-end")
             .classList.contains("active");
+          // If not active and instruction overlay is up, run loop with 0 dt to draw static
           if (
             !this.active &&
             !document
@@ -1875,7 +1884,7 @@
           ) {
             ctx.fillStyle = C.bg;
             ctx.fillRect(0, 0, 800, 600);
-            if (window.Games[this.mode]) window.Games[this.mode].draw();
+            if (window.Games[this.mode]) window.Games[this.mode].draw(); // FORCE DRAW
             requestAnimationFrame(this.loop.bind(this));
             return;
           }
@@ -1933,6 +1942,7 @@
             this.timer,
           );
 
+          // SEPARATE UPDATE AND DRAW
           if (window.Games[this.mode]) {
             if (this.active && !isEnded) window.Games[this.mode].update(dt);
             window.Games[this.mode].draw();
