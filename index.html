@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
     />
-    <title>SYNAPTIQ | v83.0 UI TWEAKS</title>
+    <title>SYNAPTIQ | v84.0 NEON POLISH</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
       rel="stylesheet"
@@ -189,6 +189,7 @@
         font-weight: bold;
         color: var(--stable);
         transition: transform 0.1s;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
       }
       .hud-val.danger {
         color: var(--chaos);
@@ -275,6 +276,7 @@
         font-size: 1.1rem;
         cursor: pointer;
         margin-top: 20px;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
       }
       .btn-primary:hover {
         background: var(--stable);
@@ -336,31 +338,27 @@
         text-align: center;
         padding-bottom: 100px;
       }
-      /* CHANGED: Logo Size */
+
       .logo-welcome {
         max-width: 300px;
         width: 100%;
         height: auto;
         margin-bottom: 10px;
         filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        justify-content: center;
       }
-      /* CHANGED: Centered Block */
+
+      /* FIX: FORCED CENTERING */
       .welcome-tag {
         color: var(--gold);
         letter-spacing: 3px;
         font-size: 0.8rem;
-        margin-bottom: 40px;
+        margin: 0 auto 40px auto;
         font-weight: bold;
         text-transform: uppercase;
         border: 1px solid var(--gold);
         padding: 5px 15px;
         border-radius: 20px;
-        display: inline-block;
-        justify-content: center;
+        display: table; /* Forces width to fit content and allows margin:auto */
       }
 
       .module-grid {
@@ -401,6 +399,7 @@
         font-size: 2rem;
         color: var(--stable);
         margin-bottom: 15px;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
       }
       .mc-title {
         font-size: 1.5rem;
@@ -505,12 +504,14 @@
         font-size: 2rem;
         color: var(--stable);
         background: rgba(0, 229, 255, 0.1);
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
       }
       .pc-rank {
         font-size: 2.5rem;
         font-weight: bold;
         color: var(--gold);
         margin-bottom: 5px;
+        text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
       }
       .pc-sub {
         font-size: 0.8rem;
@@ -555,6 +556,7 @@
         font-size: 1.2rem;
         color: var(--focus);
         font-weight: bold;
+        text-shadow: 0 0 5px var(--focus);
       }
       .perk-grid {
         display: grid;
@@ -878,6 +880,7 @@
     <div id="welcome-view">
       <div class="welcome-content">
         <img src="logo.png" alt="SYNAPTIQ LOGO" class="logo-welcome" />
+
         <div class="welcome-tag">
           ZERO FRICTION / ZERO ONBOARDING / INSTANT START
         </div>
@@ -950,7 +953,7 @@
         <img src="logo.png" alt="SYNAPTIQ" class="logo-sidebar" />
         <div class="brand-sub">AI-ENHANCED BRAIN GYM</div>
         <div>
-          <span style="font-size: 0.6rem; color: #666">v83.0 UI TWEAKS</span>
+          <span style="font-size: 0.6rem; color: #666">v84.0 NEON POLISH</span>
         </div>
       </div>
       <div class="nav-label">DAILY OPERATIONS</div>
@@ -1179,7 +1182,7 @@
     </main>
 
     <script>
-      /** SYNAPTIQ v83.0 - UI TWEAKS & STABLE **/
+      /** SYNAPTIQ v84.0 - NEON POLISH & STABLE **/
 
       const canvas = document.getElementById("gameCanvas");
       const ctx = canvas.getContext("2d");
@@ -1253,31 +1256,11 @@
         },
       };
 
-      // HELPER FUNCTIONS (TUNED 1.1x)
+      // HELPER FUNCTIONS (ZOOM KILLED - 1:1 SCALE)
       function applyMobileScale() {
-        if (isMobile) {
-          const scale = Math.min(canvas.width / 800, canvas.height / 600) * 1.1;
-          ctx.scale(scale, scale);
-          const offsetX = (canvas.width / scale - 800) / 2;
-          const offsetY = (canvas.height / scale - 600) / 2;
-          ctx.translate(offsetX, offsetY);
-          return scale;
-        }
         return 1;
       }
-
-      function resetMobileScale(scale) {
-        if (isMobile && scale !== 1) {
-          ctx.setTransform(
-            window.devicePixelRatio || 1,
-            0,
-            0,
-            window.devicePixelRatio || 1,
-            0,
-            0,
-          );
-        }
-      }
+      function resetMobileScale(scale) {}
 
       const SFX = {
         ctx: null,
@@ -1639,9 +1622,12 @@
             return;
           }
           this.active = false;
+
+          // CSS FORCED DISPLAY OVERRIDE
           const dash = document.getElementById("dashboard-view");
           dash.style.display = "block";
           dash.classList.add("active");
+
           document.getElementById("welcome-view").classList.add("hidden");
           document.getElementById("overlay-instr").classList.remove("active");
           document.getElementById("overlay-end").classList.remove("active");
@@ -2175,11 +2161,14 @@
             ctx.fillStyle = C.text;
             ctx.font = "30px Rajdhani";
             ctx.textAlign = "center";
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = C.text;
             ctx.fillText(
               `TARGET: MATCH ${this.rule === 0 ? cN[this.tgt] : sN[this.tgt]}`,
               400,
               100,
             );
+            ctx.shadowBlur = 0;
             drawTimerBar(200, 60, 400, 3.0, Math.max(0, this.turnT)); // TOP TIMER
             const cl = [C.chaos, C.stable, C.green, C.gold];
             this.opts.forEach((o, i) => {
@@ -2194,6 +2183,8 @@
                 this.init();
               }
               ctx.fillStyle = cl[o.c];
+              ctx.shadowBlur = 20;
+              ctx.shadowColor = cl[o.c]; // NEON GLOW
               if (o.s === 0) {
                 ctx.beginPath();
                 ctx.arc(x + 75, y + 75, 40, 0, Math.PI * 2);
@@ -2214,6 +2205,7 @@
                 ctx.lineTo(x + 30, y + 75);
                 ctx.fill();
               }
+              ctx.shadowBlur = 0;
             });
             resetMobileScale(scale);
           },
@@ -2299,7 +2291,11 @@
                 stroke = "#444",
                 lw = 1;
               if (this.show) {
-                if (this.seq[this.idx] === i && this.t > 0.1) fill = "#fff";
+                if (this.seq[this.idx] === i && this.t > 0.1) {
+                  fill = "#fff";
+                  ctx.shadowBlur = 20;
+                  ctx.shadowColor = "#fff";
+                }
               } else {
                 const visited = this.seq.slice(0, this.step).includes(i);
                 const isTarget = this.seq.includes(i);
@@ -2307,6 +2303,8 @@
                   fill = "rgba(0,229,255,0.5)";
                   stroke = C.stable;
                   lw = 3;
+                  ctx.shadowBlur = 15;
+                  ctx.shadowColor = C.stable;
                 } else if (isTarget) {
                   fill = "rgba(255,215,0,0.1)";
                   stroke = C.gold;
@@ -2320,6 +2318,7 @@
               ctx.fillRect(cx + 10, cy + 10, 100, 100);
               ctx.strokeRect(cx + 10, cy + 10, 100, 100);
               ctx.setLineDash([]);
+              ctx.shadowBlur = 0;
             }
             ctx.restore();
 
@@ -2385,7 +2384,10 @@
             ctx.font = "bold 80px Rajdhani";
             ctx.textAlign = "center";
             ctx.fillStyle = this.cols[this.ci];
+            ctx.shadowBlur = 20;
+            ctx.shadowColor = this.cols[this.ci];
             ctx.fillText(this.words[this.wi], 400, 250);
+            ctx.shadowBlur = 0;
             drawTimerBar(
               200,
               320,
@@ -2633,7 +2635,10 @@
                 ctx.fillStyle = "#fff";
                 ctx.font = "30px FontAwesome";
                 ctx.textAlign = "center";
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = "#fff";
                 ctx.fillText(c.icon, x + 40, y + 50);
+                ctx.shadowBlur = 0;
               } else {
                 if (
                   window.App.active &&
@@ -2710,7 +2715,10 @@
             ctx.fillStyle = C.stable;
             ctx.font = "60px Rajdhani";
             ctx.textAlign = "center";
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = C.stable;
             ctx.fillText(this.q, 400, 200);
+            ctx.shadowBlur = 0;
             drawTimerBar(
               250,
               250,
@@ -2808,7 +2816,10 @@
                 if (show) {
                   ctx.fillStyle = v < this.nxt ? "#000" : "#fff";
                   ctx.font = "bold 24px Rajdhani";
+                  ctx.shadowBlur = 15;
+                  ctx.shadowColor = v < this.nxt ? "#000" : "#fff";
                   ctx.fillText(v, x + sz / 2, y + sz / 2 + 15);
+                  ctx.shadowBlur = 0;
                 }
               }
             }
@@ -2866,7 +2877,7 @@
 
                 // Trail Logic
                 b.history.push({ x: b.x, y: b.y });
-                if (b.history.length > 10) b.history.shift();
+                if (b.history.length > 20) b.history.shift(); // Longer trails
               });
               if (this.timer <= 0) this.state = "input";
             }
@@ -2914,16 +2925,16 @@
                 }
               }
 
-              // Draw Trail
+              // Draw Trail (Longer & Thicker)
               if (this.state === "shuffle") {
                 ctx.beginPath();
                 ctx.strokeStyle = col;
-                ctx.lineWidth = 2;
+                ctx.lineWidth = 4; // Thicker trail
                 if (b.history.length > 0) {
                   ctx.moveTo(b.history[0].x, b.history[0].y);
                   for (let i = 1; i < b.history.length; i++)
                     ctx.lineTo(b.history[i].x, b.history[i].y);
-                  ctx.globalAlpha = 0.3;
+                  ctx.globalAlpha = 0.5; // More visible
                   ctx.stroke();
                   ctx.globalAlpha = 1.0;
                 }
@@ -2934,12 +2945,10 @@
               ctx.arc(b.x, b.y, 20, 0, Math.PI * 2);
               ctx.fill();
               // Glow
-              if (col === C.gold) {
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = C.gold;
-                ctx.fill();
-                ctx.shadowBlur = 0;
-              }
+              ctx.shadowBlur = 20;
+              ctx.shadowColor = col;
+              ctx.fill();
+              ctx.shadowBlur = 0;
             });
             resetMobileScale(scale);
           },
