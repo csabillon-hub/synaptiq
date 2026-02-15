@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
     />
-    <title>SYNAPTIQ | v76.0 MOBILE ZOOM</title>
+    <title>SYNAPTIQ | v77.0 ZOOM TUNED</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
       rel="stylesheet"
@@ -840,6 +840,7 @@
     <div id="welcome-view">
       <div class="welcome-content">
         <img src="logo.png" alt="SYNAPTIQ LOGO" class="logo-welcome" />
+
         <div class="module-grid">
           <div class="module-card">
             <i class="fa-solid fa-microchip mc-icon"></i>
@@ -884,6 +885,7 @@
             <div class="mc-benefit">WORKING MEMORY</div>
           </div>
         </div>
+
         <button class="start-btn" onclick="window.App.enterSystem()">
           INITIALIZE NEURAL LINK
         </button>
@@ -897,7 +899,7 @@
       >
         <img src="logo.png" alt="SYNAPTIQ" class="logo-sidebar" />
         <div>
-          <span style="font-size: 0.6rem; color: #666">v76.0 MOBILE ZOOM</span>
+          <span style="font-size: 0.6rem; color: #666">v77.0 ZOOM TUNED</span>
         </div>
       </div>
       <div class="nav-label">DAILY OPERATIONS</div>
@@ -1117,7 +1119,7 @@
     </main>
 
     <script>
-      /** SYNAPTIQ v76.0 - MOBILE ZOOM WRAPPER **/
+      /** SYNAPTIQ v77.0 - ZOOM TUNED **/
 
       const canvas = document.getElementById("gameCanvas");
       const ctx = canvas.getContext("2d");
@@ -1190,10 +1192,10 @@
         },
       };
 
-      // NEW HELPER FUNCTIONS
+      // HELPER FUNCTIONS (TUNED to 1.1)
       function applyMobileScale() {
         if (isMobile) {
-          const scale = Math.min(canvas.width / 800, canvas.height / 600) * 1.2;
+          const scale = Math.min(canvas.width / 800, canvas.height / 600) * 1.1; // TUNED: 1.1x
           ctx.scale(scale, scale);
           const offsetX = (canvas.width / scale - 800) / 2;
           const offsetY = (canvas.height / scale - 600) / 2;
@@ -2644,7 +2646,7 @@
               }
               ctx.fillStyle = "#fff";
               ctx.font = "40px Rajdhani";
-              ctx.fillText(o, x + sz / 2, y + sz / 2 + 15);
+              ctx.fillText(o, x + 60, y + 75); // FIXED CENTER ALIGN
             });
             resetMobileScale(scale);
           },
