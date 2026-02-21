@@ -1960,6 +1960,36 @@
               y: (e.clientY - r.top) * (600 / r.height),
             };
           };
+          // --- MOBILE SIDEBAR AUTO-CLOSE ---
+
+          // We listen for both mouse clicks and screen taps
+          ["click", "touchstart"].forEach((eventType) => {
+            document.addEventListener(eventType, function (event) {
+              // 1. UPDATE THESE IDs to match your actual HTML!
+              const sidebar = document.getElementById("sidebar");
+              const menuButton = document.getElementById("menu-toggle");
+
+              // Ensure the elements actually exist on the page before doing math
+              if (!sidebar) return;
+
+              // 2. Check if the tap happened OUTSIDE the sidebar AND outside the menu button
+              const clickedOutsideSidebar = !sidebar.contains(event.target);
+              const clickedOutsideButton = menuButton
+                ? !menuButton.contains(event.target)
+                : true;
+
+              if (clickedOutsideSidebar && clickedOutsideButton) {
+                // 3. CLOSE THE SIDEBAR
+                // Update this line to match however your code currently hides the sidebar.
+                // It might be a class removal like this:
+                sidebar.classList.remove("active");
+
+                // Or it might be a direct style change like this:
+                // sidebar.style.display = 'none';
+                // sidebar.style.transform = 'translateX(-100%)';
+              }
+            });
+          });
 
           canvas.addEventListener("mousemove", (e) => {
             const p = getPos(e);
