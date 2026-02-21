@@ -6,8 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui"
     />
-    <link rel="icon" href="favicon.ico" />
-    <title>SYNAPTIQ | v92.0</title>
+    <title>SYNAPTIQ | v150.0</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;700&display=swap"
       rel="stylesheet"
@@ -33,6 +32,7 @@
       * {
         box-sizing: border-box;
         -webkit-tap-highlight-color: transparent;
+        user-select: none;
       }
 
       body {
@@ -71,6 +71,9 @@
         transition: transform 0.3s;
         overflow-y: auto;
       }
+      #sidebar.open {
+        transform: translateX(0);
+      }
       .brand {
         display: flex;
         flex-direction: column;
@@ -82,7 +85,9 @@
         width: 100%;
         height: auto;
         margin-bottom: 5px;
-        filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.2));
+        /* This creates the ambient purple glow hugging the image shape */
+        filter: drop-shadow(0px 0px 12px rgba(208, 0, 255, 0.6));
+        transition: filter 0.3s ease;
       }
       .brand-sub {
         font-size: 0.6rem;
@@ -139,6 +144,14 @@
         background: rgba(255, 215, 0, 0.1);
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
       }
+      .nav-btn.locked {
+        opacity: 0.6;
+      }
+      .nav-btn.locked i.fa-lock {
+        margin-left: auto;
+        font-size: 0.8rem;
+        color: #666;
+      }
 
       .audio-btn,
       .lang-btn {
@@ -165,6 +178,51 @@
         border-color: var(--stable);
         background: rgba(0, 229, 255, 0.05);
       }
+      /* PREMIUM INITIALIZE BUTTON */
+      .btn-init-premium {
+        background: linear-gradient(45deg, #d000ff, #00e5ff, #d000ff);
+        background-size: 200% 200%;
+        color: #fff;
+        border: none;
+        border-radius: 50px; /* Sleek, inviting pill shape */
+        padding: 16px 45px;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+        cursor: pointer;
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+        transition: all 0.3s ease;
+        animation: initPulse 4s ease infinite; /* Makes the gradient slowly shift */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+      }
+
+      .btn-init-premium:hover {
+        transform: translateY(-3px) scale(1.02); /* Lifts up towards the user */
+        box-shadow:
+          0 10px 30px rgba(208, 0, 255, 0.6),
+          0 0 15px rgba(0, 229, 255, 0.6);
+        color: #fff;
+      }
+
+      .btn-init-premium:active {
+        transform: translateY(1px) scale(0.98); /* Satisfying click press */
+      }
+
+      @keyframes initPulse {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
 
       /* --- GAME AREA --- */
       #viewport {
@@ -173,6 +231,18 @@
         background: radial-gradient(circle at center, #111 0%, #000 100%);
         display: flex;
         flex-direction: column;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      /* --- GLOBAL CANVAS WRAPPER (CENTERS ON DESKTOP & MOBILE) --- */
+      #canvas-wrapper {
+        flex-grow: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 10px;
+        position: relative;
         width: 100%;
         height: 100%;
         overflow: hidden;
@@ -219,30 +289,6 @@
         color: var(--gold);
         letter-spacing: 1px;
       }
-
-      /* --- CANVAS --- */
-      #canvas-wrapper {
-        flex-grow: 1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 10px;
-        position: relative;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
-      canvas {
-        background: #000;
-        box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
-        border: 1px solid #333;
-        border-radius: 8px;
-        width: 100%;
-        height: auto;
-        aspect-ratio: 4/3;
-        object-fit: contain;
-      }
-
       /* --- OVERLAYS --- */
       .overlay {
         position: absolute;
@@ -280,11 +326,18 @@
         cursor: pointer;
         margin-top: 20px;
         text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+        width: fit-content;
       }
       .btn-primary:hover {
         background: var(--stable);
         color: #000;
         box-shadow: 0 0 20px var(--stable);
+      }
+      .btn-upgrade {
+        background: linear-gradient(135deg, var(--gold), #ff8800);
+        border: none;
+        color: #000;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
       }
 
       .social-btn {
@@ -311,6 +364,7 @@
       .social-btn i {
         font-size: 1.2rem;
       }
+
       .or-divider {
         display: flex;
         align-items: center;
@@ -376,7 +430,9 @@
         width: 100%;
         height: auto;
         margin-bottom: 10px;
-        filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.3));
+        /* This creates the ambient purple glow hugging the image shape */
+        filter: drop-shadow(0px 0px 12px rgba(208, 0, 255, 0.6));
+        transition: filter 0.3s ease;
       }
 
       .welcome-tag {
@@ -454,6 +510,61 @@
         margin-top: auto;
       }
 
+      /* PROMO CODE STYLES */
+      .promo-input {
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid #444;
+        border-radius: 6px;
+        color: #fff;
+        text-align: center;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1.1rem;
+        padding: 12px;
+        width: 100%;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+      }
+      .promo-input:focus {
+        outline: none;
+        border-color: var(--gold);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      }
+      .btn-redeem {
+        background: transparent;
+        border: 1px solid var(--stable);
+        border-radius: 6px;
+        color: var(--stable);
+        cursor: pointer;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1rem;
+        font-weight: bold;
+        padding: 10px;
+        transition: all 0.3s ease;
+        width: 100%;
+        letter-spacing: 1px;
+      }
+      .btn-redeem:hover {
+        background: var(--stable);
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+      }
+      .btn-nothanks {
+        background: transparent;
+        border: none;
+        color: #666;
+        cursor: pointer;
+        font-family: "Rajdhani", sans-serif;
+        font-size: 0.9rem;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        letter-spacing: 2px;
+      }
+      .btn-nothanks:hover {
+        color: #fff;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      }
+
       .start-btn {
         background: linear-gradient(
           135deg,
@@ -486,7 +597,7 @@
         width: 100%;
         height: 100%;
         background: #050505;
-        z-index: 20;
+        z-index: 100;
         display: none;
         padding: 40px;
         overflow-y: auto;
@@ -817,7 +928,7 @@
       }
 
       .mobile-menu-btn {
-        display: none;
+        display: none !important; /* FORCE HIDDEN ON DESKTOP */
         position: absolute;
         top: 15px;
         left: 15px;
@@ -839,8 +950,8 @@
           flex-direction: column;
         }
         .mobile-menu-btn {
-          display: flex;
-        }
+          display: flex !important;
+        } /* ONLY VISIBLE ON MOBILE */
         #sidebar {
           position: fixed;
           top: 0;
@@ -868,15 +979,19 @@
           margin-top: 60px;
           padding: 10px 15px;
         }
-        #canvas-wrapper {
-          padding: 0;
-        }
+        /* --- CANVAS --- */
+
         canvas {
+          background: #000;
+          box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+          border: 1px solid #333;
+          border-radius: 8px;
           width: 100%;
-          border: none;
-          border-bottom: 1px solid #333;
-          border-radius: 0;
+          height: auto;
+          aspect-ratio: 4/3;
+          object-fit: contain;
         }
+
         #stat-box {
           bottom: 10px;
         }
@@ -890,6 +1005,94 @@
         .logo-welcome {
           width: 80%;
         }
+      }
+      /* FORCE OVERRIDE: Make locked tiles look unlocked */
+      .module-card.locked {
+        opacity: 1 !important;
+        filter: none !important;
+        border-style: solid !important;
+        cursor: pointer;
+      }
+      /* --- LEVEL SELECTOR BUTTONS --- */
+      .lvl-btn {
+        background: rgba(0, 229, 255, 0.05);
+        border: 2px solid var(--stable);
+        color: var(--stable);
+        font-family: "Rajdhani", sans-serif;
+        font-size: 1.5rem;
+        font-weight: bold;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.2s;
+        box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+        flex-shrink: 0;
+      }
+
+      .lvl-btn:hover {
+        background: var(--stable);
+        color: #000;
+        box-shadow: 0 0 20px var(--stable);
+        transform: translateY(-2px);
+      }
+
+      /* Active/Current Level Styling (Optional but looks great) */
+      .lvl-btn.active-lvl {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #000;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+      }
+      /* --- END OF SESSION WINDOW GLOW & HOVER --- */
+      #overlay-end .modal {
+        border: 2px solid var(--gold);
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+        transition: all 0.3s ease-in-out;
+      }
+
+      #overlay-end .modal:hover {
+        box-shadow: 0 0 40px rgba(255, 215, 0, 0.5);
+        transform: translateY(-4px);
+        border-color: #ffea00; /* Slightly brighter gold on hover */
+      }
+      /* --- MODULE CATEGORY COLOR CODING --- */
+
+      /* 1. LOGIC & REASONING (Cyan / Stable) */
+      #btn-SHIFT,
+      #btn-TRACE,
+      #btn-CALC {
+        border-left: 3px solid var(--stable);
+      }
+      #btn-SHIFT i,
+      #btn-TRACE i,
+      #btn-CALC i {
+        color: var(--stable);
+      }
+
+      /* 2. SPATIAL MEMORY (Gold) */
+      #btn-PATH,
+      #btn-MATCH {
+        border-left: 3px solid var(--gold);
+      }
+      #btn-PATH i,
+      #btn-MATCH i {
+        color: var(--gold);
+      }
+
+      /* 3. ATTENTION & FOCUS (Purple / Focus) */
+      #btn-CHROMA,
+      #btn-FLASH,
+      #btn-SWARM {
+        border-left: 3px solid var(--focus);
+      }
+      #btn-CHROMA i,
+      #btn-FLASH i,
+      #btn-SWARM i {
+        color: var(--focus);
       }
     </style>
   </head>
@@ -909,11 +1112,19 @@
         </div>
         <div class="module-grid" id="module-grid"></div>
         <button
-          class="start-btn"
           id="btn-init"
+          class="btn-init-premium"
           onclick="window.App.enterSystem()"
         >
-          INITIALIZE BRAIN TRAINING
+          <i class="fa-solid fa-bolt" style="color: yellow"></i>
+          <span
+            id="btn-init-text"
+            style="
+              font-family: &quot;Rajdhani&quot;, sans-serif;
+              font-weight: bold;
+            "
+            >INITIALIZE BRAIN TRAINING</span
+          >
         </button>
       </div>
     </div>
@@ -926,7 +1137,7 @@
         <img src="logo.png" alt="SYNAPTIQ" class="logo-sidebar" />
         <div class="brand-sub">AI-ENHANCED BRAIN GYM</div>
         <div>
-          <span style="font-size: 0.6rem; color: #666">v92.0</span>
+          <span style="font-size: 0.6rem; color: #666">v155.0</span>
         </div>
       </div>
 
@@ -961,12 +1172,8 @@
       >
         <i class="fa-solid fa-palette"></i> CHROMA CLASH
       </button>
-      <button
-        class="nav-btn"
-        id="btn-CYPHER"
-        onclick="window.App.load('CYPHER')"
-      >
-        <i class="fa-solid fa-border-all"></i> CYPHER GRID
+      <button class="nav-btn" id="btn-TRACE" onclick="window.App.load('TRACE')">
+        <i class="fa-solid fa-border-all"></i> NEXUS TRACE
       </button>
       <button class="nav-btn" id="btn-MATCH" onclick="window.App.load('MATCH')">
         <i class="fa-solid fa-clone"></i> MEMORY MATCH
@@ -990,7 +1197,11 @@
         <i class="fa-solid fa-share-nodes"></i>
         <span id="nav-share">TRANSMIT SIGNAL</span>
       </button>
-      <button class="nav-btn" onclick="window.App.goHome()">
+      <button
+        class="nav-btn"
+        style="color: #ff2e2e; border-color: rgba(255, 46, 46, 0.3)"
+        onclick="window.App.goHome()"
+      >
         <i class="fa-solid fa-power-off"></i>
         <span id="nav-disconnect">DISCONNECT</span>
       </button>
@@ -1083,6 +1294,18 @@
           "
           id="dash-badges"
         >
+          <div class="dash-panel">
+            <div class="panel-header">MODULE MASTERY</div>
+            <div
+              id="mastery-list"
+              style="
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                margin-top: 15px;
+              "
+            ></div>
+          </div>
           BADGE COLLECTION
         </h3>
         <div class="badge-grid" id="badge-container"></div>
@@ -1124,7 +1347,27 @@
       </button>
 
       <div id="overlay-instr" class="overlay active">
-        <div class="modal">
+        <div class="modal" style="position: relative">
+          <i
+            class="fa-solid fa-xmark"
+            style="
+              position: absolute;
+              top: 15px;
+              right: 20px;
+              font-size: 1.5rem;
+              color: #666;
+              cursor: pointer;
+              transition: 0.2s;
+            "
+            onmouseover="this.style.color = '#fff'"
+            onmouseout="this.style.color = '#666'"
+            onclick="window.App.resumeGame()"
+          ></i>
+
+          <i
+            class="fa-solid fa-microchip"
+            style="font-size: 3rem; color: var(--stable); margin-bottom: 15px"
+          ></i>
           <h1 id="instr-title" style="color: var(--stable)">LOGIC SHIFT</h1>
           <p
             id="instr-text"
@@ -1132,12 +1375,90 @@
           >
             Select the object that matches the target rule.
           </p>
-          <button
-            id="instr-start"
-            class="btn-primary"
-            onclick="window.App.startGame()"
-          >
+          <button class="btn-primary" onclick="window.App.startGame()">
             INITIALIZE
+          </button>
+        </div>
+      </div>
+
+      <div id="overlay-paywall" class="overlay">
+        <div
+          class="modal"
+          style="
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+          "
+        >
+          <i
+            class="fa-solid fa-crown"
+            style="
+              font-size: 4rem;
+              color: var(--gold);
+              text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+              margin-bottom: 15px;
+              display: block;
+            "
+          ></i>
+
+          <h1 style="color: var(--gold); margin-bottom: 5px">
+            UNLOCK YOUR FULL COGNITIVE POTENTIAL!
+          </h1>
+          <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 20px">
+            ACCESS ALL 8 MODULES + ADVANCED METRICS
+          </p>
+
+          <div
+            style="
+              background: #1a1a1a;
+              padding: 15px;
+              border-radius: 8px;
+              border: 1px solid #333;
+              margin-bottom: 20px;
+            "
+          >
+            <h3 style="color: #fff; margin: 0 0 5px 0">7-DAY FREE TRIAL</h3>
+            <p style="color: #888; font-size: 0.8rem; margin: 0">
+              Then $2.99/month. Cancel anytime.
+            </p>
+          </div>
+
+          <button
+            class="btn-primary btn-upgrade"
+            onclick="window.App.startTrial()"
+          >
+            START FREE TRIAL
+          </button>
+
+          <div
+            style="
+              margin-top: 25px;
+              border-top: 1px solid #333;
+              padding-top: 20px;
+              width: 100%;
+              box-sizing: border-box;
+            "
+          >
+            <input
+              type="text"
+              id="promo-code"
+              class="promo-input"
+              placeholder="ENTER PROMO CODE"
+              autocomplete="off"
+            />
+            <button class="btn-redeem" onclick="window.App.redeemCode()">
+              REDEEM CODE
+            </button>
+          </div>
+
+          <button
+            class="btn-nothanks"
+            onclick="
+              document
+                .getElementById('overlay-paywall')
+                .classList.remove('active')
+            "
+          >
+            NO THANKS
           </button>
         </div>
       </div>
@@ -1206,159 +1527,141 @@
       </div>
 
       <div id="overlay-end" class="overlay">
-        <div class="modal">
+        <div class="modal" style="position: relative">
+          <button
+            onclick="window.App.closeEndScreen()"
+            style="
+              position: absolute;
+              top: 15px;
+              right: 15px;
+              background: transparent;
+              border: none;
+              color: #666;
+              font-size: 1.5rem;
+              cursor: pointer;
+              transition: 0.2s;
+            "
+            onmouseover="this.style.color = '#fff'"
+            onmouseout="this.style.color = '#666'"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
           <h1 id="end-title" style="color: var(--gold)">SESSION COMPLETE</h1>
-          <div class="end-stat-grid">
-            <div class="end-stat">
-              <label id="end-correct-lbl">CORRECT</label>
-              <div id="end-correct" style="color: var(--stable)">0</div>
+
+          <div
+            style="
+              text-align: left;
+              margin: 20px 0;
+              background: rgba(255, 255, 255, 0.05);
+              padding: 15px;
+              border-radius: 8px;
+            "
+          >
+            <div class="tally-row">
+              <span>Session Score</span
+              ><span class="tally-val" id="tally-base">+0</span>
             </div>
-            <div class="end-stat">
-              <label id="end-wrong-lbl">WRONG</label>
-              <div id="end-wrong" style="color: var(--chaos)">0</div>
+            <div class="tally-row">
+              <span>Speed Bonus (<2.5s)</span>
+              <span
+                class="tally-val"
+                id="tally-speed"
+                style="color: var(--stable)"
+                >+0</span
+              >
             </div>
-            <div class="end-stat">
-              <label id="end-acc-lbl">ACCURACY</label>
-              <div id="end-acc">0%</div>
+            <div class="tally-row">
+              <span>Accuracy Bonus (>90%)</span
+              ><span class="tally-val" id="tally-acc" style="color: var(--gold)"
+                >+0</span
+              >
             </div>
-            <div class="end-stat">
-              <label id="end-sp-lbl">SP EARNED</label>
-              <div id="end-sp" style="color: var(--focus)">+0</div>
+
+            <div
+              class="tally-row"
+              style="
+                border-top: 1px solid #333;
+                margin-top: 10px;
+                padding-top: 10px;
+                color: #aaa;
+              "
+            >
+              <span>Previous Module XP</span
+              ><span class="tally-val" id="tally-prev">0</span>
+            </div>
+            <div
+              class="tally-total"
+              style="color: var(--focus); margin-top: 5px; font-size: 1.2rem"
+            >
+              <span>ACCUMULATED XP</span
+              ><span class="tally-val" id="tally-total" style="float: right"
+                >0</span
+              >
             </div>
           </div>
+
+          <div class="end-stat-grid">
+            <div class="end-stat">
+              <label>SP EARNED</label>
+              <div id="end-sp" style="color: var(--focus)">+0</div>
+            </div>
+            <div class="end-stat">
+              <label>AVG SPEED</label>
+              <div id="end-ms" style="color: #fff">0ms</div>
+            </div>
+          </div>
+
+          <div
+            id="level-select-container"
+            style="
+              display: flex;
+              justify-content: center;
+              gap: 5px;
+              flex-wrap: wrap;
+              margin-bottom: 15px;
+            "
+          ></div>
+
           <button
             id="end-cont"
             class="btn-primary"
-            onclick="window.App.finishSession()"
+            onclick="window.App.closeEndScreen()"
           >
             CONTINUE
           </button>
         </div>
       </div>
     </main>
-
     <script>
-      /** SYNAPTIQ v92.0 **/
+      /** SYNAPTIQ v5.0 - THE MASTER BUILD
+       * FIXES: LocalStorage Corruption (Undefined), Missing Functions, V6 Polish, UI & Login Locked
+       */
 
-      const LANG = {
-        EN: {
-          nav_daily: "DAILY OPERATIONS",
-          nav_blitz: "DAILY BLITZ",
-          nav_dash: "COMMAND CENTER",
-          nav_mods: "MODULES",
-          nav_sys: "SYSTEM",
-          nav_login: "OPERATOR LOGIN",
-          nav_share: "TRANSMIT SIGNAL",
-          nav_disconnect: "DISCONNECT",
-          tag_welcome: "ZERO FRICTION / ZERO ONBOARDING / INSTANT START",
-          btn_init: "INITIALIZE BRAIN TRAINING",
-          dash_title: "COMMAND CENTER",
-          dash_sub: "NEURAL PERFORMANCE ANALYTICS",
-          dash_streak: "DAY STREAK",
-          dash_wipe: "[ DANGER ] WIPE DATA",
-          dash_perks: "SYNAPSE NETWORK",
-          dash_mastery: "MODULE MASTERY",
-          dash_badges: "BADGE COLLECTION",
-          hud_score: "SCORE",
-          hud_timer: "TIMER",
-          hud_level: "LEVEL",
-          hud_flow: "FLOW",
-          hud_blitz: "BLITZ STAGE",
-          live_acc: "AVG ACCURACY",
-          instr_start: "INITIALIZE",
-          end_title: "SESSION COMPLETE",
-          end_cor: "CORRECT",
-          end_wrg: "WRONG",
-          end_acc: "ACCURACY",
-          end_sp: "SP EARNED",
-          end_cont: "CONTINUE",
-          login_title: "IDENTIFY",
-          login_sub: "LINK NEURAL PROFILE",
-          shift_desc: "Select 1 of 4 objects that matches the rule.",
-          path_desc: "Memorize sequence, repeat after rotation.",
-          chroma_desc: "Match INK color, not the word.",
-          cypher_desc: "Reveal safe spots. Right-click/Flag mines.",
-          match_desc: "Memorize cards, find pairs.",
-          calc_desc: "Solve equation.",
-          flash_desc: "Order numbers 1-5.",
-          swarm_desc: "Track the GOLD spheres as they move.",
-          shift_rule0: "MATCH COLOR",
-          shift_rule1: "MATCH SHAPE",
-          path_seq: "SEQUENCE COMPLETE",
-          path_rep: "REPEAT (ROTATED)",
-          path_watch: "WATCH",
-          match_mem: "MEMORIZE",
-          flash_mem: "MEMORIZE",
-          swarm_track: "TRACK",
-          swarm_sel: "SELECT TARGETS",
-          colors: ["RED", "BLUE", "GREEN", "GOLD", "PURPLE", "ORANGE"],
-        },
-        ES: {
-          nav_daily: "OPERACIONES DIARIAS",
-          nav_blitz: "BLITZ DIARIO",
-          nav_dash: "CENTRO DE MANDO",
-          nav_mods: "MÓDULOS",
-          nav_sys: "SISTEMA",
-          nav_login: "INICIAR SESIÓN",
-          nav_share: "TRANSMITIR SEÑAL",
-          nav_disconnect: "DESCONECTAR",
-          tag_welcome: "CERO FRICCIÓN / CERO REGISTRO / INICIO INSTANTÁNEO",
-          btn_init: "INICIALIZAR ENTRENAMIENTO",
-          dash_title: "CENTRO DE MANDO",
-          dash_sub: "ANÁLISIS DE RENDIMIENTO NEURAL",
-          dash_streak: "RACHA DIARIA",
-          dash_wipe: "[ PELIGRO ] BORRAR DATOS",
-          dash_perks: "RED SINÁPTICA",
-          dash_mastery: "MAESTRÍA DE MÓDULOS",
-          dash_badges: "COLECCIÓN DE INSIGNIAS",
-          hud_score: "PUNTOS",
-          hud_timer: "TIEMPO",
-          hud_level: "NIVEL",
-          hud_flow: "FLUJO",
-          hud_blitz: "FASE BLITZ",
-          live_acc: "PRECISIÓN PROM.",
-          instr_start: "INICIALIZAR",
-          end_title: "SESIÓN COMPLETADA",
-          end_cor: "CORRECTO",
-          end_wrg: "INCORRECTO",
-          end_acc: "PRECISIÓN",
-          end_sp: "SP GANADOS",
-          end_cont: "CONTINUAR",
-          login_title: "IDENTIFICAR",
-          login_sub: "VINCULAR PERFIL NEURAL",
-          shift_desc: "Selecciona el objeto que cumple la regla.",
-          path_desc: "Memoriza la secuencia, repite tras la rotación.",
-          chroma_desc: "Coincide el color de la TINTA, no la palabra.",
-          cypher_desc: "Revela zonas seguras. Marca minas con bandera.",
-          match_desc: "Memoriza las cartas, encuentra parejas.",
-          calc_desc: "Resuelve la ecuación.",
-          flash_desc: "Ordena los números 1-5.",
-          swarm_desc: "Sigue las esferas DORADAS mientras se mueven.",
-          shift_rule0: "COINCIDIR COLOR",
-          shift_rule1: "COINCIDIR FORMA",
-          path_seq: "SECUENCIA COMPLETA",
-          path_rep: "REPETIR (ROTADO)",
-          path_watch: "OBSERVA",
-          match_mem: "MEMORIZA",
-          flash_mem: "MEMORIZA",
-          swarm_track: "RASTREA",
-          swarm_sel: "SELECCIONA OBJETIVOS",
-          colors: ["ROJO", "AZUL", "VERDE", "DORADO", "MORADO", "NARANJA"],
-        },
+      // --- V6 HTML BRIDGE (Guarantees your HTML buttons work) ---
+      window.switchTab = (tab) => {
+        if (tab === "ARCHIVE" || tab === "SYSTEM" || tab === "DASHBOARD")
+          window.App.openDashboard();
+        else window.App.load(tab);
       };
+      window.closeInstr = (tab) => window.App.startGame();
+      window.resetSession = () => window.App.closeEndScreen();
+      window.startWorkout = () => window.App.startBlitz();
+      window.toggleMute = () => window.App.toggleAudio();
+      window.openHelp = (tab) => window.App.showInstr();
+      window.login = () => window.App.login(); // FIXED: Pointed to the robust login function
+      window.enterSystem = () => window.App.enterSystem();
 
-      const canvas = document.getElementById("gameCanvas");
-      const ctx = canvas.getContext("2d");
+      // 1. CONFIGURATION & ASSETS
       const C = {
-        bg: "#000",
+        bg: "#050505",
         stable: "#00E5FF",
         chaos: "#FF2E2E",
         gold: "#FFD700",
-        green: "#00FF88",
         focus: "#D000FF",
+        green: "#00FF88",
         text: "#FFF",
-        dim: "#333",
-        impulse: "#FF8800",
+        dim: "#222",
       };
       const Icons = {
         skull: "\uf714",
@@ -1371,59 +1674,149 @@
         key: "\uf084",
         question: "\uf059",
         flag: "\uf024",
-        dna: "\uf471",
         shield: "\uf3ed",
         clock: "\uf017",
-        timer: "\uf017",
-        combo: "\uf0e7",
-        penalty: "\uf05e",
-        xp: "\uf091",
+        shield: "\uf132",
+        gear: "\uf013",
+        star: "\uf005",
+        satellite: "\uf7bf",
+        ghost: "\uf6e2",
+      };
+      const FreeGames = ["SHIFT", "PATH", "CHROMA"];
+      const GameNames = {
+        SHIFT: "LOGIC SHIFT",
+        PATH: "NODE PATH",
+        CHROMA: "CHROMA CLASH",
+        TRACE: "NEXUS TRACE",
+        MATCH: "MEMORY MATCH",
+        CALC: "QUANTUM CALC",
+        FLASH: "FLASH ORDER",
+        SWARM: "QUANTUM SWARM",
       };
 
-      const FX = {
-        particles: [],
-        shake: 0,
-        burst(x, y, color) {
-          for (let i = 0; i < 15; i++) {
-            const a = Math.random() * Math.PI * 2,
-              s = Math.random() * 5 + 2;
-            this.particles.push({
-              x: x,
-              y: y,
-              vx: Math.cos(a) * s,
-              vy: Math.sin(a) * s,
-              life: 1.0,
-              color: color,
-            });
-          }
+      const LANG = {
+        EN: {
+          nav_daily: "DAILY OP",
+          nav_blitz: "DAILY BLITZ",
+          nav_dash: "COMMAND CENTER",
+          nav_mods: "MODULES",
+          tag_welcome: "ZERO ONBOARDING/ ZERO FRICTION / INSTANT START",
+          dash_title: "COMMAND CENTER",
+          dash_sub: "NEURAL PERFORMANCE",
+          lvl_up: "LEVEL UNLOCKED!",
+          click_cont: "CLICK TO CONTINUE",
+          shift_desc: "Select the object that matches the rule.",
+          path_desc: "Memorize sequence, repeat after rotation.",
+          chroma_desc: "Match INK color, not the word.",
+          trace_desc: "Memorize and reconstruct the rapid neural pathways.",
+          trace_obs: "OBSERVE NEURAL LINK",
+          trace_rec: "RECONSTRUCT LINK",
+          trace_err: "LINK SEVERED",
+          match_desc: "Memorize cards, find pairs.",
+          calc_desc: "Solve the equation.",
+          flash_desc: "Memorize numbers, select in order.",
+          swarm_desc: "Track the GOLD spheres.",
+          shift_rule0: "MATCH COLOR",
+          shift_rule1: "MATCH SHAPE",
+          path_seq: "SEQUENCE COMPLETE",
+          path_rep: "REPEAT (ROTATED)",
+          path_watch: "WATCH",
+          match_mem: "MEMORIZE",
+          flash_mem: "MEMORIZE",
+          swarm_track: "TRACK",
+          swarm_sel: "SELECT TARGETS",
+          colors: ["RED", "BLUE", "GREEN", "GOLD", "PURPLE", "ORANGE"],
+          hud_score: "SCORE",
+          hud_timer: "TIMER",
+          hud_level: "LEVEL",
+          dash_perks: "SYNAPSE NETWORK",
+          dash_badges: "BADGE COLLECTION",
         },
-        update(dt) {
-          if (this.shake > 0) this.shake = Math.max(0, this.shake - dt * 60);
-          for (let i = this.particles.length - 1; i >= 0; i--) {
-            let p = this.particles[i];
-            p.x += p.vx;
-            p.y += p.vy;
-            p.life -= dt * 2;
-            if (p.life <= 0) this.particles.splice(i, 1);
-          }
+        ES: {
+          nav_daily: "OP DIARIA",
+          nav_blitz: "RÁFAGA",
+          nav_dash: "CG",
+          nav_mods: "MÓDULOS",
+          tag_welcome: "CERO FRICCIÓN / CERO INDUCCIÓN / INICIO INSTANTÁNEO",
+          dash_title: "CENTRO DE MANDO",
+          dash_sub: "RENDIMIENTO NEURAL",
+          lvl_up: "¡NIVEL DESBLOQUEADO!",
+          click_cont: "HAZ CLIC PARA CONTINUAR",
+          shift_desc: "Selecciona el objeto que cumple la regla.",
+          path_desc: "Memoriza la secuencia, repite tras rotar.",
+          chroma_desc: "Empareja el color de la TINTA, no la palabra.",
+          trace_desc: "Memoriza y reconstruye las rápidas vías neuronales.",
+          trace_obs: "OBSERVA EL ENLACE NEURAL",
+          trace_rec: "RECONSTRUYE EL ENLACE",
+          trace_err: "ENLACE ROTO",
+          match_desc: "Memoriza las cartas, encuentra pares.",
+          calc_desc: "Resuelve la ecuación.",
+          flash_desc: "Memoriza los números, selecciona en orden.",
+          swarm_desc: "Sigue las esferas DORADAS.",
+          shift_rule0: "EMPAREJA COLOR",
+          shift_rule1: "EMPAREJA FORMA",
+          path_seq: "SECUENCIA COMPLETA",
+          path_rep: "REPITE (ROTADO)",
+          path_watch: "OBSERVA",
+          match_mem: "MEMORIZA",
+          flash_mem: "MEMORIZA",
+          swarm_track: "SIGUE",
+          swarm_sel: "SELECCIONA OBJETIVOS",
+          colors: ["ROJO", "AZUL", "VERDE", "DORADO", "PÚRPURA", "NARANJA"],
+          hud_score: "PUNTOS",
+          hud_timer: "TIEMPO",
+          hud_level: "NIVEL",
+          dash_perks: "RED SINÁPTICA",
+          dash_badges: "COLECCIÓN DE MEDALLAS",
         },
-        draw() {
-          this.particles.forEach((p) => {
-            ctx.globalAlpha = p.life;
-            ctx.fillStyle = p.color;
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
-            ctx.fill();
-          });
-          ctx.globalAlpha = 1.0;
-        },
+      };
+
+      // 2. UTILITIES & AUDIO
+      let canvas, ctx;
+      const Mouse = {
+        x: 0,
+        y: 0,
+        click: false,
+        rightClick: false,
+        down: false,
+        handled: false,
+      };
+      const safeSet = (id, txt) => {
+        const el = document.getElementById(id);
+        if (el) el.innerText = txt;
       };
 
       function applyMobileScale() {
+        if (!ctx) return 1;
+        ctx.save();
         return 1;
       }
-      function resetMobileScale(scale) {}
 
+      function resetMobileScale(scale) {
+        if (!ctx) return;
+        ctx.restore();
+      }
+
+      function btn(x, y, w, h) {
+        const isHover =
+          Mouse.x >= x && Mouse.x <= x + w && Mouse.y >= y && Mouse.y <= y + h;
+        return isHover && Mouse.click && !Mouse.handled;
+      }
+
+      function drawTimerBar(x, y, w, maxT, curT) {
+        if (!ctx) return;
+        const pct = Math.max(0, curT / maxT);
+        ctx.fillStyle = "#222";
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, 6, 3);
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.roundRect(x, y, w * pct, 6, 3);
+        ctx.fill();
+      }
+
+      // HIGH-FIDELITY AUDIO ENGINE (RESTORED)
       const SFX = {
         ctx: null,
         init() {
@@ -1439,6 +1832,7 @@
           gain.connect(this.ctx.destination);
 
           if (type === "click") {
+            // TICK
             const osc = this.ctx.createOscillator();
             osc.type = "triangle";
             osc.frequency.setValueAtTime(2000, t);
@@ -1449,6 +1843,7 @@
             osc.start(t);
             osc.stop(t + 0.1);
           } else if (type === "win") {
+            // MAJOR CHORD ARPEGGIO
             [440, 554, 659].forEach((freq, i) => {
               const osc = this.ctx.createOscillator();
               osc.type = "sine";
@@ -1462,6 +1857,7 @@
               osc.stop(t + i * 0.05 + 0.4);
             });
           } else if (type === "lose") {
+            // DISSONANT BUZZ
             const osc = this.ctx.createOscillator();
             osc.type = "sawtooth";
             osc.frequency.setValueAtTime(150, t);
@@ -1483,403 +1879,285 @@
           }
         },
       };
-
-      const Mouse = {
-        x: 0,
-        y: 0,
-        click: false,
-        rightClick: false,
-        handled: false,
-      };
-      const isMobile = window.matchMedia("(pointer: coarse)").matches;
-
-      const resizeObserver = new ResizeObserver((entries) => {
-        for (let entry of entries) {
-          const { width, height } = entry.contentRect;
-          const logicalW = 800,
-            logicalH = 600;
-          const scale = Math.min(width / logicalW, height / logicalH);
-          canvas.style.width = `${logicalW * scale}px`;
-          canvas.style.height = `${logicalH * scale}px`;
-          const dpr = window.devicePixelRatio || 1;
-          canvas.width = logicalW * dpr;
-          canvas.height = logicalH * dpr;
-          ctx.scale(dpr, dpr);
-          if (
-            window.App &&
-            !window.App.active &&
-            window.Games &&
-            window.Games[window.App.mode]
-          ) {
-            window.Games[window.App.mode].draw();
+      const FX = {
+        particles: [],
+        shake: 0,
+        burst(x, y, color) {
+          for (let i = 0; i < 15; i++) {
+            this.particles.push({
+              x: x,
+              y: y,
+              vx: (Math.random() - 0.5) * 10,
+              vy: (Math.random() - 0.5) * 10,
+              life: 1.0,
+              color: color,
+            });
           }
-        }
-      });
-      resizeObserver.observe(document.getElementById("canvas-wrapper"));
-
-      function getMousePos(evt) {
-        const rect = canvas.getBoundingClientRect();
-        return {
-          x: (evt.clientX - rect.left) * (800 / rect.width),
-          y: (evt.clientY - rect.top) * (600 / rect.height),
-        };
-      }
-
-      canvas.addEventListener("mousemove", (e) => {
-        const p = getMousePos(e);
-        Mouse.x = p.x;
-        Mouse.y = p.y;
-      });
-      canvas.addEventListener("mousedown", (e) => {
-        if (e.button === 2) {
-          Mouse.rightClick = true;
-        } else {
-          Mouse.click = true;
-        }
-        Mouse.handled = false;
-        SFX.init();
-      });
-      canvas.addEventListener("mouseup", () => {
-        Mouse.click = false;
-        Mouse.rightClick = false;
-      });
-      canvas.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-      });
-
-      canvas.addEventListener(
-        "touchstart",
-        (e) => {
-          e.preventDefault();
-          const t = e.touches[0];
-          const p = getMousePos(t);
-          Mouse.x = p.x;
-          Mouse.y = p.y;
-          Mouse.click = true;
-          Mouse.handled = false;
-          SFX.init();
         },
-        { passive: false },
-      );
+        update(dt) {
+          if (this.shake > 0) this.shake = Math.max(0, this.shake - dt * 60);
 
-      canvas.addEventListener(
-        "touchend",
-        (e) => {
-          e.preventDefault();
-          Mouse.click = false;
+          if (this.particles) {
+            for (let i = this.particles.length - 1; i >= 0; i--) {
+              let p = this.particles[i];
+              p.x += p.vx;
+              p.y += p.vy;
+              p.life -= dt * 2;
+              if (p.life <= 0) this.particles.splice(i, 1);
+            }
+          }
         },
-        { passive: false },
-      );
-
-      function btn(x, y, w, h, col, fill) {
-        const pad = isMobile ? 50 : 0;
-        const hover =
-          Mouse.x > x - pad &&
-          Mouse.x < x + w + pad &&
-          Mouse.y > y - pad &&
-          Mouse.y < y + h + pad;
-
-        // UI POLISH: Rounded Rect
-        const r = 10;
-        ctx.beginPath();
-        ctx.moveTo(x + r, y);
-        ctx.lineTo(x + w - r, y);
-        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-        ctx.lineTo(x + w, y + h - r);
-        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-        ctx.lineTo(x + r, y + h);
-        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-        ctx.lineTo(x, y + r);
-        ctx.quadraticCurveTo(x, y, x + r, y);
-        ctx.closePath();
-
-        ctx.strokeStyle = col;
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        if (hover || fill) {
-          ctx.fillStyle = col;
-          ctx.globalAlpha = fill ? 1.0 : 0.2;
-          ctx.fill();
+        draw() {
+          this.particles.forEach((p) => {
+            ctx.globalAlpha = p.life;
+            ctx.fillStyle = p.color;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+            ctx.fill();
+          });
           ctx.globalAlpha = 1.0;
+        },
+      };
 
-          // PRESS EFFECT
-          if (hover) {
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = col;
-            ctx.stroke();
-            ctx.shadowBlur = 0;
-          }
-        }
-
-        if (hover && Mouse.click && !Mouse.handled) {
-          SFX.play("click");
-          return true;
-        }
-        return false;
-      }
-
+      // 3. APP CONTROLLER
       window.App = {
         mode: "SHIFT",
         score: 0,
         timer: 60,
         active: false,
         lastTime: 0,
-        user: null,
         audioEnabled: true,
-        totalScore: 0,
-        sessionsPlayed: 0,
-        stats: { logic: 10, speed: 10, focus: 10 },
-        history: {
-          SHIFT: [],
-          PATH: [],
-          CHROMA: [],
-          CYPHER: [],
-          MATCH: [],
-          CALC: [],
-          FLASH: [],
-          SWARM: [],
-        },
+        language: "EN",
+        isPro: false,
         synapsePoints: 0,
-        perks: { timer: 0, combo: 0, penalty: 0, xp: 0, shield: 0 },
-        badges: [],
-        blitzMode: false,
-        blitzQueue: [],
-        correct: 0,
-        wrong: 0,
-        progress: {},
         streak: 0,
         lastPlayed: 0,
-        currentMod: 1.0,
+        rank: "NOVICE",
+        progress: {},
+        perks: { timer: 0, combo: 0, penalty: 0, xp: 0, shield: 0 },
+        stats: { logic: 0, spatial: 0, attention: 0 },
+        PERK_COSTS: [50, 150, 350, 700, 1400],
+        levelUpActive: false,
+        levelUpGame: "",
+        blitzMode: false,
+        blitzQueue: [],
         shieldCount: 0,
-        flagMode: false, // FLAG MODE
-        language: "EN", // DEFAULT LANG
+        correct: 0,
+        wrong: 0,
+        reactionTimes: [],
+        sessionProcessed: false,
+        roundStart: 0,
+        avgLatency: 0,
 
         init() {
-          this.active = false;
-          const modes = [
+          canvas = document.getElementById("gameCanvas");
+          if (!canvas) return;
+          ctx = canvas.getContext("2d");
+          const getPos = (e) => {
+            const r = canvas.getBoundingClientRect();
+            return {
+              x: (e.clientX - r.left) * (800 / r.width),
+              y: (e.clientY - r.top) * (600 / r.height),
+            };
+          };
+
+          canvas.addEventListener("mousemove", (e) => {
+            const p = getPos(e);
+            Mouse.x = p.x;
+            Mouse.y = p.y;
+          });
+          canvas.addEventListener("mousedown", (e) => {
+            Mouse.click = true;
+            Mouse.down = true;
+            Mouse.handled = false;
+            if (e.button === 2) Mouse.rightClick = true;
+            SFX.init();
+          });
+          canvas.addEventListener("mouseup", () => {
+            Mouse.click = false;
+            Mouse.down = false;
+            Mouse.rightClick = false;
+          });
+          canvas.addEventListener(
+            "touchstart",
+            (e) => {
+              e.preventDefault();
+              Mouse.click = true;
+              Mouse.down = true;
+              const p = getPos(e.touches[0]);
+              Mouse.x = p.x;
+              Mouse.y = p.y;
+              SFX.init();
+            },
+            { passive: false },
+          );
+          canvas.addEventListener(
+            "touchend",
+            (e) => {
+              e.preventDefault();
+              Mouse.click = false;
+              Mouse.down = false;
+            },
+            { passive: false },
+          );
+
+          this.loadData();
+          this.updateLockVisuals();
+          this.renderWelcome();
+          this.updateUIText();
+          this.lastTime = performance.now();
+          requestAnimationFrame(this.loop.bind(this));
+        },
+
+        loadData() {
+          const saved = JSON.parse(
+            localStorage.getItem("synaptiq_v128") || "{}",
+          );
+
+          this.progress = saved.progress || {};
+          [
             "SHIFT",
             "PATH",
             "CHROMA",
-            "CYPHER",
+            "TRACE",
             "MATCH",
             "CALC",
             "FLASH",
             "SWARM",
-          ];
-          modes.forEach((m) => {
+          ].forEach((m) => {
             if (!this.progress[m]) this.progress[m] = { lvl: 1, xp: 0 };
+            this.progress[m].xpToNext = 3000;
           });
-          if (localStorage.getItem("synaptiq_data_v44")) {
-            const data = JSON.parse(localStorage.getItem("synaptiq_data_v44"));
-            this.user = data.user;
-            this.totalScore = data.totalScore;
-            this.sessionsPlayed = data.sessionsPlayed;
-            this.stats = data.stats;
-            if (data.history) this.history = data.history;
-            if (data.progress) {
-              for (let m of modes) {
-                if (data.progress[m]) this.progress[m] = data.progress[m];
-              }
-            }
-            this.streak = data.streak || 0;
-            this.lastPlayed = data.lastPlayed || 0;
-            this.synapsePoints = data.synapsePoints || 0;
-            this.perks = data.perks || {
-              timer: 0,
-              combo: 0,
-              penalty: 0,
-              xp: 0,
-              shield: 0,
-            };
-            this.language = data.language || "EN";
 
-            for (let key in this.progress) {
-              this.progress[key].lvl =
-                1 + Math.floor(this.progress[key].xp / 3000);
-            }
-            if (this.user) {
-              document.getElementById("dash-user").innerText = this.user;
-              document.getElementById("dash-status").innerText = "FULL ACCESS";
-              document.getElementById("dash-status").style.color = C.green;
-            }
-          }
-          this.applyLang();
-          this.updateBadges();
-          this.renderWelcome();
-          if (window.Games && window.Games["SHIFT"])
-            window.Games["SHIFT"].init();
-          requestAnimationFrame(this.loop.bind(this));
-        },
-
-        toggleLang() {
-          this.language = this.language === "EN" ? "ES" : "EN";
-          document.getElementById("lang-toggle").innerText =
-            "LANG: " + this.language;
-          this.applyLang();
-          this.renderWelcome();
-          this.saveData();
-        },
-
-        applyLang() {
-          const T = LANG[this.language];
-          const safeSet = (id, txt) => {
-            const el = document.getElementById(id);
-            if (el) el.innerText = txt;
+          let st = saved.stats || {};
+          this.stats = {
+            logic: st.logic || 0,
+            spatial: st.spatial || 0,
+            attention: st.attention || 0,
           };
 
-          safeSet("nav-daily", T.nav_daily);
-          safeSet("nav-blitz", T.nav_blitz);
-          safeSet("nav-dash", T.nav_dash);
-          safeSet("nav-mods", T.nav_mods);
-          safeSet("nav-sys", T.nav_sys);
-          safeSet("nav-login", T.nav_login);
-          safeSet("nav-share", T.nav_share);
-          safeSet("nav-disconnect", T.nav_disconnect);
-          safeSet("tag-welcome", T.tag_welcome);
-          safeSet("btn-init", T.btn_init);
-          safeSet("dash-title", T.dash_title);
-          safeSet("dash-subtitle", T.dash_sub);
-          safeSet("dash-streak-lbl", T.dash_streak);
-          safeSet("dash-wipe", T.dash_wipe);
-          safeSet("dash-perks-title", T.dash_perks);
-          safeSet("dash-mastery", T.dash_mastery);
-          safeSet("dash-badges", T.dash_badges);
-          safeSet("hud-score", T.hud_score);
-          safeSet("hud-timer", T.hud_timer);
-          safeSet("hud-level", T.hud_level);
-          safeSet("hud-flow", T.hud_flow);
-          safeSet("blitz-stage", T.hud_blitz);
-          safeSet("live-acc-lbl", T.live_acc);
-          safeSet("instr-start", T.instr_start);
-          safeSet("end-title", T.end_title);
-          safeSet("end-correct-lbl", T.end_cor);
-          safeSet("end-wrong-lbl", T.end_wrg);
-          safeSet("end-acc-lbl", T.end_acc);
-          safeSet("end-sp-lbl", T.end_sp);
-          safeSet("end-cont", T.end_cont);
-          safeSet("login-title", T.login_title);
-          safeSet("login-sub", T.login_sub);
+          this.isPro = saved.isPro || false;
+          this.synapsePoints = saved.sp || 0;
+          this.streak = saved.streak || 0;
+          this.perks = saved.perks || {
+            timer: 0,
+            combo: 0,
+            penalty: 0,
+            xp: 0,
+            shield: 0,
+          };
         },
 
-        renderWelcome() {
-          const grid = document.getElementById("module-grid");
-          if (!grid) return;
-          grid.innerHTML = "";
-          const T = LANG[this.language];
-          const mods = [
-            {
-              id: "SHIFT",
-              icon: "microchip",
-              title: "LOGIC SHIFT",
-              desc: T.shift_desc,
-              ben: "COGNITIVE FLEXIBILITY",
-            },
-            {
-              id: "PATH",
-              icon: "share-nodes",
-              title: "NODE PATH",
-              desc: T.path_desc,
-              ben: "VISUAL MEMORY",
-            },
-            {
-              id: "CHROMA",
-              icon: "palette",
-              title: "CHROMA CLASH",
-              desc: T.chroma_desc,
-              ben: "FOCUS CONTROL",
-            },
-            {
-              id: "CYPHER",
-              icon: "border-all",
-              title: "CYPHER GRID",
-              desc: T.cypher_desc,
-              ben: "PATTERN RECOGNITION",
-            },
-            {
-              id: "MATCH",
-              icon: "clone",
-              title: "MEMORY MATCH",
-              desc: T.match_desc,
-              ben: "SHORT-TERM MEMORY",
-            },
-            {
-              id: "CALC",
-              icon: "calculator",
-              title: "QUANTUM CALC",
-              desc: T.calc_desc,
-              ben: "PROCESSING SPEED",
-            },
-            {
-              id: "FLASH",
-              icon: "layer-group",
-              title: "FLASH ORDER",
-              desc: T.flash_desc,
-              ben: "WORKING MEMORY",
-            },
-            {
-              id: "SWARM",
-              icon: "bolt",
-              title: "QUANTUM SWARM",
-              desc: T.swarm_desc,
-              ben: "SPATIAL ATTENTION",
-              col: "var(--impulse)",
-            },
-          ];
-
-          mods.forEach((m) => {
-            grid.innerHTML += `
-            <div class="module-card">
-                <i class="fa-solid fa-${m.icon} mc-icon" style="${m.col ? "color:" + m.col : ""}"></i>
-                <div class="mc-title">${m.title}</div>
-                <div class="mc-desc">${m.desc}</div>
-                <div class="mc-benefit">${m.ben}</div>
-            </div>`;
-          });
+        saveData() {
+          localStorage.setItem(
+            "synaptiq_v128",
+            JSON.stringify({
+              progress: this.progress,
+              isPro: this.isPro,
+              sp: this.synapsePoints,
+              perks: this.perks,
+              streak: this.streak,
+              stats: this.stats,
+              lang: this.language,
+            }),
+          );
         },
 
-        PERK_COSTS: [50, 150, 350, 700, 1400],
-
-        calculateSigmoid(mode) {
-          const history = this.history[mode] || [];
-          if (history.length < 5) return 0.5;
-          const recent = history.slice(-10);
-          const avgAcc = recent.reduce((a, b) => a + b, 0) / recent.length;
-          const lvl = this.progress[mode].lvl;
-          const x0 = Math.max(0.45, 0.85 - lvl * 0.01);
-          const k = 12;
-          return 1 / (1 + Math.exp(-k * (avgAcc - x0)));
-        },
-
-        buyPerk(id) {
-          const lvl = this.perks[id];
-          if (lvl >= 5) return;
-          const cost = this.PERK_COSTS[lvl];
-          if (this.synapsePoints >= cost) {
-            this.synapsePoints -= cost;
-            this.perks[id]++;
-            this.saveData();
-            this.updateStats();
-            SFX.play("win");
-            alert(
-              `UPGRADE COMPLETE: ${id.toUpperCase()} LVL ${this.perks[id]}`,
-            );
-          } else {
-            alert(`NEED ${cost} SYNAPSE POINTS`);
+        wipeData() {
+          if (
+            confirm(
+              "WARNING: This will permanently delete all your progress, SP, and badges. Are you sure?",
+            )
+          ) {
+            localStorage.removeItem("synaptiq_v128"); // Deletes the save file
+            location.reload(); // Instantly refreshes the browser, kicking you to the homescreen
           }
         },
 
-        goHome() {
-          this.active = false;
-          this.saveData();
-          document.getElementById("welcome-view").classList.remove("hidden");
-          document.getElementById("dashboard-view").style.display = "none";
-          document.getElementById("dashboard-view").classList.remove("active");
-          document.getElementById("sidebar").classList.remove("open");
-          document.getElementById("overlay-instr").classList.remove("active");
-          document.getElementById("overlay-end").classList.remove("active");
+        handleLogin() {
+          this.login(); // Safety redirect
         },
 
+        login() {
+          const inputEl =
+            document.getElementById("user-id") ||
+            document.getElementById("login-input");
+          if (!inputEl) return;
+
+          const id = inputEl.value;
+          if (id) {
+            this.user = id.toUpperCase();
+            this.isPro = true; // FIXED: Grants access past paywall
+
+            const dashUser = document.getElementById("dash-user");
+            if (dashUser) dashUser.innerText = this.user;
+
+            const dashStatus = document.getElementById("dash-status");
+            if (dashStatus) {
+              dashStatus.innerText = "PRO OPERATOR";
+              dashStatus.style.color = C.stable;
+            }
+
+            const overlay = document.getElementById("overlay-login");
+            if (overlay) overlay.classList.remove("active");
+
+            if (typeof SFX !== "undefined") SFX.play("start");
+            this.saveData();
+            this.updateLockVisuals(); // Refreshes the menu locks
+          }
+        },
+
+        openLogin() {
+          this.showInstr(); // Pause the game if instructions are open, otherwise it can cause visual bugs with the overlays
+          const l = document.getElementById("overlay-login");
+          if (l) l.classList.add("active");
+          const sb = document.getElementById("sidebar");
+          if (sb) sb.classList.remove("open");
+        },
+
+        socialLogin(provider) {
+          this.user = provider + "_USER";
+          this.isPro = true;
+          this.saveData();
+          const overlay = document.getElementById("overlay-login");
+          if (overlay) overlay.classList.remove("active");
+          this.updateLockVisuals();
+        },
+
+        redeemCode() {
+          const inputEl = document.getElementById("promo-code");
+          if (!inputEl) return;
+
+          const code = inputEl.value.trim().toUpperCase();
+          if (code === "PROMO") {
+            // You can change "PRO" to whatever secret word you want
+            this.isPro = true;
+            this.saveData();
+
+            // Update the UI
+            const dashStatus = document.getElementById("dash-status");
+            if (dashStatus) {
+              dashStatus.innerText = "PRO OPERATOR";
+              dashStatus.style.color = C.stable;
+            }
+            this.updateLockVisuals();
+
+            // Close the paywall
+            const paywall = document.getElementById("overlay-paywall");
+            if (paywall) paywall.classList.remove("active");
+
+            // Polish
+            if (typeof SFX !== "undefined") SFX.play("win");
+            alert("PROMO ACCEPTED. PRO ACCESS UNLOCKED.");
+            inputEl.value = ""; // clear the box
+          } else {
+            if (typeof SFX !== "undefined") SFX.play("lose");
+            alert("INVALID CODE");
+            inputEl.value = "";
+          }
+        },
+
+        // --- SYSTEM & NAVIGATION FUNCTIONS ---
         shareApp() {
           if (navigator.share) {
             navigator.share({
@@ -1892,33 +2170,621 @@
           }
         },
 
-        openLogin() {
-          document.getElementById("overlay-login").classList.add("active");
-          document.getElementById("sidebar").classList.remove("open");
+        goHome() {
+          this.active = false;
+
+          const dash = document.getElementById("dashboard-view");
+          if (dash) {
+            dash.style.display = "none";
+            dash.classList.remove("active");
+          }
+
+          const welc = document.getElementById("welcome-view");
+          if (welc) {
+            welc.style.display = ""; // or "" depending on your css
+            welc.classList.remove("hidden");
+          }
+
+          const sb = document.getElementById("sidebar");
+          if (sb) sb.classList.remove("open");
+
+          // Close any open overlays
+          document.getElementById("overlay-instr")?.classList.remove("active");
+          document.getElementById("overlay-end")?.classList.remove("active");
         },
 
-        socialLogin(provider) {
-          this.user = provider + "_USER";
-          this.completeLogin();
+        disconnect() {
+          // Wipes the current session user and locks the paywall, then goes home
+          this.user = null;
+          this.isPro = false;
+          this.saveData();
+
+          const dashUser = document.getElementById("dash-user");
+          if (dashUser) dashUser.innerText = "GUEST";
+
+          const dashStatus = document.getElementById("dash-status");
+          if (dashStatus) {
+            dashStatus.innerText = "FREE TIER";
+            dashStatus.style.color = C.gold;
+          }
+
+          this.updateLockVisuals();
+          this.goHome();
         },
 
-        handleLogin() {
-          const val = document
-            .getElementById("login-input")
-            .value.toUpperCase();
-          if (val.length > 0) {
-            this.user = val;
-            this.completeLogin();
+        addXP(gameKey, amount) {
+          const p = this.progress[gameKey];
+          if (!p) return;
+          p.xp += amount;
+          this.saveData();
+        },
+
+        drawXPBar() {
+          if (this.mode === "DASHBOARD" || !this.progress[this.mode]) return;
+          const p = this.progress[this.mode];
+
+          const barW = 400,
+            barH = 8,
+            barX = 200,
+            barY = 570;
+
+          ctx.fillStyle = "#fff";
+          ctx.font = "bold 14px Rajdhani";
+          ctx.textAlign = "right";
+          ctx.fillText("LVL " + p.lvl, barX - 15, barY + 9);
+
+          ctx.fillStyle = "#222";
+          ctx.fillRect(barX, barY, barW, barH);
+          ctx.fillStyle = C.gold;
+          ctx.fillRect(barX, barY, barW * Math.min(1, p.xp / 3000), barH);
+        },
+
+        drawLevelUp() {
+          if (!this.levelUpActive) return;
+          ctx.fillStyle = "rgba(0,0,0,0.95)";
+          ctx.fillRect(0, 0, 800, 600);
+          ctx.shadowBlur = 40;
+          ctx.shadowColor = C.gold;
+          ctx.fillStyle = C.gold;
+          ctx.font = "bold 60px Rajdhani";
+          ctx.textAlign = "center";
+          ctx.fillText(LANG.EN.lvl_up, 400, 250);
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = "#fff";
+          ctx.font = "30px Rajdhani";
+          ctx.fillText(
+            GameNames[this.levelUpGame] +
+              " -> LVL " +
+              this.progress[this.levelUpGame].lvl,
+            400,
+            320,
+          );
+          ctx.fillStyle = "#888";
+          ctx.font = "20px Rajdhani";
+          ctx.fillText(LANG.EN.click_cont, 400, 500);
+
+          if ((Mouse.click || Mouse.down) && !Mouse.handled) {
+            this.levelUpActive = false;
+            Mouse.handled = true;
           }
         },
 
-        completeLogin() {
-          document.getElementById("dash-user").innerText = this.user;
-          document.getElementById("dash-status").innerText = "FULL ACCESS";
-          document.getElementById("dash-status").style.color = C.green;
-          document.getElementById("overlay-login").classList.remove("active");
-          SFX.play("win");
+        load(mode, lvlOverride) {
+          if (
+            typeof FreeGames !== "undefined" &&
+            !FreeGames.includes(mode) &&
+            !this.isPro &&
+            !this.blitzMode
+          ) {
+            this.showPaywall();
+            return;
+          }
+
+          const dash = document.getElementById("dashboard-view");
+          if (dash) {
+            dash.classList.remove("active");
+            dash.style.display = "none";
+          }
+          const welc = document.getElementById("welcome-view");
+          if (welc) {
+            welc.classList.add("hidden");
+            welc.style.display = "none";
+          }
+
+          document
+            .querySelectorAll(".nav-btn")
+            .forEach((b) => b.classList.remove("active"));
+          const btn = document.getElementById(`btn-${mode}`);
+          if (btn) btn.classList.add("active");
+
+          const sidebar = document.getElementById("sidebar");
+          if (sidebar) sidebar.classList.remove("open");
+
+          this.mode = mode;
+          this.flagMode = false;
+          this.sessionProcessed = false;
+
+          this.score = 0;
+          this.correct = 0;
+          this.wrong = 0;
+          this.reactionTimes = [];
+          this.timer =
+            60 + (this.perks && this.perks.timer ? this.perks.timer * 5 : 0);
+
+          safeSet("score-val", "0");
+          safeSet("timer-val", this.timer);
+          safeSet("live-acc", "100%");
+          this.shake = 0;
+
+          let lvl =
+            lvlOverride ||
+            (this.progress && this.progress[mode]
+              ? this.progress[mode].lvl
+              : 1);
+          if (this.blitzMode) lvl = 1;
+          this.currentLvl = lvl;
+          safeSet("level-val", this.currentLvl);
+
+          const T = LANG[this.language] || {};
+          const instr = {
+            SHIFT: T.shift_desc,
+            PATH: T.path_desc,
+            CHROMA: T.chroma_desc,
+            TRACE: T.trace_desc,
+            MATCH: T.match_desc,
+            CALC: T.calc_desc,
+            FLASH: T.flash_desc,
+            SWARM: T.swarm_desc,
+          };
+
+          const titleEl = document.getElementById("instr-title");
+          if (titleEl && typeof GameNames !== "undefined")
+            titleEl.innerText = GameNames[mode];
+          const descEl = document.getElementById("instr-desc");
+          if (descEl && instr[mode]) descEl.innerText = instr[mode];
+
+          const overlay = document.getElementById("overlay-instr");
+          if (overlay) overlay.classList.add("active");
+
+          if (window.Games && window.Games[mode]) {
+            window.Games[mode].init(lvl);
+          }
+
+          this.active = false;
+          this.timer =
+            60 + (this.perks && this.perks.timer ? this.perks.timer * 5 : 0);
+        },
+
+        resumeGame() {
+          const overlay = document.getElementById("overlay-instr");
+          if (overlay) overlay.classList.remove("active");
+
+          // Only resume if we are actually in a game module
+          if (this.mode !== "DASHBOARD") {
+            this.active = true;
+            this.lastTime = performance.now(); // FIX: Prevents the timer from jumping forward after the pause
+            if (typeof SFX !== "undefined") SFX.play("click");
+          }
+        },
+
+        startGame() {
+          // FIXED: Prevents game starting in background while in Dashboard
+          if (
+            this.mode === "DASHBOARD" ||
+            document
+              .getElementById("dashboard-view")
+              .classList.contains("active")
+          )
+            return;
+
+          const overlay = document.getElementById("overlay-instr");
+          if (overlay) overlay.classList.remove("active");
+
+          this.score = 0;
+          this.timer = 60 + this.perks.timer * 5;
+          this.correct = 0;
+          this.wrong = 0;
+          this.reactionTimes = [];
+          this.shieldCount = [0, 1, 2, 3, 5, 999][this.perks.shield] || 0;
+          this.active = true;
+          SFX.play("start");
+          this.startRound();
+          this.lastTime = performance.now();
+        },
+
+        startRound() {
+          this.roundStart = performance.now();
+        },
+
+        logResult(isCorrect, isTimeout = false) {
+          if (this.roundStart > 0 && !isTimeout) {
+            this.reactionTimes.push(performance.now() - this.roundStart);
+          }
+
+          let category = "logic";
+          if (["PATH", "MATCH"].includes(this.mode)) category = "spatial";
+          if (["CHROMA", "FLASH", "SWARM"].includes(this.mode))
+            category = "attention";
+
+          // Calculate potential earnings first
+          const mult =
+            [1.0, 1.1, 1.25, 1.5, 1.75, 2.0][this.perks.combo] || 1.0;
+
+          let basePts = 100;
+          if (this.mode === "SHIFT") basePts = 50;
+          if (this.mode === "CHROMA") basePts = 30;
+          if (this.mode === "MATCH") basePts = 40; // 40 XP per successful pair
+
+          const earned = Math.floor(basePts * mult);
+
+          if (isCorrect) {
+            this.correct++;
+            this.stats[category]++;
+            SFX.play("win");
+            FX.burst(Mouse.x, Mouse.y, C.stable);
+
+            this.score += earned;
+            this.addXP(this.mode, earned + this.perks.xp * 10);
+          } else {
+            if (this.shieldCount > 0) {
+              this.shieldCount--;
+              FX.burst(Mouse.x, Mouse.y, C.gold);
+            } else {
+              this.wrong++;
+              SFX.play("lose");
+              FX.shake = 20;
+
+              // Dynamic Penalty: Exactly half of what you would earn
+              let basePen = 50;
+              if (this.mode === "MATCH") {
+                basePen = Math.floor(earned / 2);
+              }
+
+              const pen = Math.floor(
+                basePen *
+                  (1 - ([0, 0.2, 0.4, 0.6, 0.8, 1.0][this.perks.penalty] || 0)),
+              );
+              this.score -= pen;
+            }
+          }
+
+          if (this.score < 0) this.score = 0;
+          safeSet("score-val", this.score);
+          const total = this.correct + this.wrong;
+          const acc =
+            total === 0 ? 100 : Math.round((this.correct / total) * 100);
+          safeSet("live-acc", acc + "%");
+          this.startRound();
+        },
+
+        finishSession() {
+          if (this.sessionProcessed) return;
+          this.sessionProcessed = true;
+          this.active = false;
+          FX.shake = 0;
+
+          const total = this.correct + this.wrong;
+          const acc =
+            total === 0 ? 0 : Math.round((this.correct / total) * 100);
+          this.avgLatency = 0;
+          if (this.reactionTimes.length > 0)
+            this.avgLatency = Math.floor(
+              this.reactionTimes.reduce((a, b) => a + b, 0) /
+                this.reactionTimes.length,
+            );
+
+          let speedBonus =
+            this.avgLatency > 0 && this.avgLatency < 2500 ? 50 : 0;
+          let accBonus = acc >= 90 && total > 5 ? 50 : 0;
+          let bonusXP = speedBonus + accBonus;
+
+          let sessionXP = this.score + bonusXP;
+
+          if (bonusXP > 0) this.addXP(this.mode, bonusXP);
+
+          let accumulatedXP = Math.floor(this.progress[this.mode].xp);
+          let previousXP = Math.max(0, accumulatedXP - sessionXP);
+
+          let sp = 0;
+          if (acc === 100 && total > 5) sp = 10;
+          else if (acc > 50) sp = 5;
+          if (this.blitzMode) sp += 25;
+          this.synapsePoints += sp;
           this.saveData();
+
+          safeSet("end-correct", this.correct);
+          safeSet("final-correct", this.correct);
+          safeSet("end-correct-val", this.correct);
+          safeSet("end-wrong", this.wrong);
+          safeSet("final-wrong", this.wrong);
+          safeSet("end-wrong-val", this.wrong);
+          safeSet("end-acc", acc + "%");
+          safeSet("final-accuracy", acc + "%");
+          safeSet("end-acc-val", acc + "%");
+          safeSet("end-ms", this.avgLatency + "ms");
+          safeSet("end-ms-val", this.avgLatency + "ms");
+
+          safeSet("tally-base", "+" + this.score);
+          safeSet("tally-speed", "+" + speedBonus);
+          safeSet("tally-acc", "+" + accBonus);
+          safeSet("tally-prev", previousXP);
+          safeSet("tally-total", accumulatedXP + " XP");
+
+          safeSet("end-sp", "+" + sp);
+          safeSet("end-sp-val", "+" + sp);
+
+          const endTitle = document.getElementById("end-title");
+          if (endTitle) {
+            if (acc === 100 && total > 0) {
+              endTitle.innerText = "PERFECT SCORE";
+              endTitle.style.color = C.gold;
+            } else if (acc < 50) {
+              endTitle.innerText = "TRY AGAIN";
+              endTitle.style.color = C.chaos;
+            } else {
+              endTitle.innerText = "SESSION COMPLETE";
+              endTitle.style.color = "#fff";
+            }
+          }
+
+          this.renderEndScreenLevels();
+
+          const overlay = document.getElementById("overlay-end");
+          if (overlay) overlay.classList.add("active");
+
+          const endBtn = document.getElementById("end-cont");
+          if (endBtn) {
+            if (this.blitzMode) {
+              endBtn.innerText = "NEXT MODULE";
+              endBtn.onclick = () => {
+                this.closeEndScreen();
+              };
+            } else {
+              endBtn.innerText = "CONTINUE";
+              endBtn.onclick = () => {
+                this.closeEndScreen();
+              };
+            }
+          }
+        },
+
+        renderEndScreenLevels() {
+          const lvlCont = document.getElementById("level-select-container");
+          if (!lvlCont) return;
+          const p = this.progress[this.mode];
+          lvlCont.innerHTML = "";
+          for (let i = 1; i <= p.lvl; i++) {
+            lvlCont.innerHTML += `<button class='lvl-btn' onclick="window.App.load('${this.mode}', ${i})">${i}</button>`;
+          }
+          const nextLvl = p.lvl + 1;
+          if (p.xp >= 3000) {
+            lvlCont.innerHTML += `<button class='lvl-btn' style='background: ${C.gold}; color: #000; font-weight: bold; width: 100%; margin-top: 15px;' onclick="window.App.unlockNextLevel()">UNLOCK LEVEL ${nextLvl} (3000 XP)</button>`;
+          } else {
+            lvlCont.innerHTML += `<button class='lvl-btn' style='background: #222; color: #666; width: 100%; margin-top: 15px; cursor: not-allowed;' disabled>LEVEL ${nextLvl} LOCKED (${Math.floor(p.xp)}/3000 XP)</button>`;
+          }
+        },
+
+        unlockNextLevel() {
+          const p = this.progress[this.mode];
+          if (p.xp >= 3000) {
+            p.xp -= 3000;
+            p.lvl++;
+            p.xpToNext = 3000;
+            safeSet("level-val", p.lvl);
+            this.saveData();
+            this.levelUpActive = true;
+            this.levelUpGame = this.mode;
+            SFX.play("levelup");
+            this.renderEndScreenLevels();
+          }
+        },
+
+        closeEndScreen() {
+          const overlay = document.getElementById("overlay-end");
+          if (overlay) overlay.classList.remove("active");
+          if (this.blitzMode) this.nextBlitz();
+          else this.load(this.mode);
+        },
+
+        showInstr() {
+          this.active = false;
+          document.getElementById("overlay-instr").classList.add("active");
+        },
+
+        startBlitz() {
+          this.blitzMode = true;
+          this.blitzQueue = Object.keys(GameNames);
+          document.getElementById("blitz-hud").style.display = "block";
+          this.nextBlitz();
+        },
+
+        nextBlitz() {
+          if (this.blitzQueue.length === 0) {
+            this.blitzMode = false;
+            document.getElementById("blitz-hud").style.display = "none";
+            this.synapsePoints += 50;
+            this.saveData();
+            this.openDashboard();
+            alert("BLITZ COMPLETE! +50 SP");
+          } else {
+            const next = this.blitzQueue.shift();
+            const currentStage = 8 - this.blitzQueue.length;
+            safeSet("blitz-stage", currentStage + "/8");
+            this.load(next);
+          }
+        },
+
+        renderWelcome() {
+          const grid = document.getElementById("module-grid");
+          if (!grid) return;
+          grid.innerHTML = "";
+
+          // Pulls the correct translation file
+          const T = LANG[this.language] || LANG.EN;
+
+          const mods = [
+            {
+              id: "SHIFT",
+              icon: "microchip",
+              title: "LOGIC SHIFT",
+              desc: T.shift_desc,
+              ben: "COGNITIVE FLEXIBILITY",
+              color: C.stable,
+              free: true,
+            },
+            {
+              id: "PATH",
+              icon: "share-nodes",
+              title: "NODE PATH",
+              desc: T.path_desc,
+              ben: "VISUAL MEMORY",
+              color: C.gold,
+              free: true,
+            },
+            {
+              id: "CHROMA",
+              icon: "palette",
+              title: "CHROMA CLASH",
+              desc: T.chroma_desc,
+              ben: "FOCUS CONTROL",
+              color: C.focus,
+              free: true,
+            },
+            {
+              id: "TRACE",
+              icon: "project-diagram",
+              title: "NEXUS TRACE",
+              desc: T.trace_desc,
+              ben: "SEQUENTIAL MEMORY",
+              color: C.stable,
+              free: false,
+            },
+            {
+              id: "MATCH",
+              icon: "clone",
+              title: "MEMORY MATCH",
+              desc: T.match_desc,
+              ben: "SHORT-TERM MEMORY",
+              color: C.gold,
+              free: false,
+            },
+            {
+              id: "CALC",
+              icon: "calculator",
+              title: "QUANTUM CALC",
+              desc: T.calc_desc,
+              ben: "PROCESSING SPEED",
+              color: C.stable,
+              free: false,
+            },
+            {
+              id: "FLASH",
+              icon: "layer-group",
+              title: "FLASH ORDER",
+              desc: T.flash_desc,
+              ben: "WORKING MEMORY",
+              color: C.focus,
+              free: false,
+            },
+            {
+              id: "SWARM",
+              icon: "bolt",
+              title: "QUANTUM SWARM",
+              desc: T.swarm_desc,
+              ben: "SPATIAL ATTENTION",
+              color: C.focus,
+              free: false,
+            },
+          ];
+
+          mods.forEach((g) => {
+            const locked = !g.free && !this.isPro;
+            const clickAction = locked
+              ? "window.App.showPaywall()"
+              : "window.App.load('" + g.id + "')";
+
+            grid.innerHTML += `
+              <div class='module-card ${locked ? "locked" : ""}' onclick="${clickAction}">
+                <i class='fa-solid fa-${g.icon} mc-icon' style='color: ${g.color}; text-shadow: 0 0 10px ${g.color}55;'></i>
+                <div class='mc-title'>${g.title}</div>
+                <div class='mc-desc'>${g.desc}</div>
+                
+                <div class='mc-benefit' style='color: ${g.color}; font-weight: bold; margin-top: 12px; font-size: 0.75rem; letter-spacing: 1px;'>
+                  <i class="fa-solid fa-brain" style="margin-right: 5px;"></i> ${g.ben}
+                </div>
+                
+                <div class='mc-benefit' style='color: #666; margin-top: 5px; font-size: 0.7rem;'>
+                  ${g.free ? "FREE ACCESS" : "PRO MODULE"}
+                </div>
+              </div>`;
+          });
+
+          const statusEl = document.getElementById("dash-status");
+          if (statusEl) {
+            statusEl.innerText = this.isPro ? "PRO OPERATOR" : "FREE TIER";
+            statusEl.style.color = this.isPro ? C.stable : C.gold;
+          }
+        },
+
+        updateLockVisuals() {
+          [
+            "SHIFT",
+            "PATH",
+            "CHROMA",
+            "TRACE",
+            "MATCH",
+            "CALC",
+            "FLASH",
+            "SWARM",
+          ].forEach((g) => {
+            const btn = document.getElementById("btn-" + g);
+            if (btn) {
+              const isFree = FreeGames.includes(g);
+              if (!isFree && !this.isPro) {
+                btn.classList.add("locked");
+                if (!btn.innerHTML.includes("fa-lock"))
+                  btn.innerHTML +=
+                    ' <i class="fa-solid fa-lock" style="font-size:0.8rem; margin-left:auto; color:#666;"></i>';
+              } else {
+                btn.classList.remove("locked");
+                const lock = btn.querySelector(".fa-lock");
+                if (lock) lock.remove();
+              }
+            }
+          });
+        },
+
+        updateUIText() {
+          const T = LANG.EN;
+          safeSet("nav-daily", T.nav_daily);
+          safeSet("nav-blitz", T.nav_blitz);
+          safeSet("nav-dash", T.nav_dash);
+          safeSet("nav-mods", T.nav_mods);
+          safeSet("tag-welcome", T.tag_welcome);
+          safeSet("dash-title", T.dash_title);
+          safeSet("dash-subtitle", T.dash_sub);
+          safeSet("dash-perks-title", T.dash_perks);
+          safeSet("dash-badges", T.dash_badges);
+          safeSet("hud-score", T.hud_score);
+          safeSet("hud-timer", T.hud_timer);
+          safeSet("hud-level", T.hud_level);
+        },
+
+        enterSystem() {
+          const welcome = document.getElementById("welcome-view");
+          if (welcome) {
+            welcome.style.display = "none";
+            welcome.classList.add("hidden");
+          }
+          SFX.play("start");
+          this.load("SHIFT");
+        },
+
+        showPaywall() {
+          this.showInstr;
+          const p = document.getElementById("overlay-paywall");
+          if (p) p.classList.add("active");
+          else alert("PRO FEATURE LOCKED");
         },
 
         toggleAudio() {
@@ -1933,45 +2799,18 @@
             btn.classList.remove("on");
           }
         },
-        enterSystem() {
-          document.getElementById("welcome-view").classList.add("hidden");
-          SFX.play("start");
-          this.load("SHIFT");
-        },
-        saveData() {
-          const data = {
-            user: this.user,
-            totalScore: this.totalScore,
-            sessionsPlayed: this.sessionsPlayed,
-            stats: this.stats,
-            history: this.history,
-            progress: this.progress,
-            streak: this.streak,
-            lastPlayed: this.lastPlayed,
-            synapsePoints: this.synapsePoints,
-            perks: this.perks,
-            language: this.language,
-          };
-          localStorage.setItem("synaptiq_data_v44", JSON.stringify(data));
-        },
-        wipeData() {
-          if (
-            confirm("WARNING: THIS WILL DELETE ALL PROGRESS. ARE YOU SURE?")
-          ) {
-            localStorage.removeItem("synaptiq_data_v44");
-            location.reload();
+
+        toggleLang() {
+          this.language = this.language === "EN" ? "ES" : "EN";
+          const btn = document.getElementById("lang-toggle");
+          if (btn) {
+            btn.innerText = "LANG: " + this.language;
+            btn.classList.add("active");
+            setTimeout(() => btn.classList.remove("active"), 200);
           }
-        },
-        login() {
-          const id = document.getElementById("user-id").value;
-          if (id) {
-            this.user = id.toUpperCase();
-            document.getElementById("dash-user").innerText = this.user;
-            document.getElementById("dash-status").innerText = "FULL ACCESS";
-            document.getElementById("dash-status").style.color = C.green;
-            SFX.play("start");
-            this.saveData();
-          }
+          this.updateUIText();
+          this.renderWelcome();
+          this.saveData();
         },
 
         openDashboard() {
@@ -1980,376 +2819,267 @@
             return;
           }
           this.active = false;
+          this.mode = "DASHBOARD"; // FIXED: Kills background engine bleed
 
-          // CSS FORCED DISPLAY OVERRIDE
+          // FIXED: Uses empty string so your CSS grid/flexbox handles it properly
           const dash = document.getElementById("dashboard-view");
-          dash.style.display = "block";
-          dash.classList.add("active");
-
-          document.getElementById("welcome-view").classList.add("hidden");
-          document.getElementById("overlay-instr").classList.remove("active");
-          document.getElementById("overlay-end").classList.remove("active");
-          document.getElementById("sidebar").classList.remove("open");
-          this.updateStats();
-        },
-
-        updateStats() {
-          let totalLevels = 0;
-          for (let key in this.progress) totalLevels += this.progress[key].lvl;
-          document.getElementById("dash-rank").innerText =
-            totalLevels < 15
-              ? "NOVICE"
-              : totalLevels < 30
-                ? "ADVANCED"
-                : "ELITE";
-          document.getElementById("dash-total-level").innerText =
-            `TOTAL LEVEL ${totalLevels}`;
-          document.getElementById("dash-streak").innerText = this.streak;
-          document.getElementById("level-val").innerText = this.progress[
-            this.mode
-          ]
-            ? this.progress[this.mode].lvl
-            : 1;
-          document.getElementById("dash-sp").innerText = this.synapsePoints;
-
-          const perkList = document.getElementById("perk-list");
-          perkList.innerHTML = "";
-          const pDefs = [
-            {
-              id: "timer",
-              name: "CHRONOS BOOST",
-              icon: "timer",
-              desc: "+Timer Duration",
-            },
-            {
-              id: "combo",
-              name: "HYPERION COMBO",
-              icon: "bolt",
-              desc: "Score Multiplier",
-            },
-            {
-              id: "penalty",
-              name: "VOID SHIELD",
-              icon: "ban",
-              desc: "Reduce Penalty",
-            },
-            { id: "xp", name: "NEXUS GAIN", icon: "gem", desc: "XP Boost" },
-            {
-              id: "shield",
-              name: "AEGIS GUARD",
-              icon: "shield-halved",
-              desc: "Free Misses",
-            },
-          ];
-
-          pDefs.forEach((p) => {
-            const lvl = this.perks[p.id];
-            const cost = this.PERK_COSTS[lvl] || "MAX";
-            const isMax = lvl >= 5;
-            const cls = isMax
-              ? "perk-node maxed"
-              : this.synapsePoints >= cost
-                ? "perk-node"
-                : "perk-node locked";
-            perkList.innerHTML += `
-                <div class="${cls}" onclick="window.App.buyPerk('${p.id}')">
-                    <div class="perk-icon"><i class="fa-solid fa-${p.icon}"></i></div>
-                    <span class="perk-name">${p.name}</span>
-                    <span class="perk-desc">${p.desc}</span>
-                    <span class="perk-lvl">LVL ${lvl}/5</span>
-                    <span class="perk-cost">${cost} SP</span>
-                </div>
-            `;
-          });
-
-          const list = document.getElementById("mastery-list");
-          list.innerHTML = "";
-          const mapping = {
-            SHIFT: "mi-logic",
-            PATH: "mi-focus",
-            CHROMA: "mi-focus",
-            CYPHER: "mi-logic",
-            MATCH: "mi-focus",
-            CALC: "mi-speed",
-            FLASH: "mi-speed",
-            SWARM: "mi-speed",
-          };
-          for (let key in this.progress) {
-            const p = this.progress[key];
-            const curXp = p.xp % 3000;
-            const pct = (curXp / 3000) * 100;
-            list.innerHTML += `<div class="mastery-item ${mapping[key]}"><div class="mi-header"><span>${key}</span><span>LVL ${p.lvl}</span></div><div class="mi-bar-bg"><div class="mi-bar-fill" style="width:${pct}%"></div></div></div>`;
+          if (dash) {
+            dash.style.display = "";
+            dash.classList.add("active");
           }
-          this.updateBadges();
-        },
-        updateBadges() {
-          const badgeContainer = document.getElementById("badge-container");
-          if (!badgeContainer) return;
-          badgeContainer.innerHTML = "";
 
-          const badges = [
-            {
-              id: "badge-logic",
-              icon: "brain",
-              label: "LOGIC MASTER",
-              score: this.stats.logic,
-            },
-            {
-              id: "badge-speed",
-              icon: "bolt",
-              label: "SPEED DEMON",
-              score: this.stats.speed,
-            },
-            {
-              id: "badge-focus",
-              icon: "eye",
-              label: "IRON FOCUS",
-              score: this.stats.focus,
-            },
-            {
-              id: "badge-elite",
-              icon: "crown",
-              label: "ELITE RANK",
-              score:
-                this.progress.SHIFT.lvl +
-                this.progress.PATH.lvl +
-                this.progress.CHROMA.lvl,
-            },
-            {
-              id: "badge-streak",
-              icon: "fire",
-              label: "NEURAL STREAK",
-              score: this.streak,
-            },
-            {
-              id: "badge-veteran",
-              icon: "shield-halved",
-              label: "SESSION VETERAN",
-              score: this.sessionsPlayed,
-            },
-            {
-              id: "badge-xp",
-              icon: "gem",
-              label: "XP HOARDER",
-              score: this.totalScore,
-            },
-            {
-              id: "badge-jack",
-              icon: "user-check",
-              label: "JACK OF ALL TRADES",
-              score: 1,
-            },
-          ];
+          const welc = document.getElementById("welcome-view");
+          if (welc) welc.classList.add("hidden");
 
-          badges.forEach((b) => {
-            let tier = "";
-            let cls = "badge";
-            if (b.score >= 50000) {
-              cls += " diamond";
-              tier = "DIAMOND";
-            } // HARDER
-            else if (b.score >= 20000) {
-              cls += " gold";
-              tier = "GOLD";
-            } else if (b.score >= 5000) {
-              cls += " silver";
-              tier = "SILVER";
-            } else if (b.score >= 1000) {
-              cls += " bronze";
-              tier = "BRONZE";
-            }
+          const instr = document.getElementById("overlay-instr");
+          if (instr) instr.classList.remove("active");
 
-            if (b.score >= 1000) cls += " unlocked"; // HARDER UNLOCK
+          const endScr = document.getElementById("overlay-end");
+          if (endScr) endScr.classList.remove("active");
 
-            badgeContainer.innerHTML += `
-                <div class="${cls}">
-                    <i class="fa-solid fa-${b.icon}"></i>
-                    <span>${b.label}</span>
-                    <div class="badge-tier">${tier}</div>
-                </div>
-            `;
-          });
-        },
-
-        startBlitz() {
-          this.blitzMode = true;
-          this.blitzQueue = [
-            "SHIFT",
-            "PATH",
-            "CHROMA",
-            "CYPHER",
-            "MATCH",
-            "CALC",
-            "FLASH",
-            "SWARM",
-          ];
-          document.getElementById("blitz-hud").style.display = "block";
-          document.getElementById("sidebar").classList.remove("open");
-          this.nextBlitz();
-        },
-        nextBlitz() {
-          if (this.blitzQueue.length === 0) {
-            this.blitzMode = false;
-            document.getElementById("blitz-hud").style.display = "none";
-            this.sessionsPlayed++;
-            this.saveData();
-            this.openDashboard();
-            return;
-          }
-          this.load(this.blitzQueue.shift());
-          document.getElementById("blitz-stage").innerText =
-            9 - this.blitzQueue.length + "/8";
-        },
-        load(mode) {
-          // FORCE HIDE DASHBOARD
-          const dash = document.getElementById("dashboard-view");
-          dash.classList.remove("active");
-          dash.style.display = "none";
+          const sb = document.getElementById("sidebar");
+          if (sb) sb.classList.remove("open");
 
           document
             .querySelectorAll(".nav-btn")
             .forEach((b) => b.classList.remove("active"));
-          document.getElementById(`btn-${mode}`).classList.add("active");
-          document.getElementById("sidebar").classList.remove("open");
-          this.mode = mode;
-          this.active = false;
-          this.flagMode = false; // RESET FLAG MODE
+          const btnDash = document.getElementById("btn-DASHBOARD");
+          if (btnDash) btnDash.classList.add("active");
 
-          document.getElementById("level-val").innerText =
-            this.progress[mode].lvl;
-
-          const diff = this.calculateSigmoid(mode);
-          this.currentMod = diff;
-          let flowText = "OPTIMAL";
-          if (diff > 0.8) flowText = "OVERLOAD";
-          if (diff < 0.2) flowText = "UNDERLOAD";
-          document.getElementById("flow-val").innerText = flowText;
-
-          const T = LANG[this.language];
-          const instr = {
-            SHIFT: T.shift_desc,
-            PATH: T.path_desc,
-            CHROMA: T.chroma_desc,
-            CYPHER: T.cypher_desc,
-            MATCH: T.match_desc,
-            CALC: T.calc_desc,
-            FLASH: T.flash_desc,
-            SWARM: T.swarm_desc,
-          };
-
-          document.getElementById("instr-title").innerText = mode;
-          document.getElementById("instr-text").innerText = instr[mode];
-          document.getElementById("overlay-instr").classList.add("active");
-          document.getElementById("overlay-end").classList.remove("active");
-          if (window.Games[this.mode]) window.Games[this.mode].init();
+          this.updateStats();
         },
-        showInstr() {
-          this.active = false;
-          document.getElementById("overlay-instr").classList.add("active");
-        },
-        startGame() {
-          document.getElementById("overlay-instr").classList.remove("active");
-          this.score = 0;
-          this.timer = 60 + this.perks.timer * 5;
-          this.active = true;
-          this.correct = 0;
-          this.wrong = 0;
-          document.getElementById("level-val").innerText =
-            this.progress[this.mode].lvl;
-          this.updateLiveAcc();
 
-          const sBoosts = [0, 1, 2, 3, 5, 999];
-          this.shieldCount = sBoosts[this.perks.shield];
+        updateStats() {
+          let totalXP = 0;
+          let totalLvl = 0;
+          let catXP = { logic: 0, spatial: 0, attention: 0 };
 
-          if (window.Games[this.mode]) window.Games[this.mode].init();
-          SFX.play("start");
-          this.lastTime = performance.now();
-        },
-        logResult(isCorrect) {
-          if (!this.history[this.mode]) this.history[this.mode] = [];
-          this.history[this.mode].push(isCorrect ? 1 : 0);
-          if (this.history[this.mode].length > 10)
-            this.history[this.mode].shift();
-
-          if (isCorrect) {
-            this.correct++;
-            SFX.play("win");
-            FX.burst(Mouse.x, Mouse.y, C.stable);
-            const cMults = [1.0, 1.1, 1.25, 1.5, 1.75, 2.0];
-            const mult = cMults[this.perks.combo];
-            this.score += Math.floor(100 * mult);
-          } else {
-            if (this.shieldCount > 0) {
-              this.shieldCount--;
-              FX.burst(Mouse.x, Mouse.y, C.gold);
-            } else {
-              this.wrong++;
-              SFX.play("lose");
-              FX.shake = 20;
-              const pRed = [0, 0.2, 0.4, 0.6, 0.8, 1.0];
-              const penalty = Math.floor(50 * (1 - pRed[this.perks.penalty]));
-              this.score -= penalty;
-            }
-          }
-          document.getElementById("score-val").style.transform = "scale(1.5)";
-          setTimeout(
-            () =>
-              (document.getElementById("score-val").style.transform =
-                "scale(1)"),
-            100,
-          );
-          this.updateLiveAcc();
-        },
-        updateLiveAcc() {
-          const total = this.correct + this.wrong;
-          const acc =
-            total === 0 ? 100 : Math.round((this.correct / total) * 100);
-          document.getElementById("live-acc").innerText = acc + "%";
-        },
-        finishSession() {
-          let xpGain = this.score;
-          if (this.perks.xp > 0) {
-            const xMults = [1.0, 1.1, 1.25, 1.5, 2.0, 2.5];
-            xpGain = Math.floor(xpGain * xMults[this.perks.xp]);
+          for (let k in this.progress) {
+            totalXP += this.progress[k].xp;
+            totalLvl += this.progress[k].lvl;
+            if (["SHIFT", "CALC", "TRACE"].includes(k))
+              catXP.logic += this.progress[k].xp;
+            if (["PATH", "MATCH"].includes(k))
+              catXP.spatial += this.progress[k].xp;
+            if (["CHROMA", "FLASH", "SWARM"].includes(k))
+              catXP.attention += this.progress[k].xp;
           }
 
-          this.totalScore += xpGain;
-          const acc =
-            this.correct + this.wrong === 0
-              ? 0
-              : this.correct / (this.correct + this.wrong);
-          const sBonus = this.streak >= 10 ? 2.0 : this.streak >= 5 ? 1.5 : 1.0;
-          const spGain = Math.floor((10 + acc * 20) * sBonus);
+          if (totalXP > 20000) this.rank = "ELITE";
+          else if (totalXP > 10000) this.rank = "EXPERT";
+          else if (totalXP > 3000) this.rank = "ADVANCED";
+          else this.rank = "NOVICE";
 
-          this.synapsePoints += spGain;
-          document.getElementById("end-sp").innerText = "+" + spGain + " SP";
+          safeSet("dash-rank", this.rank);
+          safeSet("dash-total-level", "TOTAL LEVEL " + totalLvl);
+          safeSet("dash-sp", this.synapsePoints);
+          safeSet("dash-streak", this.streak || 0);
 
-          const now = Date.now();
-          const hoursSince = (now - this.lastPlayed) / (1000 * 60 * 60);
-          if (hoursSince > 24 && hoursSince < 48) {
-            this.streak++;
-          } else if (this.streak === 0 || hoursSince > 48) {
-            this.streak = 1;
+          const pList = document.getElementById("perk-list");
+          if (pList) {
+            pList.innerHTML = "";
+            const pDefs = [
+              {
+                id: "timer",
+                name: "TIME WARP",
+                icon: "clock",
+                desc: "+5s to base timer per level",
+              },
+              {
+                id: "combo",
+                name: "HYPER COMBO",
+                icon: "fire",
+                desc: "Increases score multiplier",
+              },
+              {
+                id: "penalty",
+                name: "VOID SHIELD",
+                icon: "shield-halved",
+                desc: "Reduces point penalty on errors",
+              },
+              {
+                id: "xp",
+                name: "XP NEXUS",
+                icon: "arrow-up-right-dots",
+                desc: "+10 Base XP per correct answer",
+              },
+              {
+                id: "shield",
+                name: "AEGIS",
+                icon: "shield",
+                desc: "Blocks strike penalties (recharges)",
+              },
+            ];
+            pDefs.forEach((p) => {
+              const lvl = this.perks[p.id] || 0;
+              const cost = this.PERK_COSTS[lvl] || "MAX";
+              const cls =
+                lvl >= 5
+                  ? "perk-node maxed"
+                  : this.synapsePoints >= cost
+                    ? "perk-node"
+                    : "perk-node locked";
+              pList.innerHTML += `
+                    <div class='${cls}' onclick="window.App.buyPerk('${p.id}')">
+                        <div class='perk-icon'><i class='fa-solid fa-${p.icon}'></i></div>
+                        <span class='perk-name'>${p.name}</span>
+                        <span class='perk-desc'>${p.desc}</span>
+                        <span class='perk-lvl'>LVL ${lvl}/5</span>
+                        <span class='perk-cost'>${cost === "MAX" ? "MAXED" : cost + " SP"}</span>
+                    </div>`;
+            });
           }
-          this.lastPlayed = now;
 
-          if (this.progress[this.mode]) {
-            this.progress[this.mode].xp += xpGain;
-            this.progress[this.mode].lvl =
-              1 + Math.floor(this.progress[this.mode].xp / 3000);
+          const mList = document.getElementById("mastery-list");
+          if (mList) {
+            mList.innerHTML = "";
+            const maxCatXP = 15000;
+            const cats = [
+              {
+                id: "logic",
+                name: "LOGIC & REASONING",
+                xp: catXP.logic,
+                colorClass: "mi-logic",
+              },
+              {
+                id: "spatial",
+                name: "SPATIAL MEMORY",
+                xp: catXP.spatial,
+                colorClass: "mi-speed",
+              },
+              {
+                id: "attention",
+                name: "ATTENTION & FOCUS",
+                xp: catXP.attention,
+                colorClass: "mi-focus",
+              },
+            ];
+
+            cats.forEach((c) => {
+              let pct = Math.min(100, (c.xp / maxCatXP) * 100);
+              mList.innerHTML += `
+                    <div class="mastery-item ${c.colorClass}">
+                        <div class="mi-header">
+                            <span>${c.name}</span>
+                            <span>${Math.floor(c.xp)} XP</span>
+                        </div>
+                        <div class="mi-bar-bg">
+                            <div class="mi-bar-fill" style="width: ${pct}%"></div>
+                        </div>
+                    </div>`;
+            });
           }
-          if (["SHIFT", "CYPHER", "CALC"].includes(this.mode))
-            this.stats.logic += Math.floor(this.score / 10);
-          if (["PATH", "MATCH"].includes(this.mode))
-            this.stats.speed += Math.floor(this.score / 10);
-          if (["CHROMA", "FLASH", "SWARM"].includes(this.mode))
-            this.stats.focus += Math.floor(this.score / 10);
-          this.saveData();
-          if (this.blitzMode) this.nextBlitz();
-          else this.load(this.mode);
+
+          const bList = document.getElementById("badge-container");
+          if (bList) {
+            bList.innerHTML = "";
+            const badges = [
+              {
+                name: "INITIATE",
+                icon: "power-off",
+                req: totalXP >= 500,
+                tier: "bronze",
+              },
+              {
+                name: "STREAK I",
+                icon: "fire",
+                req: this.streak >= 3,
+                tier: "silver",
+              },
+              {
+                name: "TACTICIAN",
+                icon: "chess-knight",
+                req: catXP.logic >= 3000,
+                tier: "gold",
+              },
+              {
+                name: "ARCHITECT",
+                icon: "cubes",
+                req: catXP.spatial >= 3000,
+                tier: "diamond",
+              },
+              {
+                name: "HAWKEYE",
+                icon: "eye",
+                req: catXP.attention >= 3000,
+                tier: "silver",
+              },
+              {
+                name: "PERFECTION",
+                icon: "check-double",
+                req:
+                  this.stats.logic +
+                    this.stats.spatial +
+                    this.stats.attention >=
+                  100,
+                tier: "gold",
+              },
+              {
+                name: "SHIFT ELITE",
+                icon: "microchip",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+              {
+                name: "PATH ELITE",
+                icon: "share-nodes",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+              {
+                name: "CHROMA ELITE",
+                icon: "palette",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+              {
+                name: "NEXUS ELITE",
+                icon: "project-diagram",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+              {
+                name: "MATCH ELITE",
+                icon: "clone",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+              {
+                name: "CALC ELITE",
+                icon: "calculator",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+              {
+                name: "FLASH ELITE",
+                icon: "layer-group",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+              {
+                name: "SWARM ELITE",
+                icon: "bolt",
+                req: this.rank === "ELITE",
+                tier: "diamond",
+              },
+            ];
+
+            badges.forEach((b) => {
+              let cls = b.req ? `badge unlocked ${b.tier}` : "badge";
+              let tierLabel = b.req ? b.tier.toUpperCase() : "LOCKED";
+              bList.innerHTML += `
+                    <div class="${cls}">
+                        <i class="fa-solid fa-${b.icon}"></i>
+                        <span class="badge-tier">${tierLabel}</span>
+                        <div style="font-size: 0.7rem; font-weight: bold; margin-top: 10px;">${b.name}</div>
+                    </div>`;
+            });
+          }
         },
+
         loop(timestamp) {
           if (
+            document.getElementById("dashboard-view") &&
             document
               .getElementById("dashboard-view")
               .classList.contains("active")
@@ -2358,6 +3088,7 @@
             return;
           }
           if (
+            document.getElementById("welcome-view") &&
             !document
               .getElementById("welcome-view")
               .classList.contains("hidden")
@@ -2366,20 +3097,21 @@
             return;
           }
 
-          const isEnded = document
-            .getElementById("overlay-end")
-            .classList.contains("active");
-          // If not active and instruction overlay is up, run loop with 0 dt to draw static
+          const isEnded =
+            document.getElementById("overlay-end") &&
+            document.getElementById("overlay-end").classList.contains("active");
+
           if (
             !this.active &&
-            !document
+            document.getElementById("overlay-instr") &&
+            document
               .getElementById("overlay-instr")
               .classList.contains("active") &&
             !isEnded
           ) {
             ctx.fillStyle = C.bg;
             ctx.fillRect(0, 0, 800, 600);
-            if (window.Games[this.mode]) window.Games[this.mode].draw(); // FORCE DRAW
+            if (window.Games[this.mode]) window.Games[this.mode].draw();
             requestAnimationFrame(this.loop.bind(this));
             return;
           }
@@ -2391,11 +3123,13 @@
           ctx.fillRect(0, 0, 800, 600);
           FX.update(dt);
           ctx.save();
+
           if (FX.shake > 0) {
             const dx = (Math.random() - 0.5) * FX.shake;
             const dy = (Math.random() - 0.5) * FX.shake;
             ctx.translate(dx, dy);
           }
+
           ctx.strokeStyle = "#111";
           ctx.lineWidth = 2;
           for (let i = 0; i < 800; i += 50) {
@@ -2411,949 +3145,1299 @@
             ctx.stroke();
           }
 
-          // Timer Logic
           if (this.active) {
             if (this.mode !== "CYPHER") {
-              // PAUSE FOR CYPHER
               this.timer -= dt;
             }
-            // RED TIMER ALERT
             const tVal = document.getElementById("timer-val");
-            if (this.timer <= 10) {
-              tVal.classList.add("danger");
-            } else {
-              tVal.classList.remove("danger");
+            if (tVal) {
+              if (this.timer <= 10) tVal.classList.add("danger");
+              else tVal.classList.remove("danger");
             }
 
             if (this.timer <= 0) {
               this.timer = 0;
-              this.active = false;
-              const total = this.correct + this.wrong;
-              const acc =
-                total === 0 ? 0 : Math.round((this.correct / total) * 100);
-              document.getElementById("end-correct").innerText = this.correct;
-              document.getElementById("end-wrong").innerText = this.wrong;
-              document.getElementById("end-acc").innerText = acc + "%";
-              const prevAcc = total === 0 ? 0 : this.correct / total;
-              const sBonus =
-                this.streak >= 10 ? 2.0 : this.streak >= 5 ? 1.5 : 1.0;
-              document.getElementById("end-sp").innerText =
-                "+" + Math.floor((10 + prevAcc * 20) * sBonus) + " SP";
-              document.getElementById("overlay-end").classList.add("active");
+              this.finishSession();
             }
           }
 
-          document.getElementById("score-val").innerText = this.score;
-          document.getElementById("timer-val").innerText = Math.ceil(
-            this.timer,
-          );
+          safeSet("score-val", this.score);
+          safeSet("timer-val", Math.ceil(this.timer));
 
-          // SEPARATE UPDATE AND DRAW
           if (window.Games[this.mode]) {
             if (this.active && !isEnded) window.Games[this.mode].update(dt);
             window.Games[this.mode].draw();
           }
 
+          this.drawXPBar();
+          this.drawLevelUp();
+
           FX.draw();
           ctx.restore();
+
           Mouse.click = false;
           Mouse.rightClick = false;
           requestAnimationFrame(this.loop.bind(this));
         },
       };
 
-      function drawTimerBar(x, y, w, maxT, curT) {
-        const pct = Math.max(0, curT / maxT);
-        ctx.fillStyle = "#333";
-        ctx.fillRect(x, y, w, 6);
-        ctx.fillStyle = "#fff";
-        ctx.fillRect(x, y, w * pct, 6);
-      }
+      window.Games = {};
 
-      // --- GLOBAL GAMES OBJECT (SPLIT UPDATE/DRAW) ---
-      window.Games = {
-        SHIFT: {
-          init: function () {
-            const l = window.App.progress.SHIFT.lvl;
-            const mod = window.App.currentMod;
-            this.maxC = Math.min(2 + Math.floor(l / 2 + mod * 2), 4);
-            this.maxS = Math.min(2 + Math.floor(l / 2 + mod * 2), 4);
-            this.rule = Math.random() < 0.5 ? 0 : 1;
-            this.tgt = Math.floor(
-              Math.random() * (this.rule === 0 ? this.maxC : this.maxS),
-            );
-            this.opts = [];
-            this.turnT = Math.max(1.0, 3.0 - l * 0.1 - mod * 0.5);
-            const c = {
+      window.Games.SHIFT = {
+        init: function (lvl) {
+          const mod = 1.0;
+          this.maxC = Math.min(2 + Math.floor(lvl / 2 + mod * 2), 4);
+          this.maxS = Math.min(2 + Math.floor(lvl / 2 + mod * 2), 4);
+          this.rule = Math.random() < 0.5 ? 0 : 1;
+          this.tgt = Math.floor(
+            Math.random() * (this.rule === 0 ? this.maxC : this.maxS),
+          );
+          this.opts = [];
+          this.turnT = Math.max(1.0, 3.0 - lvl * 0.1 - mod * 0.5);
+          const c = {
+            c: Math.floor(Math.random() * this.maxC),
+            s: Math.floor(Math.random() * this.maxS),
+          };
+          if (this.rule === 0) c.c = this.tgt;
+          else c.s = this.tgt;
+          this.opts.push(c);
+          while (this.opts.length < 4) {
+            let d = {
               c: Math.floor(Math.random() * this.maxC),
               s: Math.floor(Math.random() * this.maxS),
             };
-            if (this.rule === 0) c.c = this.tgt;
-            else c.s = this.tgt;
-            this.opts.push(c);
-            while (this.opts.length < 4) {
-              let d = {
-                c: Math.floor(Math.random() * this.maxC),
-                s: Math.floor(Math.random() * this.maxS),
-              };
-              if (this.rule === 0 && d.c === this.tgt)
-                d.c = (d.c + 1) % this.maxC;
-              if (this.rule === 1 && d.s === this.tgt)
-                d.s = (d.s + 1) % this.maxS;
-              this.opts.push(d);
+            if (this.rule === 0 && d.c === this.tgt)
+              d.c = (d.c + 1) % this.maxC;
+            if (this.rule === 1 && d.s === this.tgt)
+              d.s = (d.s + 1) % this.maxS;
+            this.opts.push(d);
+          }
+          this.opts.sort(() => Math.random() - 0.5);
+          window.App.startRound();
+        },
+        update: function (t) {
+          this.turnT -= t;
+          if (this.turnT <= 0) {
+            window.App.score -= 50;
+            window.App.logResult(false, true);
+            this.init(window.App.progress.SHIFT.lvl);
+          }
+        },
+        draw: function () {
+          if (!this.opts) return;
+          const scale = applyMobileScale();
+          const T = LANG[window.App.language];
+          const cN = T.colors.slice(0, 4);
+          const sN = ["CIRCLE", "SQUARE", "TRIANGLE", "DIAMOND"];
+
+          ctx.fillStyle = C.text;
+          ctx.font = "30px Rajdhani";
+          ctx.textAlign = "center";
+          ctx.fillText(
+            (this.rule === 0 ? T.shift_rule0 : T.shift_rule1) +
+              ": " +
+              (this.rule === 0 ? cN[this.tgt] : sN[this.tgt]),
+            400,
+            100,
+          );
+
+          drawTimerBar(200, 60, 400, 3.0, Math.max(0, this.turnT));
+
+          const cl = [C.chaos, C.stable, C.green, C.gold];
+          this.opts.forEach((o, i) => {
+            const x = 200 + (i % 2) * 220,
+              y = 200 + Math.floor(i / 2) * 180;
+
+            const isHovered =
+              typeof Mouse !== "undefined" &&
+              Mouse.x >= x &&
+              Mouse.x <= x + 150 &&
+              Mouse.y >= y &&
+              Mouse.y <= y + 150;
+
+            if (window.App.active && btn(x, y, 150, 150)) {
+              Mouse.handled = true;
+              const cr =
+                (this.rule === 0 && o.c === this.tgt) ||
+                (this.rule === 1 && o.s === this.tgt);
+
+              window.App.logResult(cr);
+              this.init(window.App.progress.SHIFT.lvl);
             }
-            this.opts.sort(() => Math.random() - 0.5);
-          },
-          update: function (t) {
-            if (!this.opts) return;
-            this.turnT -= t;
+
+            ctx.fillStyle = cl[o.c];
+
+            // Outer Glow & Border Settings
+            if (isHovered) {
+              ctx.shadowBlur = 35;
+              ctx.shadowColor = "#FFFFFF";
+              ctx.strokeStyle = "#FFFFFF";
+              ctx.lineWidth = 3;
+            } else {
+              ctx.shadowBlur = 15;
+              ctx.shadowColor = cl[o.c];
+              ctx.strokeStyle = cl[o.c];
+              ctx.lineWidth = 2;
+            }
+
+            // 1. Draw the Outer Bounding Box (Like your screenshot)
+            ctx.beginPath();
+            if (ctx.roundRect) {
+              ctx.roundRect(x + 5, y + 5, 140, 140, 15); // x, y, width, height, border-radius
+            } else {
+              ctx.rect(x + 5, y + 5, 140, 140); // Fallback just in case
+            }
+            ctx.stroke();
+
+            // 2. Draw the Inner Shape (Filled, no separate border)
+            if (o.s === 0) {
+              // Circle
+              ctx.beginPath();
+              ctx.arc(x + 75, y + 75, 35, 0, Math.PI * 2);
+              ctx.fill();
+            } else if (o.s === 1) {
+              // Square
+              ctx.fillRect(x + 40, y + 40, 70, 70);
+            } else if (o.s === 2) {
+              // Triangle
+              ctx.beginPath();
+              ctx.moveTo(x + 75, y + 40);
+              ctx.lineTo(x + 110, y + 110);
+              ctx.lineTo(x + 40, y + 110);
+              ctx.closePath();
+              ctx.fill();
+            } else if (o.s === 3) {
+              // Diamond
+              ctx.beginPath();
+              ctx.moveTo(x + 75, y + 35);
+              ctx.lineTo(x + 115, y + 75);
+              ctx.lineTo(x + 75, y + 115);
+              ctx.lineTo(x + 35, y + 75);
+              ctx.closePath();
+              ctx.fill();
+            }
+
+            ctx.shadowBlur = 0; // Reset blur for the next frame
+          });
+          resetMobileScale(scale);
+        },
+      };
+
+      window.Games.PATH = {
+        init: function (lvl) {
+          const steps = 2 + Math.floor(lvl / 2);
+          this.seq = [];
+          for (let i = 0; i < steps; i++)
+            this.seq.push(Math.floor(Math.random() * 9));
+          this.step = 0;
+          this.idx = 0;
+          this.t = 0.5;
+          this.show = true;
+          this.rot = 0;
+          this.turnT = 5.0;
+          this.winDelay = 0;
+          window.App.startRound();
+        },
+        update: function (dt) {
+          if (!this.seq) return;
+          if (this.winDelay > 0) {
+            this.winDelay -= dt;
+            if (this.winDelay <= 0) this.init(window.App.progress.PATH.lvl);
+            return;
+          }
+          if (this.show) {
+            this.t -= dt;
+            if (this.t <= 0) {
+              this.t = 0.5;
+              this.idx++;
+              if (this.idx >= this.seq.length) this.show = false;
+            }
+          } else if (this.rot < Math.PI / 2) {
+            this.rot += dt * 2;
+          }
+
+          if (!this.show && this.rot >= Math.PI / 2) {
+            this.turnT -= dt;
             if (this.turnT <= 0) {
               window.App.score -= 50;
-              window.App.logResult(false);
-              this.init();
+              window.App.logResult(false, true);
+              this.init(window.App.progress.PATH.lvl);
             }
-          },
-          draw: function () {
-            if (!this.opts) return;
-            const scale = applyMobileScale();
-            const T = LANG[window.App.language];
-            if (!this.words) this.words = [0, 1, 2, 3, 4, 5]; // Safety init
-            const cN = T.colors.slice(0, 4);
-            const sN = ["CIRCLE", "SQUARE", "TRIANGLE", "DIAMOND"];
-            ctx.fillStyle = C.text;
-            ctx.font = "30px Rajdhani";
+          }
+        },
+        draw: function () {
+          if (!this.seq) return;
+          const scale = applyMobileScale();
+          const T = LANG[window.App.language];
+
+          ctx.fillStyle = C.text;
+          ctx.font = "30px Rajdhani";
+          ctx.textAlign = "center";
+          if (this.winDelay > 0) ctx.fillText(T.path_seq, 400, 80);
+          else if (!this.show && this.rot >= Math.PI / 2) {
+            drawTimerBar(250, 100, 300, 5.0, this.turnT);
+            ctx.fillText(T.path_rep, 400, 80);
+          } else {
+            ctx.fillText(T.path_watch, 400, 80);
+          }
+
+          const s = 100,
+            gap = 12,
+            stride = s + gap,
+            offset = (stride * 3 - gap) / 2;
+
+          ctx.save();
+          ctx.translate(400, 320);
+          ctx.rotate(this.rot);
+          ctx.translate(-offset, -offset);
+
+          for (let i = 0; i < 9; i++) {
+            const col = i % 3,
+              row = Math.floor(i / 3),
+              cx = col * stride,
+              cy = row * stride;
+
+            const isTargeted =
+              this.show && this.seq[this.idx] === i && this.t > 0.1;
+            const isCorrectPath = !this.show && this.seq.includes(i);
+            const isVisited =
+              !this.show && this.seq.slice(0, this.step).includes(i);
+
+            // 1. Draw the Square Bounding Box
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(cx, cy, s, s, 10);
+            else ctx.rect(cx, cy, s, s);
+
+            if (isTargeted) {
+              // Active highlight (WHITE)
+              ctx.shadowBlur = 25;
+              ctx.shadowColor = "#FFF";
+              ctx.strokeStyle = "#FFF";
+              ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+            } else if (isVisited) {
+              // Successfully tapped (CYAN)
+              ctx.shadowBlur = 15;
+              ctx.shadowColor = C.stable;
+              ctx.strokeStyle = C.stable;
+              ctx.fillStyle = "rgba(0, 229, 255, 0.2)";
+            } else if (isCorrectPath) {
+              // The GHOST HINT (PURPLE)
+              ctx.shadowBlur = 10;
+              ctx.shadowColor = C.focus;
+              ctx.strokeStyle = C.focus;
+              ctx.fillStyle = "rgba(208, 0, 255, 0.2)";
+              ctx.setLineDash([5, 5]);
+            } else {
+              // Idle state (CYAN BORDER)
+              ctx.shadowBlur = 0;
+              ctx.setLineDash([]);
+              ctx.strokeStyle = "rgba(0, 229, 255, 0.8)";
+              ctx.fillStyle = "rgba(0, 229, 255, 0.8)";
+            }
+
+            ctx.lineWidth = isTargeted || isVisited ? 3 : 2;
+            ctx.fill();
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset for next square
+
+            // 2. Add a neural core dot for visited squares
+            if (isVisited) {
+              ctx.beginPath();
+              ctx.arc(cx + s / 2, cy + s / 2, 6, 0, Math.PI * 2);
+              ctx.fillStyle = C.stable;
+              ctx.fill();
+            }
+          }
+          ctx.restore();
+
+          // Interaction Logic
+          if (window.App.active && !this.show && this.rot >= Math.PI / 2) {
+            const map = [6, 3, 0, 7, 4, 1, 8, 5, 2];
+            const startX = 400 - offset,
+              startY = 320 - offset;
+            for (let i = 0; i < 9; i++) {
+              const col = i % 3,
+                row = Math.floor(i / 3),
+                vx = startX + col * stride,
+                vy = startY + row * stride;
+
+              if (btn(vx, vy, s, s)) {
+                Mouse.handled = true;
+                if (map[i] === this.seq[this.step]) {
+                  this.step++;
+                  FX.burst(vx + s / 2, vy + s / 2, C.stable);
+                  SFX.play("win");
+                  if (this.step >= this.seq.length) {
+                    window.App.logResult(true);
+                    this.winDelay = 0.5;
+                  }
+                } else {
+                  window.App.logResult(false);
+                  this.init(window.App.progress.PATH.lvl);
+                }
+              }
+            }
+          }
+          resetMobileScale(scale);
+        },
+      };
+
+      window.Games.CHROMA = {
+        init: function (lvl) {
+          this.cols = [C.chaos, C.stable, C.gold, C.focus];
+          this.ink = Math.floor(Math.random() * 4);
+          this.word =
+            Math.random() < 0.5 ? this.ink : Math.floor(Math.random() * 4);
+          this.timer = 3.0;
+        },
+        update: function (dt) {
+          this.timer -= dt;
+          if (this.timer <= 0) {
+            window.App.logResult(false, true);
+            this.init(window.App.progress.CHROMA.lvl);
+          }
+        },
+        draw: function () {
+          // Central Word Display
+          ctx.fillStyle = this.cols[this.ink];
+          ctx.font = "bold 80px Rajdhani";
+          ctx.textAlign = "center";
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = this.cols[this.ink];
+          ctx.fillText(["RED", "BLUE", "GOLD", "PURPLE"][this.word], 400, 180);
+          ctx.shadowBlur = 0;
+
+          drawTimerBar(200, 80, 400, 3.0, Math.max(0, this.timer));
+
+          const w = 150,
+            h = 90,
+            gap = 25,
+            startX = 400 - w - gap / 2,
+            startY = 280;
+
+          for (let i = 0; i < 4; i++) {
+            const x = startX + (i % 2) * (w + gap),
+              y = startY + Math.floor(i / 2) * (h + gap);
+
+            const isHover =
+              typeof Mouse !== "undefined" &&
+              Mouse.x >= x &&
+              Mouse.x <= x + w &&
+              Mouse.y >= y &&
+              Mouse.y <= y + h;
+
+            if (window.App.active && btn(x, y, w, h)) {
+              Mouse.handled = true;
+              window.App.logResult(i === this.ink);
+              this.init(window.App.progress.CHROMA.lvl);
+            }
+
+            // Outer Box & Glow Logic
+            if (isHover) {
+              ctx.shadowBlur = 30;
+              ctx.shadowColor = "#FFFFFF";
+              ctx.strokeStyle = "#FFFFFF";
+              ctx.lineWidth = 3;
+            } else {
+              ctx.shadowBlur = 10;
+              ctx.shadowColor = this.cols[i];
+              ctx.strokeStyle = this.cols[i];
+              ctx.lineWidth = 2;
+            }
+
+            // Draw the Bounding Box
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(x, y, w, h, 12);
+            else ctx.rect(x, y, w, h);
+            ctx.stroke();
+
+            // Draw the Inner Solid Fill (matching the screenshot style)
+            ctx.fillStyle = this.cols[i];
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(x + 10, y + 10, w - 20, h - 20, 8);
+            else ctx.rect(x + 10, y + 10, w - 20, h - 20);
+            ctx.fill();
+
+            ctx.shadowBlur = 0;
+          }
+        },
+      };
+
+      window.Games.TRACE = {
+        init: function (lvl) {
+          if (this.errorTimeout) clearTimeout(this.errorTimeout);
+
+          const mod = 1.0;
+          this.count = Math.min(3 + Math.floor(lvl / 2 + mod), 8);
+          this.nodes = [];
+
+          // BULLETPROOF ANTI-OVERLAP
+          const minDist = 90; // Increased to account for the heavy glass glow
+
+          for (let i = 0; i < this.count; i++) {
+            let valid = false;
+            let cx, cy;
+            let attempts = 0;
+
+            // Increased to 1000 attempts so the engine never "gives up"
+            while (!valid && attempts < 1000) {
+              // Slightly expanded bounding box to give the orbs more room
+              cx = 120 + Math.random() * 560;
+              cy = 130 + Math.random() * 340;
+              valid = true;
+
+              for (let j = 0; j < this.nodes.length; j++) {
+                let dx = cx - this.nodes[j].x;
+                let dy = cy - this.nodes[j].y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < minDist) {
+                  valid = false;
+                  break;
+                }
+              }
+              attempts++;
+            }
+
+            this.nodes.push({ x: cx, y: cy, r: 25 });
+          }
+
+          // Generate Random Sequence
+          this.seq = [];
+          let available = [...Array(this.count).keys()];
+          for (let i = 0; i < this.count; i++) {
+            let idx = Math.floor(Math.random() * available.length);
+            this.seq.push(available.splice(idx, 1)[0]);
+          }
+
+          this.showIdx = 0;
+          this.showing = true;
+          this.inputIdx = 0;
+          this.wait = 1.0;
+
+          this.playerPath = [];
+          this.failed = false;
+
+          // Urgency Timer
+          this.maxTime = Math.max(3.0, 8.0 - lvl * 0.3);
+          this.turnT = this.maxTime;
+
+          window.App.startRound();
+        },
+
+        update: function (dt) {
+          if (this.failed) return;
+
+          if (this.showing) {
+            this.wait -= dt;
+            if (this.wait <= 0) {
+              this.showIdx++;
+              SFX.play("click");
+              if (this.showIdx >= this.seq.length) {
+                this.showing = false;
+                this.wait = 0;
+              } else {
+                this.wait = 0.6;
+              }
+            }
+          } else {
+            this.turnT -= dt;
+            if (this.turnT <= 0) {
+              window.App.score -= 50;
+              window.App.logResult(false, true);
+              this.init(window.App.progress.TRACE.lvl);
+            }
+          }
+        },
+
+        draw: function () {
+          const scale = applyMobileScale();
+          const T = LANG[window.App.language];
+
+          if (this.showing) {
+            ctx.fillStyle = C.stable;
+            ctx.font = "24px Rajdhani";
             ctx.textAlign = "center";
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = C.text;
+            ctx.fillText(T.trace_obs || "OBSERVE NEURAL LINK", 400, 60);
+          } else {
+            drawTimerBar(250, 40, 300, this.maxTime, this.turnT);
+            ctx.fillStyle = this.failed ? C.chaos : C.stable;
+            ctx.font = "24px Rajdhani";
+            ctx.textAlign = "center";
             ctx.fillText(
-              `${this.rule === 0 ? T.shift_rule0 : T.shift_rule1}: ${this.rule === 0 ? cN[this.tgt] : sN[this.tgt]}`,
+              this.failed
+                ? T.trace_err || "LINK SEVERED"
+                : T.trace_rec || "RECONSTRUCT LINK",
               400,
               100,
             );
-            ctx.shadowBlur = 0;
-            drawTimerBar(200, 60, 400, 3.0, Math.max(0, this.turnT)); // TOP TIMER
-            const cl = [C.chaos, C.stable, C.green, C.gold];
-            this.opts.forEach((o, i) => {
-              const x = 200 + (i % 2) * 220,
-                y = 200 + Math.floor(i / 2) * 180;
-              if (window.App.active && btn(x, y, 150, 150, cl[o.c], false)) {
-                Mouse.handled = true;
-                const cr =
-                  (this.rule === 0 && o.c === this.tgt) ||
-                  (this.rule === 1 && o.s === this.tgt);
-                window.App.logResult(cr);
-                this.init();
-              }
-              ctx.fillStyle = cl[o.c];
-              ctx.shadowBlur = 20;
-              ctx.shadowColor = cl[o.c];
-              if (o.s === 0) {
-                ctx.beginPath();
-                ctx.arc(x + 75, y + 75, 40, 0, Math.PI * 2);
-                ctx.fill();
-              } else if (o.s === 1) {
-                ctx.fillRect(x + 35, y + 35, 80, 80);
-              } else if (o.s === 2) {
-                ctx.beginPath();
-                ctx.moveTo(x + 75, y + 35);
-                ctx.lineTo(x + 115, y + 115);
-                ctx.lineTo(x + 35, y + 115);
-                ctx.fill();
-              } else if (o.s === 3) {
-                ctx.beginPath();
-                ctx.moveTo(x + 75, y + 30);
-                ctx.lineTo(x + 120, y + 75);
-                ctx.lineTo(x + 75, y + 120);
-                ctx.lineTo(x + 30, y + 75);
-                ctx.fill();
-              }
-              ctx.shadowBlur = 0;
-            });
-            resetMobileScale(scale);
-          },
-        },
-        PATH: {
-          init: function () {
-            const l = window.App.progress.PATH.lvl;
-            const mod = window.App.currentMod;
-            const steps = 2 + Math.floor(l / 2);
-            this.seq = [];
-            for (let i = 0; i < steps; i++)
-              this.seq.push(Math.floor(Math.random() * 9));
-            this.step = 0;
-            this.idx = 0;
-            this.t = 0.5;
-            this.show = true;
-            this.rot = 0;
-            this.turnT = 5.0;
-            this.winDelay = 0;
-          },
-          update: function (dt) {
-            if (!this.seq) return;
-            if (this.winDelay > 0) {
-              this.winDelay -= dt;
-              if (this.winDelay <= 0) {
-                window.App.score += 100;
-                window.App.logResult(true);
-                this.init();
-              }
-              return;
-            }
-            if (this.show) {
-              this.t -= dt;
-              if (this.t <= 0) {
-                this.t = 0.5;
-                this.idx++;
-                if (this.idx >= this.seq.length) this.show = false;
-              }
-            } else if (this.rot < Math.PI / 2) {
-              this.rot += dt * 2;
-            }
+          }
 
-            if (!this.show && this.rot >= Math.PI / 2) {
-              this.turnT -= dt;
-              if (this.turnT <= 0) {
-                window.App.score -= 50;
-                window.App.logResult(false);
-                this.init();
-              }
+          ctx.setLineDash([]);
+          ctx.lineCap = "round";
+          ctx.lineJoin = "round";
+
+          for (let i = 0; i < this.seq.length - 1; i++) {
+            const n1 = this.nodes[this.seq[i]];
+            const n2 = this.nodes[this.seq[i + 1]];
+
+            if (this.showing && i < this.showIdx) {
+              ctx.strokeStyle = "rgba(0, 229, 255, 0.4)";
+              ctx.lineWidth = 6;
+              ctx.beginPath();
+              ctx.moveTo(n1.x, n1.y);
+              ctx.lineTo(n2.x, n2.y);
+              ctx.stroke();
+
+              ctx.strokeStyle = "#FFF";
+              ctx.lineWidth = 2;
+              ctx.stroke();
             }
-          },
-          draw: function () {
-            if (!this.seq) return;
-            const scale = applyMobileScale();
-            const T = LANG[window.App.language];
-            if (this.winDelay > 0) {
-              ctx.fillStyle = C.stable;
-              ctx.font = "30px Rajdhani";
-              ctx.textAlign = "center";
-              ctx.fillText(T.path_seq, 400, 80);
-            } else if (!this.show && this.rot >= Math.PI / 2) {
-              drawTimerBar(250, 100, 300, 5.0, this.turnT);
-              ctx.fillStyle = C.stable;
-              ctx.font = "30px Rajdhani";
-              ctx.textAlign = "center";
-              ctx.fillText(T.path_rep, 400, 80);
-            } else {
-              ctx.fillStyle = C.stable;
-              ctx.font = "30px Rajdhani";
-              ctx.textAlign = "center";
-              ctx.fillText(T.path_watch, 400, 80);
+          }
+
+          if (!this.showing && this.playerPath.length > 1) {
+            ctx.beginPath();
+            ctx.strokeStyle = this.failed ? C.chaos : C.stable;
+            ctx.lineWidth = 4;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.failed ? C.chaos : C.stable;
+
+            let firstPos = this.nodes[this.playerPath[0]];
+            ctx.moveTo(firstPos.x, firstPos.y);
+
+            for (let i = 1; i < this.playerPath.length; i++) {
+              let pos = this.nodes[this.playerPath[i]];
+              ctx.lineTo(pos.x, pos.y);
+            }
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+          }
+
+          this.nodes.forEach((n, i) => {
+            const isTarget = this.showing && this.seq[this.showIdx] === i;
+            const isHover =
+              !this.showing &&
+              !this.failed &&
+              Mouse.x >= n.x - 30 &&
+              Mouse.x <= n.x + 30 &&
+              Mouse.y >= n.y - 30 &&
+              Mouse.y <= n.y + 30;
+            const isSelected = this.playerPath.includes(i);
+
+            if (
+              window.App.active &&
+              !this.showing &&
+              !this.failed &&
+              btn(n.x - 30, n.y - 30, 60, 60)
+            ) {
+              Mouse.handled = true;
+
+              if (!isSelected) {
+                if (i === this.seq[this.inputIdx]) {
+                  this.inputIdx++;
+                  this.playerPath.push(i);
+                  SFX.play("click");
+                  FX.burst(n.x, n.y, C.stable);
+
+                  if (this.inputIdx >= this.seq.length) {
+                    window.App.logResult(true);
+                    setTimeout(
+                      () => this.init(window.App.progress.TRACE.lvl),
+                      600,
+                    );
+                  }
+                } else {
+                  this.failed = true;
+                  this.playerPath.push(i);
+                  SFX.play("lose");
+                  FX.shake = 20;
+                  window.App.logResult(false);
+
+                  this.errorTimeout = setTimeout(() => {
+                    this.init(window.App.progress.TRACE.lvl);
+                  }, 1000);
+                }
+              }
             }
 
             ctx.save();
-            ctx.translate(400, 300);
-            ctx.rotate(this.rot);
-            ctx.translate(-175, -175);
+            ctx.translate(n.x, n.y);
 
-            for (let i = 0; i < 9; i++) {
-              const cx = (i % 3) * 110,
-                cy = Math.floor(i / 3) * 110;
-              let fill = "#222",
-                stroke = "#444",
-                lw = 1;
-              if (this.show) {
-                if (this.seq[this.idx] === i && this.t > 0.1) {
-                  fill = "#fff";
-                  ctx.shadowBlur = 20;
-                  ctx.shadowColor = "#fff";
-                }
-              } else {
-                const visited = this.seq.slice(0, this.step).includes(i);
-                const isTarget = this.seq.includes(i);
-                if (visited) {
-                  fill = "rgba(0,229,255,0.5)";
-                  stroke = C.stable;
-                  lw = 3;
-                  ctx.shadowBlur = 15;
-                  ctx.shadowColor = C.stable;
-                } else if (isTarget) {
-                  fill = "rgba(255,215,0,0.1)";
-                  stroke = C.gold;
-                  ctx.setLineDash([5, 5]);
-                  lw = 2;
-                }
-              }
-              ctx.fillStyle = fill;
-              ctx.strokeStyle = stroke;
-              ctx.lineWidth = lw;
-              ctx.fillRect(cx + 10, cy + 10, 100, 100);
-              ctx.strokeRect(cx + 10, cy + 10, 100, 100);
-              ctx.setLineDash([]);
-              ctx.shadowBlur = 0;
+            ctx.shadowBlur = isTarget || isHover || isSelected ? 20 : 5;
+            if (this.failed && isSelected) {
+              ctx.shadowColor = C.chaos;
+            } else {
+              ctx.shadowColor =
+                isTarget || isSelected ? C.stable : isHover ? "#FFF" : C.gold;
             }
+
+            ctx.beginPath();
+            ctx.arc(0, 0, n.r, 0, Math.PI * 2);
+            let grad = ctx.createRadialGradient(-5, -5, 0, 0, 0, n.r);
+
+            if (this.failed && isSelected) {
+              grad.addColorStop(0, "rgba(255, 46, 46, 0.4)");
+              grad.addColorStop(1, "rgba(255, 46, 46, 0.1)");
+            } else {
+              grad.addColorStop(0, "rgba(255, 255, 255, 0.4)");
+              grad.addColorStop(1, "rgba(255, 255, 255, 0.1)");
+            }
+
+            ctx.fillStyle = grad;
+            ctx.fill();
+
+            if (this.failed && isSelected) {
+              ctx.strokeStyle = C.chaos;
+            } else {
+              ctx.strokeStyle =
+                isTarget || isHover || isSelected ? "#FFF" : C.gold;
+            }
+
+            ctx.lineWidth = isTarget || isSelected ? 4 : 2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(-8, -8, 5, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(255,255,255,0.4)";
+            ctx.fill();
+
             ctx.restore();
-
-            if (window.App.active && !this.show && this.rot >= Math.PI / 2) {
-              const map = [6, 3, 0, 7, 4, 1, 8, 5, 2];
-              const startX = 240,
-                startY = 140;
-              for (let i = 0; i < 9; i++) {
-                const vx = startX + (i % 3) * 110,
-                  vy = startY + Math.floor(i / 3) * 110;
-                if (btn(vx, vy, 100, 100, C.dim, false)) {
-                  Mouse.handled = true;
-                  SFX.play("click");
-                  if (map[i] === this.seq[this.step]) {
-                    this.step++;
-                    if (this.step >= this.seq.length) {
-                      this.winDelay = 0.5;
-                    }
-                  } else {
-                    window.App.score -= 50;
-                    window.App.logResult(false);
-                    this.init();
-                  }
-                }
-              }
-            }
-            resetMobileScale(scale);
-          },
-        },
-        CHROMA: {
-          init: function () {
-            const l = window.App.progress.CHROMA.lvl;
-            this.pool = Math.min(4 + Math.floor((l - 1) / 2), 6);
-            this.cols = [
-              C.chaos,
-              C.stable,
-              C.green,
-              C.gold,
-              "#A020F0",
-              "#FF8C00",
-            ];
-            this.words = [0, 1, 2, 3, 4, 5];
-            this.ai = [];
-            while (this.ai.length < 4) {
-              let r = Math.floor(Math.random() * this.pool);
-              if (!this.ai.includes(r)) this.ai.push(r);
-            }
-            this.ci = this.ai[Math.floor(Math.random() * 4)];
-            this.wi = this.ai[Math.floor(Math.random() * 4)];
-            this.timer = Math.max(1.0, 2.0 - l * 0.05);
-          },
-          update: function (t) {
-            this.timer -= t;
-            if (this.timer <= 0) {
-              window.App.score -= 20;
-              window.App.logResult(false);
-              this.init();
-            }
-          },
-          draw: function () {
-            if (!this.cols) return;
-            if (!this.words) this.init(); // Safety catch
-            const scale = applyMobileScale();
-            const T = LANG[window.App.language];
-            ctx.font = "bold 80px Rajdhani";
-            ctx.textAlign = "center";
-            ctx.fillStyle = this.cols[this.ci];
-            ctx.shadowBlur = 20;
-            ctx.shadowColor = this.cols[this.ci];
-            ctx.fillText(T.colors[this.words[this.wi]], 400, 200);
             ctx.shadowBlur = 0;
-            drawTimerBar(
-              200,
-              60,
-              400,
-              Math.max(1.0, 2.0 - window.App.progress.CHROMA.lvl * 0.05),
-              Math.max(0, this.timer),
-            );
+          });
 
-            // 2x2 GRID
-            const startX = 220;
-            const startY = 300;
-            this.ai.forEach((idx, i) => {
-              const col = this.cols[idx];
-              const x = startX + (i % 2) * 190;
-              const y = startY + Math.floor(i / 2) * 110;
-
-              if (window.App.active && btn(x, y, 180, 100, col, true)) {
-                Mouse.handled = true;
-                const c = idx === this.ci;
-                window.App.score += c ? 50 : -20;
-                window.App.logResult(c);
-                this.init();
-              }
-            });
-            resetMobileScale(scale);
-          },
+          resetMobileScale(scale);
         },
-        CYPHER: {
-          init: function () {
-            const l = window.App.progress.CYPHER.lvl;
-            const mc = 3 + Math.floor(l / 2);
-            this.mines = [];
-            while (this.mines.length < mc) {
-              let r = Math.floor(Math.random() * 25);
-              if (!this.mines.includes(r)) this.mines.push(r);
-            }
-            this.rev = new Array(25).fill(false);
-            this.flags = new Array(25).fill(false);
-            this.safe = 0;
-            this.turnT = 10.0;
-            this.fc = true;
-          },
-          getMines: function (i) {
-            const x = i % 5,
-              y = Math.floor(i / 5);
-            let c = 0;
-            for (let dx = -1; dx <= 1; dx++)
-              for (let dy = -1; dy <= 1; dy++) {
-                if (dx === 0 && dy === 0) continue;
-                const nx = x + dx,
-                  ny = y + dy;
-                if (
-                  nx >= 0 &&
-                  nx < 5 &&
-                  ny >= 0 &&
-                  ny < 5 &&
-                  this.mines.includes(ny * 5 + nx)
-                )
-                  c++;
-              }
-            return c;
-          },
-          reveal: function (i) {
-            if (this.rev[i] || this.flags[i]) return;
-            this.rev[i] = true;
-            this.safe++;
-            if (this.getMines(i) === 0) {
-              const x = i % 5,
-                y = Math.floor(i / 5);
-              for (let dx = -1; dx <= 1; dx++)
-                for (let dy = -1; dy <= 1; dy++) {
-                  const nx = x + dx,
-                    ny = y + dy;
-                  if (
-                    nx >= 0 &&
-                    nx < 5 &&
-                    ny >= 0 &&
-                    ny < 5 &&
-                    !this.mines.includes(ny * 5 + nx)
-                  )
-                    this.reveal(ny * 5 + nx);
-                }
-            }
-          },
-          update: function (t) {},
-          draw: function () {
-            if (!this.mines) return;
-            const scale = applyMobileScale();
-            const l = window.App.progress.CYPHER.lvl;
+      };
 
-            // FLAG BUTTON
-            const fMode = window.App.flagMode;
-            if (
-              window.App.active &&
-              btn(650, 50, 120, 50, fMode ? C.chaos : "#333", true)
-            ) {
-              Mouse.handled = true;
-              window.App.flagMode = !window.App.flagMode;
-              SFX.play("click");
-            }
-            ctx.fillStyle = "#fff";
-            ctx.font = "bold 20px Rajdhani";
-            ctx.textAlign = "center";
-            ctx.fillText(fMode ? "FLAG MODE" : "DIG MODE", 710, 82);
+      window.Games.MATCH = {
+        init: function (lvl) {
+          this.lock = true;
+          this.flipped = [];
 
-            const sz = 85,
-              gap = 5,
-              startX = 177,
-              startY = 120;
-            for (let i = 0; i < 25; i++) {
-              const x = startX + (i % 5) * (sz + gap),
-                y = startY + Math.floor(i / 5) * (sz + gap);
-              const m = this.mines.includes(i);
+          const safePool = [
+            Icons.bolt,
+            Icons.brain,
+            Icons.cube,
+            Icons.gem,
+            Icons.heart,
+            Icons.key,
+            Icons.eye,
+            Icons.skull,
+          ];
 
-              if (
-                window.App.active &&
-                !this.rev[i] &&
-                btn(x, y, sz, sz, "#222", false)
-              ) {
-                if (Mouse.rightClick || window.App.flagMode) {
-                  Mouse.handled = true;
-                  this.flags[i] = !this.flags[i];
-                  SFX.play("click");
-                  const flagCount = this.flags.filter((f) => f).length;
-                  const correctFlags = this.flags
-                    .map((f, idx) => f && this.mines.includes(idx))
-                    .filter((b) => b).length;
-                  if (
-                    flagCount === this.mines.length &&
-                    correctFlags === this.mines.length
-                  ) {
-                    window.App.score += 100;
-                    window.App.logResult(true);
-                    this.init();
-                  }
-                } else if (!this.flags[i]) {
-                  Mouse.handled = true;
-                  SFX.play("click");
-                  if (this.fc) {
-                    this.fc = false;
-                    if (m) {
-                      this.mines = this.mines.filter((z) => z !== i);
-                      let s;
-                      do {
-                        s = Math.floor(Math.random() * 25);
-                      } while (this.mines.includes(s) || s === i);
-                      this.mines.push(s);
-                      this.reveal(i);
-                    } else {
-                      this.reveal(i);
-                    }
-                  } else {
-                    if (m) {
-                      this.rev[i] = true;
-                      window.App.score -= 50;
-                      window.App.logResult(false);
-                      setTimeout(() => this.init(), 1000);
-                    } else {
-                      this.reveal(i);
-                    }
-                  }
-                  if (this.safe >= 25 - this.mines.length) {
-                    window.App.score += 100;
-                    window.App.logResult(true);
-                    this.init();
-                  }
-                }
-              }
+          const numPairs = Math.min(4 + Math.floor(lvl / 2), 8);
 
-              ctx.fillStyle = this.rev[i] ? (m ? C.chaos : "#111") : "#222";
-              ctx.strokeStyle = this.rev[i] ? (m ? C.chaos : "#444") : "#555";
-              ctx.fillRect(x, y, sz, sz);
-              ctx.strokeRect(x, y, sz, sz);
-              if (this.flags[i] && !this.rev[i]) {
-                ctx.fillStyle = C.chaos;
-                ctx.font = "30px FontAwesome";
-                ctx.fillText(Icons.flag, x + sz / 2, y + sz / 2 + 10);
-              }
-              if (this.rev[i]) {
-                if (m) {
-                  ctx.fillStyle = "#000";
-                  ctx.font = "30px FontAwesome";
-                  ctx.fillText(Icons.skull, x + sz / 2, y + sz / 2 + 10);
-                } else {
-                  const c = this.getMines(i);
-                  if (c > 0) {
-                    ctx.fillStyle = C.stable;
-                    ctx.font = "bold 30px Rajdhani";
-                    ctx.textAlign = "center";
-                    ctx.fillText(c, x + sz / 2, y + sz / 2 + 10);
-                  }
-                }
-              }
-            }
-            resetMobileScale(scale);
-          },
+          let shuffledPool = [...safePool].sort(() => Math.random() - 0.5);
+          let selected = shuffledPool.slice(0, numPairs);
+          let d = [...selected, ...selected].sort(() => Math.random() - 0.5);
+
+          this.cards = d.map((icon) => ({
+            icon: icon,
+            flip: true,
+            match: false,
+            error: false,
+          }));
+          this.previewTimer = Math.max(1.0, 4.0 - lvl * 0.3);
+
+          window.App.startRound();
         },
-        MATCH: {
-          init: function () {
-            const i = [
-              Icons.bolt,
-              Icons.brain,
-              Icons.cube,
-              Icons.gem,
-              Icons.heart,
-              Icons.key,
-              Icons.eye,
-              Icons.skull,
-            ];
-            let d = [...i, ...i].sort(() => Math.random() - 0.5);
-            this.cards = d.map((icon) => ({ icon, flip: true, match: false }));
-            this.flipped = [];
-            this.lock = true;
-            this.isPaused = true;
-            setTimeout(() => {
+
+        update: function (t) {
+          if (this.previewTimer > 0) {
+            this.previewTimer -= t;
+            if (this.previewTimer <= 0 && this.cards) {
               this.cards.forEach((c) => (c.flip = false));
               this.lock = false;
-            }, 4000);
-          },
-          update: function (t) {
-            if (this.wait > 0) this.wait -= t;
-          },
-          draw: function () {
-            if (!this.cards) return;
-            const scale = applyMobileScale();
-            const T = LANG[window.App.language];
-            if (this.lock && this.cards.every((c) => c.flip === true)) {
-              ctx.fillStyle = C.stable;
-              ctx.font = "20px Rajdhani";
-              ctx.textAlign = "center";
-              ctx.fillText(T.match_mem, 400, 50);
             }
-
-            const cardSize = 105;
-            const gap = 15;
-            const xOffset = 168;
-            const yOffset = 100;
-
-            this.cards.forEach((c, i) => {
-              const x = xOffset + (i % 4) * (cardSize + gap);
-              const y = yOffset + Math.floor(i / 4) * (cardSize + gap);
-
-              if (c.flip || c.match) {
-                ctx.fillStyle = c.match ? "#000" : "#111";
-                ctx.strokeStyle = c.match ? C.gold : C.stable;
-                ctx.fillRect(x, y, cardSize, cardSize);
-                ctx.strokeRect(x, y, cardSize, cardSize);
-                ctx.fillStyle = "#fff";
-                ctx.font = "40px FontAwesome";
-                ctx.textAlign = "center";
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = "#fff";
-                ctx.fillText(c.icon, x + cardSize / 2, y + cardSize / 2 + 15);
-                ctx.shadowBlur = 0;
-              } else {
-                if (
-                  window.App.active &&
-                  btn(x, y, cardSize, cardSize, C.dim, false) &&
-                  !this.lock &&
-                  !c.match
-                ) {
-                  Mouse.handled = true;
-                  c.flip = true;
-                  this.flipped.push(i);
-                  if (this.flipped.length === 2) {
-                    this.lock = true;
-                    const [i1, i2] = this.flipped;
-                    if (this.cards[i1].icon === this.cards[i2].icon) {
-                      this.cards[i1].match = true;
-                      this.cards[i2].match = true;
-                      window.App.score += 20;
-                      window.App.logResult(true);
-                      this.flipped = [];
-                      this.lock = false;
-                      if (this.cards.every((x) => x.match)) {
-                        window.App.score += 100;
-                        this.init();
-                      }
-                    } else {
-                      window.App.logResult(false);
-                      setTimeout(() => {
-                        this.cards[i1].flip = false;
-                        this.cards[i2].flip = false;
-                        this.flipped = [];
-                        this.lock = false;
-                      }, 1500);
-                    }
-                  }
-                }
-                ctx.fillStyle = "#555";
-                ctx.font = "30px FontAwesome";
-                ctx.textAlign = "center";
-                ctx.fillText(
-                  Icons.question,
-                  x + cardSize / 2,
-                  y + cardSize / 2 + 10,
-                );
-              }
-            });
-            resetMobileScale(scale);
-          },
+          }
         },
-        CALC: {
-          init: function () {
-            const l = window.App.progress.CALC.lvl;
-            const o = ["+", "-", "*"][Math.floor(Math.random() * 3)];
-            let a = Math.floor(Math.random() * 12) + 1,
-              b = Math.floor(Math.random() * 12) + 1;
-            if (o === "-" && a < b) [a, b] = [b, a];
-            this.q = `${a} ${o} ${b} = ?`;
-            this.ans = eval(this.q.split("=")[0]);
-            this.opts = [this.ans];
-            while (this.opts.length < 3) {
-              let f = this.ans + Math.floor(Math.random() * 10) - 5;
-              if (f >= 0 && !this.opts.includes(f)) this.opts.push(f);
-            }
-            this.opts.sort(() => Math.random() - 0.5);
-            this.turnT = Math.max(2.0, 4.0 - l * 0.1);
-          },
-          update: function (t) {
-            this.turnT -= t;
-            if (this.turnT <= 0) {
-              window.App.score -= 20;
-              window.App.logResult(false);
-              this.init();
-            }
-          },
-          draw: function () {
-            if (!this.opts) return;
-            const scale = applyMobileScale();
+
+        draw: function () {
+          if (!this.cards) return;
+          const scale = applyMobileScale();
+          const T = LANG[window.App.language];
+
+          if (this.lock && this.cards.every((c) => c.flip)) {
             ctx.fillStyle = C.stable;
-            ctx.font = "60px Rajdhani";
+            ctx.font = "24px Rajdhani";
             ctx.textAlign = "center";
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = C.stable;
-            ctx.fillText(this.q, 400, 200);
-            ctx.shadowBlur = 0;
-            drawTimerBar(
-              250,
-              250,
-              300,
-              Math.max(2.0, 4.0 - window.App.progress.CALC.lvl * 0.1),
-              Math.max(0, this.turnT),
-            ); // TIMER FIX
-            this.opts.forEach((o, i) => {
-              const x = 150 + i * 180,
-                y = 350,
-                sz = 120;
-              if (window.App.active && btn(x, y, sz, sz, "#fff", false)) {
-                Mouse.handled = true;
-                window.App.logResult(o === this.ans);
-                this.init();
-              }
-              ctx.fillStyle = "#fff";
-              ctx.font = "40px Rajdhani";
-              ctx.fillText(o, x + 60, y + 75); // FIXED CENTER ALIGN
-            });
-            resetMobileScale(scale);
-          },
-        },
-        FLASH: {
-          init: function () {
-            const l = window.App.progress.FLASH.lvl;
-            const c = 5 + Math.floor(l / 3);
-            this.g = new Array(16).fill(0);
-            let p = [];
-            while (p.length < c) {
-              let r = Math.floor(Math.random() * 16);
-              if (!p.includes(r)) p.push(r);
-            }
-            p.forEach((x, i) => (this.g[x] = i + 1));
-            this.hide = false;
-            this.nxt = 1;
-            setTimeout(() => (this.hide = true), 3000); // 3.0s FLASH
-            this.turnT = 6.0;
-          },
-          update: function (t) {
-            if (this.hide) {
-              this.turnT -= t;
-              if (this.turnT <= 0) {
-                window.App.score -= 20;
-                window.App.logResult(false);
-                this.init();
-              }
-            }
-          },
-          draw: function () {
-            // Y=100
-            const sz = 100,
-              gap = 10,
-              startX = 185,
-              startY = 100;
-            if (!this.g) return;
-            const scale = applyMobileScale();
-            const T = LANG[window.App.language];
-            if (this.hide) {
-              drawTimerBar(270, 60, 260, 6.0, Math.max(0, this.turnT)); // TOP TIMER
-            } else {
-              ctx.fillStyle = C.stable;
-              ctx.font = "20px Rajdhani";
-              ctx.textAlign = "center";
-              ctx.fillText(T.flash_mem, 400, 50);
-            }
+            ctx.fillText(T.match_mem || "MEMORIZE CONFIGURATION", 400, 50);
+          }
 
-            for (let i = 0; i < 16; i++) {
-              const x = startX + (i % 4) * (sz + gap),
-                y = startY + Math.floor(i / 4) * (sz + gap);
-              const v = this.g[i];
-              if (v > 0) {
-                let show = !this.hide || v < this.nxt;
-                let col = show ? (v < this.nxt ? C.stable : "#222") : "#333";
+          const cols = 4;
+          const cardSize = this.cards.length > 12 ? 80 : 100;
+          const gap = 15;
+          const gridW = cols * cardSize + (cols - 1) * gap;
+          const startX = 400 - gridW / 2;
+          const startY = 120;
 
-                if (
-                  window.App.active &&
-                  btn(x, y, sz, sz, col, show) &&
-                  this.hide &&
-                  v >= this.nxt
-                ) {
-                  Mouse.handled = true;
-                  if (v === this.nxt) {
-                    this.nxt++;
-                    window.App.logResult(true);
-                    if (this.nxt > 5) {
-                      window.App.score += 100;
-                      this.init();
+          this.cards.forEach((c, i) => {
+            const x = startX + (i % cols) * (cardSize + gap);
+            const y = startY + Math.floor(i / cols) * (cardSize + gap);
+
+            const isHover =
+              !this.lock &&
+              !c.flip &&
+              !c.match &&
+              Mouse.x >= x &&
+              Mouse.x <= x + cardSize &&
+              Mouse.y >= y &&
+              Mouse.y <= y + cardSize;
+
+            if (
+              window.App.active &&
+              !this.lock &&
+              !c.flip &&
+              !c.match &&
+              btn(x, y, cardSize, cardSize)
+            ) {
+              Mouse.handled = true;
+              c.flip = true;
+              SFX.play("click");
+              this.flipped.push(i);
+
+              if (this.flipped.length === 2) {
+                this.lock = true;
+                const [i1, i2] = this.flipped;
+
+                if (this.cards[i1].icon === this.cards[i2].icon) {
+                  this.cards[i1].match = true;
+                  this.cards[i2].match = true;
+                  FX.burst(x + cardSize / 2, y + cardSize / 2, C.gold);
+                  this.flipped = [];
+                  this.lock = false;
+
+                  // SUCCESS TRIGGER: Points and tally added instantly
+                  window.App.logResult(true);
+
+                  if (this.cards.every((x) => x.match)) {
+                    // No score dump here anymore, just move to the next level
+                    setTimeout(
+                      () => this.init(window.App.progress.MATCH.lvl),
+                      800,
+                    );
+                  }
+                } else {
+                  this.cards[i1].error = true;
+                  this.cards[i2].error = true;
+                  FX.shake = 15;
+                  SFX.play("lose");
+
+                  // FAILURE TRIGGER: Penalty and tally added instantly
+                  window.App.logResult(false);
+
+                  setTimeout(() => {
+                    if (this.cards && this.cards[i1] && this.cards[i2]) {
+                      this.cards[i1].flip = false;
+                      this.cards[i2].flip = false;
+                      this.cards[i1].error = false;
+                      this.cards[i2].error = false;
                     }
-                  } else {
-                    window.App.score -= 20;
-                    window.App.logResult(false);
-                    this.init();
-                  }
-                }
-                if (show) {
-                  ctx.fillStyle = v < this.nxt ? "#000" : "#fff";
-                  ctx.font = "bold 24px Rajdhani";
-                  ctx.shadowBlur = 15;
-                  ctx.shadowColor = v < this.nxt ? "#000" : "#fff";
-                  ctx.fillText(v, x + sz / 2, y + sz / 2 + 15);
-                  ctx.shadowBlur = 0;
+                    this.flipped = [];
+                    this.lock = false;
+                  }, 1000);
                 }
               }
             }
-            resetMobileScale(scale);
-          },
+
+            // Visual Styling
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(x, y, cardSize, cardSize, 12);
+            else ctx.rect(x, y, cardSize, cardSize);
+
+            if (c.error) {
+              ctx.shadowBlur = 20;
+              ctx.shadowColor = C.chaos;
+              ctx.strokeStyle = C.chaos;
+              ctx.fillStyle = "rgba(255, 46, 46, 0.2)";
+              ctx.fill();
+              ctx.stroke();
+            } else if (c.flip || c.match) {
+              ctx.shadowBlur = c.match ? 20 : 10;
+              ctx.shadowColor = c.match ? C.gold : "#FFF";
+              ctx.fillStyle = c.match ? "rgba(255, 215, 0, 0.1)" : "#111";
+              ctx.strokeStyle = c.match ? C.gold : "#FFF";
+              ctx.fill();
+              ctx.stroke();
+            } else {
+              ctx.shadowBlur = isHover ? 25 : 0;
+              ctx.shadowColor = isHover ? "#FFF" : "transparent";
+              ctx.fillStyle = isHover ? "rgba(0, 229, 255, 0.2)" : "#222";
+              ctx.strokeStyle = isHover ? "#FFF" : "#444";
+              ctx.fill();
+              ctx.stroke();
+            }
+
+            // Icons
+            if (c.flip || c.match) {
+              ctx.fillStyle = c.error ? C.chaos : c.match ? C.gold : "#FFF";
+              ctx.font = cardSize * 0.45 + "px FontAwesome";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              ctx.fillText(c.icon, x + cardSize / 2, y + cardSize / 2);
+            } else {
+              ctx.fillStyle = isHover ? "#FFF" : "#555";
+              ctx.font = cardSize * 0.35 + "px FontAwesome";
+              ctx.textAlign = "center";
+              ctx.textBaseline = "middle";
+              ctx.fillText(Icons.question, x + cardSize / 2, y + cardSize / 2);
+            }
+            ctx.shadowBlur = 0;
+          });
+          resetMobileScale(scale);
         },
-        // MODULE 8: QUANTUM SWARM (SPATIAL TRACKING)
-        SWARM: {
-          init: function () {
-            const l = window.App.progress.SWARM.lvl;
-            this.ballCount = 5 + Math.floor(l / 2); // More balls
-            this.targetCount = 2 + Math.floor(l / 4); // More targets
-            this.balls = [];
+      };
 
-            for (let i = 0; i < this.ballCount; i++) {
-              this.balls.push({
-                x: 100 + Math.random() * 600,
-                y: 100 + Math.random() * 400,
-                vx: (Math.random() - 0.5) * (10 + l), // SPEED BOOSTED
-                vy: (Math.random() - 0.5) * (10 + l),
-                isTarget: false,
-                selected: false,
-              });
+      window.Games.CALC = {
+        init: function (lvl) {
+          let ops = ["+", "-", "*"],
+            o = ops[Math.floor(Math.random() * 3)];
+
+          // DYNAMIC SCALING: Numbers get slightly larger at higher levels
+          let maxVal = 12 + Math.floor(lvl * 1.5);
+          let a = Math.floor(Math.random() * maxVal) + 1,
+            b = Math.floor(Math.random() * maxVal) + 1;
+
+          if (o === "-") [a, b] = [Math.max(a, b), Math.min(a, b)];
+          this.q = a + " " + o + " " + b;
+          this.ans = eval(this.q);
+          this.opts = [this.ans];
+
+          while (this.opts.length < 3) {
+            let f = this.ans + Math.floor(Math.random() * 10) - 5;
+            if (f >= 0 && !this.opts.includes(f)) this.opts.push(f);
+          }
+          this.opts.sort(() => Math.random() - 0.5);
+
+          // URGENCY TIMER: Starts at 6s, gets faster as you level up (minimum 2.5s)
+          this.maxTime = Math.max(2.5, 6.0 - lvl * 0.2);
+          this.turnT = this.maxTime;
+
+          window.App.startRound();
+        },
+
+        update: function (dt) {
+          // Timer naturally pauses when menus are open because this loop suspends
+          if (this.turnT > 0) {
+            this.turnT -= dt;
+            if (this.turnT <= 0) {
+              window.App.score -= 50; // Timeout penalty
+              window.App.logResult(false, true); // false = wrong, true = timeout
+              this.init(window.App.progress.CALC.lvl);
+            }
+          }
+        },
+
+        draw: function () {
+          const scale = applyMobileScale();
+
+          // 1. Draw the Urgency Timer Bar (Centered at the top)
+          drawTimerBar(250, 100, 300, this.maxTime, this.turnT);
+
+          // 2. Render the Equation with a slight glow
+          ctx.fillStyle = C.stable;
+          ctx.font = "60px Rajdhani";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.shadowBlur = 15;
+          ctx.shadowColor = C.stable;
+          ctx.fillText(this.q + " = ?", 400, 200);
+          ctx.shadowBlur = 0; // Reset shadow for the buttons
+
+          const w = 120,
+            h = 80,
+            gap = 20,
+            startX = 400 - 1.5 * w - gap,
+            startY = 320;
+
+          this.opts.forEach((v, i) => {
+            const x = startX + i * (w + gap);
+            const isHover =
+              !window.App.isPaused &&
+              Mouse.x >= x &&
+              Mouse.x <= x + w &&
+              Mouse.y >= startY &&
+              Mouse.y <= startY + h;
+
+            if (window.App.active && btn(x, startY, w, h)) {
+              Mouse.handled = true;
+              SFX.play("click");
+              window.App.logResult(v === this.ans);
+              this.init(window.App.progress.CALC.lvl);
             }
 
-            // Pick targets
-            let t = 0;
-            while (t < this.targetCount) {
-              let r = Math.floor(Math.random() * this.ballCount);
-              if (!this.balls[r].isTarget) {
-                this.balls[r].isTarget = true;
-                t++;
-              }
+            // 3. PREMIUM VISUALS (Bounding Boxes)
+            ctx.beginPath();
+            if (ctx.roundRect) ctx.roundRect(x, startY, w, h, 12);
+            else ctx.rect(x, startY, w, h);
+
+            if (isHover) {
+              ctx.shadowBlur = 20;
+              ctx.shadowColor = C.stable;
+              ctx.fillStyle = "rgba(0, 229, 255, 0.2)";
+              ctx.strokeStyle = C.stable;
+              ctx.lineWidth = 3;
+            } else {
+              ctx.shadowBlur = 0;
+              ctx.fillStyle = "rgba(255, 255, 255, 0.05)";
+              ctx.strokeStyle = "rgba(0, 229, 255, 0.3)";
+              ctx.lineWidth = 2;
             }
 
-            this.state = "preview"; // preview -> shuffle -> input
-            this.timer = 2.0; // Preview time
-          },
-          update: function (t) {
-            if (this.state === "preview") {
-              this.timer -= t;
-              if (this.timer <= 0) {
-                this.state = "shuffle";
-                this.timer = 4.0;
-              } // Shuffle time
-            } else if (this.state === "shuffle") {
-              this.timer -= t;
+            ctx.fill();
+            ctx.stroke();
+            ctx.shadowBlur = 0;
 
-              // DE-OVERLAP LOGIC ONLY IN INPUT STATE PER REQUEST - BUT USER ASKED FOR NO OVERLAP WHEN STOPPED
-              // SO WE APPLY IT ONCE WHEN TIMER HITS 0
+            // Button Text
+            ctx.fillStyle = isHover ? "#FFF" : C.stable;
+            ctx.font = "36px Rajdhani";
+            ctx.textBaseline = "middle";
+            ctx.fillText(v, x + w / 2, startY + h / 2);
+          });
 
-              this.balls.forEach((b) => {
-                b.x += b.vx * (t * 60);
-                b.y += b.vy * (t * 60);
+          resetMobileScale(scale);
+        },
+      };
 
-                if (b.x < 20 || b.x > 780) {
-                  b.vx *= -1;
-                  b.x = Math.max(20, Math.min(780, b.x));
-                }
-                if (b.y < 20 || b.y > 580) {
-                  b.vy *= -1;
-                  b.y = Math.max(20, Math.min(580, b.y));
-                }
-              });
-              if (this.timer <= 0) this.state = "input";
-            } else if (this.state === "input") {
-              // PHYSICS: REPULSION WHEN STATIC
-              for (let i = 0; i < this.balls.length; i++) {
-                for (let j = i + 1; j < this.balls.length; j++) {
-                  const b1 = this.balls[i];
-                  const b2 = this.balls[j];
-                  const dx = b2.x - b1.x;
-                  const dy = b2.y - b1.y;
-                  const dist = Math.sqrt(dx * dx + dy * dy);
-                  const minDist = 45;
-
-                  if (dist < minDist) {
-                    const angle = Math.atan2(dy, dx);
-                    const tx = Math.cos(angle) * 1; // Gentle push
-                    const ty = Math.sin(angle) * 1;
-                    b1.x -= tx;
-                    b1.y -= ty;
-                    b2.x += tx;
-                    b2.y += ty;
-                  }
-                }
-              }
+      window.Games.FLASH = {
+        init: function (lvl) {
+          this.count = Math.min(16, 2 + lvl);
+          this.timer = Math.max(1000, 5000 - (lvl - 1) * 500);
+          this.g = new Array(16).fill(0);
+          let p = [];
+          while (p.length < this.count) {
+            let r = Math.floor(Math.random() * 16);
+            if (!p.includes(r)) p.push(r);
+          }
+          p.forEach((x, i) => (this.g[x] = i + 1));
+          this.hide = false;
+          this.nxt = 1;
+          this.solveTime = 6.0;
+          setTimeout(() => {
+            if (window.App.mode === "FLASH") {
+              this.hide = true;
+              SFX.play("click");
             }
-          },
-          draw: function () {
-            const scale = applyMobileScale();
-            const T = LANG[window.App.language];
+          }, this.timer);
+        },
+        update: function (dt) {
+          if (this.hide) {
+            this.solveTime -= dt;
+            if (this.solveTime <= 0) {
+              window.App.logResult(false, true);
+              this.init(window.App.progress.FLASH.lvl);
+            }
+          }
+        },
+        draw: function () {
+          ctx.fillStyle = C.stable;
+          ctx.font = "24px Rajdhani";
+          ctx.textAlign = "center";
+          if (!this.hide) ctx.fillText("MEMORIZE", 400, 100);
+          else drawTimerBar(270, 85, 260, 6, Math.max(0, this.solveTime));
 
-            // Text
-            ctx.fillStyle = "#fff";
-            ctx.font = "30px Rajdhani";
-            ctx.textAlign = "center";
-            if (this.state === "preview")
-              ctx.fillText(`${T.swarm_track} ${this.targetCount}`, 400, 80);
-            else if (this.state === "shuffle")
-              ctx.fillText(T.swarm_track + "...", 400, 80);
-            else ctx.fillText(T.swarm_sel, 400, 80);
-
-            this.balls.forEach((b) => {
-              let col = "#444"; // Default
-              if (this.state === "preview" && b.isTarget) col = C.gold;
-              if (this.state === "input" && b.selected) col = C.stable;
+          const sz = 75,
+            gap = 12,
+            sx = 400 - 2 * sz - 1.5 * gap,
+            sy = 140;
+          for (let i = 0; i < 16; i++) {
+            const x = sx + (i % 4) * (sz + gap),
+              y = sy + Math.floor(i / 4) * (sz + gap),
+              v = this.g[i];
+            if (v > 0) {
+              let show = !this.hide || v < this.nxt,
+                col = show ? (v < this.nxt ? C.stable : "#222") : "#333";
+              const isHover =
+                Mouse.x >= x &&
+                Mouse.x <= x + sz &&
+                Mouse.y >= y &&
+                Mouse.y <= y + sz;
 
               if (
                 window.App.active &&
-                this.state === "input" &&
-                btn(b.x - 30, b.y - 30, 60, 60, col, false)
+                this.hide &&
+                v >= this.nxt &&
+                btn(x, y, sz, sz)
               ) {
-                if (!b.selected) {
-                  b.selected = true;
-                  Mouse.handled = true;
+                Mouse.handled = true;
+                if (v === this.nxt) {
+                  this.nxt++;
                   SFX.play("click");
-                  // Check win
-                  const sel = this.balls.filter((z) => z.selected);
-                  if (sel.length === this.targetCount) {
-                    const correct = sel.every((z) => z.isTarget);
-                    if (correct) {
-                      window.App.score += 100;
-                      window.App.logResult(true);
-                    } else {
-                      window.App.score -= 50;
-                      window.App.logResult(false);
-                    }
-                    this.init();
+                  if (this.nxt > this.count) {
+                    window.App.logResult(true);
+                    setTimeout(
+                      () => this.init(window.App.progress.FLASH.lvl),
+                      500,
+                    );
                   }
+                } else {
+                  window.App.logResult(false);
+                  this.init(window.App.progress.FLASH.lvl);
                 }
               }
 
-              ctx.fillStyle = col;
+              ctx.fillStyle =
+                isHover && this.hide && v >= this.nxt ? "#444" : col;
               ctx.beginPath();
-              ctx.arc(b.x, b.y, 20, 0, Math.PI * 2);
+              ctx.roundRect(x, y, sz, sz, 8);
               ctx.fill();
-              // Glow
-              if (col === C.gold) {
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = C.gold;
-                ctx.fill();
-                ctx.shadowBlur = 0;
+              ctx.textBaseline = "middle";
+              if (show) {
+                ctx.fillStyle = v < this.nxt ? "#000" : "#fff";
+                ctx.font = "bold 24px Rajdhani";
+                ctx.fillText(v, x + sz / 2, y + sz / 2);
               }
-              if (col === C.stable) {
-                ctx.shadowBlur = 20;
-                ctx.shadowColor = C.stable;
-                ctx.fill();
-                ctx.shadowBlur = 0;
+            }
+          }
+        },
+      };
+
+      window.Games.SWARM = {
+        init: function (lvl) {
+          // Ensure lvl is always a number for math scaling
+          const currentLvl =
+            lvl !== undefined ? lvl : window.App.progress.SWARM.lvl;
+
+          this.bc = Math.min(32, 4 + currentLvl);
+          this.tc = Math.min(10, 2 + Math.floor(currentLvl / 3));
+          this.balls = [];
+
+          this.timer = 2; // Preview time
+          this.state = "p"; // 'p' = preview, 's' = shuffle, 'i' = input, 'd' = done/fail
+          this.failed = false;
+
+          // URGENCY TIMER: Starts at 10s, gets faster as you level up
+          this.maxTime = Math.max(3.0, 10.0 - currentLvl * 0.3);
+          this.turnT = this.maxTime;
+
+          for (let i = 0; i < this.bc; i++) {
+            let cx, cy;
+            let valid = false;
+            let attempts = 0;
+
+            while (!valid && attempts < 200) {
+              cx = 40 + Math.random() * 720;
+              cy = 140 + Math.random() * 420;
+              valid = true;
+              for (let j = 0; j < this.balls.length; j++) {
+                let dx = cx - this.balls[j].x;
+                let dy = cy - this.balls[j].y;
+                let dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 35) {
+                  valid = false;
+                  break;
+                }
               }
+              attempts++;
+            }
+
+            this.balls.push({
+              x: cx,
+              y: cy,
+              vx: (Math.random() - 0.5) * (4 + currentLvl),
+              vy: (Math.random() - 0.5) * (4 + currentLvl),
+              t: false,
+              s: false,
+              e: false, // Tracks if this specific orb was a wrong click
             });
-            resetMobileScale(scale);
-          },
+          }
+
+          let k = 0;
+          while (k < this.tc) {
+            let r = Math.floor(Math.random() * this.bc);
+            if (!this.balls[r].t) {
+              this.balls[r].t = true;
+              k++;
+            }
+          }
+
+          // Trigger start of round for the engine
+          if (window.App.startRound) window.App.startRound();
+        },
+
+        update: function (dt) {
+          if (this.state === "d") return; // Freeze logic when won/lost
+
+          if (this.state === "p") {
+            this.timer -= dt;
+            if (this.timer <= 0) {
+              this.state = "s";
+              this.timer = Math.min(
+                3.0 + window.App.progress.SWARM.lvl * 0.2,
+                6.0,
+              ); // Shuffle time
+            }
+          } else if (this.state === "s") {
+            this.timer -= dt;
+            this.balls.forEach((b) => {
+              b.x += b.vx;
+              b.y += b.vy;
+              if (b.x < 20 || b.x > 780) b.vx *= -1;
+              if (b.y < 120 || b.y > 580) b.vy *= -1;
+            });
+            if (this.timer <= 0) this.state = "i";
+          } else if (this.state === "i") {
+            // THE URGENCY TIMER TICK
+            this.turnT -= dt;
+            if (this.turnT <= 0 && !this.failed) {
+              this.failed = true;
+              this.state = "d";
+              if (window.App.score !== undefined) window.App.score -= 50;
+              window.App.logResult(false, true); // Log timeout failure
+              setTimeout(() => this.init(window.App.progress.SWARM.lvl), 1000);
+            }
+
+            // Static Repulsion to prevent overlapping clicks
+            for (let i = 0; i < this.balls.length; i++) {
+              for (let j = i + 1; j < this.balls.length; j++) {
+                const b1 = this.balls[i];
+                const b2 = this.balls[j];
+                const dx = b2.x - b1.x;
+                const dy = b2.y - b1.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < 32 && dist > 0) {
+                  const push = (32 - dist) * 0.1;
+                  const tx = (dx / dist) * push;
+                  const ty = (dy / dist) * push;
+                  b1.x -= tx;
+                  b1.y -= ty;
+                  b2.x += tx;
+                  b2.y += ty;
+                }
+              }
+            }
+          }
+        },
+
+        draw: function () {
+          const T = LANG[window.App.language] || {};
+
+          // Draw the Urgency Timer Bar during the input phase
+          if (this.state === "i" || this.state === "d") {
+            if (typeof drawTimerBar === "function") {
+              drawTimerBar(250, 40, 300, this.maxTime, this.turnT);
+            }
+          }
+
+          ctx.fillStyle = this.failed ? C.chaos : "#fff";
+          ctx.font = "30px Rajdhani";
+          ctx.textAlign = "center";
+
+          let headerText = "TRACK TARGETS";
+          if (this.state === "p") headerText = `TRACK: ${this.tc}`;
+          else if (this.state === "s") headerText = "TRACKING...";
+          else if (this.state === "i") headerText = "SELECT TARGETS";
+          else if (this.state === "d" && this.failed)
+            headerText = "TRACKING LOST";
+
+          ctx.fillText(headerText, 400, 80);
+
+          this.balls.forEach((b) => {
+            let col = "#555"; // Base neutral state
+            if (this.state === "p" && b.t) col = C.gold;
+            if (b.s) col = C.stable;
+            if (b.e) col = C.chaos;
+
+            // Click Registration & Progression Tallying
+            if (
+              window.App.active &&
+              this.state === "i" &&
+              !b.s &&
+              (Mouse.click || Mouse.down) &&
+              !Mouse.handled
+            ) {
+              if (Math.sqrt((Mouse.x - b.x) ** 2 + (Mouse.y - b.y) ** 2) < 35) {
+                Mouse.handled = true;
+
+                if (b.t) {
+                  // CORRECT CLICK
+                  b.s = true;
+                  if (typeof SFX !== "undefined") SFX.play("click");
+
+                  // Check if all targets found
+                  if (this.balls.filter((z) => z.s).length === this.tc) {
+                    this.state = "d"; // Prevent further clicks
+                    window.App.logResult(true); // Tally win
+                    setTimeout(
+                      () => this.init(window.App.progress.SWARM.lvl),
+                      600,
+                    );
+                  }
+                } else {
+                  // WRONG CLICK (Instant fail)
+                  this.failed = true;
+                  b.e = true;
+                  this.state = "d";
+                  if (typeof SFX !== "undefined") SFX.play("lose");
+                  if (typeof FX !== "undefined") FX.shake = 20;
+
+                  // Highlight the real targets so the player learns
+                  this.balls.forEach((z) => {
+                    if (z.t) z.s = true;
+                  });
+
+                  window.App.logResult(false); // Tally loss
+                  setTimeout(
+                    () => this.init(window.App.progress.SWARM.lvl),
+                    1200,
+                  );
+                }
+              }
+            }
+
+            ctx.save();
+            ctx.translate(b.x, b.y);
+
+            // Outer Glow
+            if (col === C.gold || col === C.stable || col === C.chaos) {
+              ctx.shadowBlur = 15;
+              ctx.shadowColor = col;
+            } else {
+              ctx.shadowBlur = 5;
+              ctx.shadowColor = "rgba(0, 0, 0, 0.8)";
+            }
+
+            // Base Color Fill
+            ctx.beginPath();
+            ctx.arc(0, 0, 15, 0, Math.PI * 2);
+            ctx.fillStyle = col;
+            ctx.fill();
+
+            // Rim Light
+            ctx.lineWidth = 1;
+            ctx.strokeStyle =
+              col === C.gold || col === C.stable || col === C.chaos
+                ? col
+                : "rgba(255, 255, 255, 0.2)";
+            ctx.stroke();
+
+            ctx.shadowBlur = 0;
+
+            // 3D Volume Shading
+            ctx.beginPath();
+            ctx.arc(0, 0, 15, 0, Math.PI * 2);
+            let shadowGrad = ctx.createRadialGradient(5, 5, 0, 0, 0, 15);
+            shadowGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
+            shadowGrad.addColorStop(1, "rgba(0, 0, 0, 0.6)");
+            ctx.fillStyle = shadowGrad;
+            ctx.fill();
+
+            // Specular Highlight
+            ctx.beginPath();
+            ctx.arc(-5, -5, 5, 0, Math.PI * 2);
+            let lightGrad = ctx.createRadialGradient(-5, -5, 0, -5, -5, 5);
+            lightGrad.addColorStop(0, "rgba(255, 255, 255, 0.7)");
+            lightGrad.addColorStop(1, "rgba(255, 255, 255, 0)");
+            ctx.fillStyle = lightGrad;
+            ctx.fill();
+
+            ctx.restore();
+          });
         },
       };
 
       window.onload = function () {
-        try {
-          if (window.App) window.App.init();
-        } catch (e) {
-          console.error("CRITICAL INIT ERROR:", e);
-          alert("System Failure: " + e.message);
-        }
+        if (window.App) window.App.init();
       };
     </script>
   </body>
