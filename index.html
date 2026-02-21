@@ -2000,6 +2000,51 @@
             },
             { passive: false },
           );
+          // --- MOBILE TOUCH SUPPORT ---
+
+          canvas.addEventListener(
+            "touchstart",
+            function (e) {
+              e.preventDefault(); // Prevents the screen from scrolling when you tap
+              const rect = canvas.getBoundingClientRect();
+              const scaleX = canvas.width / rect.width;
+              const scaleY = canvas.height / rect.height;
+
+              // Get the X/Y of the first finger touching the screen
+              Mouse.x = (e.touches[0].clientX - rect.left) * scaleX;
+              Mouse.y = (e.touches[0].clientY - rect.top) * scaleY;
+
+              Mouse.down = true;
+              Mouse.click = true;
+              Mouse.handled = false;
+            },
+            { passive: false },
+          );
+
+          canvas.addEventListener(
+            "touchmove",
+            function (e) {
+              e.preventDefault();
+              const rect = canvas.getBoundingClientRect();
+              const scaleX = canvas.width / rect.width;
+              const scaleY = canvas.height / rect.height;
+
+              Mouse.x = (e.touches[0].clientX - rect.left) * scaleX;
+              Mouse.y = (e.touches[0].clientY - rect.top) * scaleY;
+            },
+            { passive: false },
+          );
+
+          canvas.addEventListener(
+            "touchend",
+            function (e) {
+              e.preventDefault();
+              Mouse.down = false;
+              Mouse.click = false;
+              Mouse.handled = false; // Reset so the next tap registers
+            },
+            { passive: false },
+          );
 
           this.loadData();
           this.updateLockVisuals();
