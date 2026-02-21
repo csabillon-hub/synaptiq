@@ -1094,6 +1094,171 @@
       #btn-SWARM i {
         color: var(--focus);
       }
+      /* Upgrade Overlay Styling */
+      .upgrade-container {
+        background: rgba(20, 20, 20, 0.95);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        text-align: center;
+        max-width: 700px;
+        box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+      }
+
+      .upgrade-container h2 {
+        font-family: "Rajdhani", sans-serif;
+        color: var(--gold);
+        font-size: 36px;
+        margin: 0 0 10px 0;
+        letter-spacing: 2px;
+      }
+
+      .upgrade-container .subtitle {
+        color: var(--stable);
+        margin-bottom: 30px;
+      }
+
+      .pricing-cards {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+      }
+
+      .tier-card {
+        background: rgba(40, 40, 40, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        padding: 30px 20px;
+        width: 250px;
+        position: relative;
+        text-align: left;
+      }
+
+      .tier-card.pro-tier {
+        background: rgba(0, 229, 255, 0.05);
+        border: 1px solid rgba(255, 215, 3, 0.9);
+        box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+      }
+
+      .glow-badge {
+        position: absolute;
+        top: -10px;
+        right: 15px;
+        background: #00e5ff;
+        color: #000;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 2px 8px;
+        border-radius: 2px;
+      }
+
+      .tier-card h3 {
+        color: #ccc;
+        font-size: 18px;
+        margin-top: 0;
+      }
+
+      .pro-tier h3 {
+        color: var(--gold);
+      }
+
+      .price {
+        font-size: 32px;
+        color: #fff;
+        font-weight: bold;
+        margin: 10px 0 20px 0;
+      }
+
+      .price span {
+        font-size: 16px;
+        color: #666;
+        font-weight: normal;
+      }
+
+      .features {
+        list-style: none;
+        padding: 0;
+        margin: 0 0 30px 0;
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      .btn-disabled {
+        background: #333;
+        color: #666;
+        border: 1px solid #444;
+        width: 100%;
+        padding: 10px;
+        font-family: "Rajdhani";
+        cursor: not-allowed;
+      }
+
+      .btn-pro {
+        background: transparent;
+        color: #00e5ff;
+        border: 1px solid #00e5ff;
+        width: 100%;
+        padding: 10px;
+        font-family: "Rajdhani";
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+
+      .btn-pro:hover {
+        background: #00e5ff;
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 229, 255, 0.5);
+      }
+
+      .close-overlay {
+        background: none;
+        border: none;
+        color: #666;
+        margin-top: 20px;
+        cursor: pointer;
+        font-family: "Rajdhani";
+      }
+      .close-overlay:hover {
+        color: #fff;
+      }
+      /* Legal Footer Styling */
+      .legal-footer {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+        font-family: "Rajdhani", sans-serif;
+        text-align: center;
+        max-width: 650px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .legal-disclaimer {
+        color: #666; /* Dim enough to not distract, bright enough to be readable */
+        font-size: 0.8rem;
+        line-height: 1.5;
+        margin-bottom: 15px;
+        letter-spacing: 0.5px;
+      }
+
+      .legal-disclaimer strong {
+        color: #888;
+      }
+
+      .legal-links a {
+        color: #555;
+        text-decoration: none;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        font-weight: bold;
+        transition: all 0.2s ease;
+        margin: 0 10px;
+      }
+
+      .legal-links a:hover {
+        color: #00e5ff;
+        text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+      }
     </style>
   </head>
   <body>
@@ -1126,6 +1291,39 @@
             >INITIALIZE BRAIN TRAINING</span
           >
         </button>
+        <div class="legal-footer">
+          <div class="legal-disclaimer">
+            <i
+              class="fa-solid fa-triangle-exclamation"
+              style="color: #ff2e2e; margin-right: 8px"
+            ></i>
+            <strong>SYSTEM NOTICE:</strong> Synaptiq is a cognitive performance
+            simulation designed for entertainment and educational purposes only.
+            It is not a medical device. This software is not intended to
+            diagnose, treat, cure, or prevent any medical condition, cognitive
+            decline, or neurodegenerative disease. Consult a licensed physician
+            for medical advice.
+          </div>
+          <div class="legal-links">
+            <a
+              href="#"
+              onclick="
+                window.App.openLegal('terms');
+                return false;
+              "
+              >[ TERMS OF SERVICE ]</a
+            >
+            <span style="color: #333">|</span>
+            <a
+              href="#"
+              onclick="
+                window.App.openLegal('privacy');
+                return false;
+              "
+              >[ PRIVACY PROTOCOL ]</a
+            >
+          </div>
+        </div>
       </div>
     </div>
 
@@ -1189,6 +1387,19 @@
       </button>
 
       <div id="nav-sys" class="nav-label">SYSTEM</div>
+      <button
+        class="nav-btn"
+        style="
+          color: #00e5ff;
+          font-weight: bold;
+          border: 1px solid rgba(0, 229, 255, 0.4);
+          background: rgba(0, 229, 255, 0.05);
+        "
+        onclick="window.App.openUpgrade()"
+      >
+        <i class="fa-solid fa-unlock-keyhole"></i>
+        <span id="nav-upgrade">UPGRADE TO PRO</span>
+      </button>
       <button class="nav-btn" onclick="window.App.openLogin()">
         <i class="fa-solid fa-user-shield"></i>
         <span id="nav-login">OPERATOR LOGIN</span>
@@ -1380,85 +1591,45 @@
           </button>
         </div>
       </div>
+      
+      </div>
 
-      <div id="overlay-paywall" class="overlay">
-        <div
-          class="modal"
-          style="
-            border-color: var(--gold);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
-          "
-        >
-          <i
-            class="fa-solid fa-crown"
-            style="
-              font-size: 4rem;
-              color: var(--gold);
-              text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
-              margin-bottom: 15px;
-              display: block;
-            "
-          ></i>
+      <div id="overlay-upgrade" class="overlay">
+        <div class="upgrade-container">
+          <h2>SYSTEM UPGRADE</h2>
+          <p class="subtitle">Unlock your full cognitive potential.</p>
 
-          <h1 style="color: var(--gold); margin-bottom: 5px">
-            UNLOCK YOUR FULL COGNITIVE POTENTIAL!
-          </h1>
-          <p style="color: #ccc; font-size: 0.9rem; margin-bottom: 20px">
-            ACCESS ALL 8 MODULES + ADVANCED METRICS
-          </p>
+          <div class="pricing-cards">
+            <div class="tier-card free-tier">
+              <h3>FREE OPERATOR</h3>
+              <div class="price">$0<span>/mo</span></div>
+              <ul class="features">
+                <li>Basic Neural Tracking</li>
+                <li>Limited Test Modules</li>
+                <li>Standard Diagnostics</li>
+              </ul>
+              <button class="btn-disabled" onclick="window.App.closeUpgrade()">
+                ACTIVE PROTOCOL
+              </button>
+            </div>
 
-          <div
-            style="
-              background: #1a1a1a;
-              padding: 15px;
-              border-radius: 8px;
-              border: 1px solid #333;
-              margin-bottom: 20px;
-            "
-          >
-            <h3 style="color: #fff; margin: 0 0 5px 0">7-DAY FREE TRIAL</h3>
-            <p style="color: #888; font-size: 0.8rem; margin: 0">
-              Then $2.99/month. Cancel anytime.
-            </p>
+            <div class="tier-card pro-tier">
+              <div class="glow-badge">RECOMMENDED</div>
+              <h3>PRO OPERATOR</h3>
+              <div class="price">$2.99<span>/mo</span></div>
+              <ul class="features">
+                <li>All Cognitive Modules Unlocked</li>
+                <li>Advanced Performance Analytics</li>
+                <li>Premium Neural Audioscape</li>
+              </ul>
+              <button class="btn-pro" onclick="window.App.mockUpgrade()">
+                INITIALIZE PRO
+              </button>
+            </div>
           </div>
 
-          <button
-            class="btn-primary btn-upgrade"
-            onclick="window.App.startTrial()"
-          >
-            START FREE TRIAL
-          </button>
-
-          <div
-            style="
-              margin-top: 25px;
-              border-top: 1px solid #333;
-              padding-top: 20px;
-              width: 100%;
-              box-sizing: border-box;
-            "
-          >
-            <input
-              type="text"
-              id="promo-code"
-              class="promo-input"
-              placeholder="ENTER PROMO CODE"
-              autocomplete="off"
-            />
-            <button class="btn-redeem" onclick="window.App.redeemCode()">
-              REDEEM CODE
-            </button>
-          </div>
-
-          <button
-            class="btn-nothanks"
-            onclick="
-              document
-                .getElementById('overlay-paywall')
-                .classList.remove('active')
-            "
-          >
-            NO THANKS
+          <button class="close-overlay" onclick="window.App.closeUpgrade()">
+            [ ABORT ]
           </button>
         </div>
       </div>
@@ -1633,6 +1804,66 @@
         </div>
       </div>
     </main>
+ <div id="overlay-legal" class="overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999 !important; background: rgba(0,0,0,0.95);">
+        <div class="modal" style="max-width: 600px; max-height: 80vh; display: flex; flex-direction: column; z-index: 999999 !important;">
+          <button
+            onclick="window.App.closeLegal()"
+            style="
+              position: absolute;
+              top: 15px;
+              right: 15px;
+              background: transparent;
+              border: none;
+              color: #666;
+              font-size: 1.5rem;
+              cursor: pointer;
+              transition: 0.2s;
+            "
+            onmouseover="this.style.color = '#fff'"
+            onmouseout="this.style.color = '#666'"
+          >
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+
+          <h1
+            id="legal-title"
+            style="
+              color: var(--stable);
+              margin-bottom: 10px;
+              font-family: &quot;Rajdhani&quot;, sans-serif;
+              letter-spacing: 2px;
+            "
+          >
+            LEGAL PROTOCOL
+          </h1>
+
+          <div
+            id="legal-content"
+            style="
+              text-align: left;
+              color: #ccc;
+              font-size: 0.85rem;
+              line-height: 1.6;
+              overflow-y: auto;
+              padding-right: 15px;
+              margin-bottom: 20px;
+              flex-grow: 1;
+              border-top: 1px solid #333;
+              border-bottom: 1px solid #333;
+              padding-top: 15px;
+              padding-bottom: 15px;
+              font-family: sans-serif;
+            "
+          ></div>
+
+          <button
+            class="btn-primary"
+            onclick="window.App.closeLegal()"
+            style="margin-top: auto"
+          >
+            ACKNOWLEDGE
+          </button>
+        </div>
     <script>
       /** SYNAPTIQ v5.0 - THE MASTER BUILD
        * FIXES: LocalStorage Corruption (Undefined), Missing Functions, V6 Polish, UI & Login Locked
@@ -2123,6 +2354,39 @@
           };
         },
 
+        openLegal(documentType) {
+          const overlay = document.getElementById("overlay-legal");
+          const title = document.getElementById("legal-title");
+          const content = document.getElementById("legal-content");
+          if (!overlay || !title || !content) return;
+
+          if (documentType === "terms") {
+            title.innerText = "TERMS OF SERVICE";
+            title.style.color = C.gold; // Differentiate with Gold
+            content.innerHTML = `
+              <p><strong>1. ACCEPTANCE OF TERMS</strong><br>By initializing Synaptiq, you agree to these terms. If you do not agree, do not use the software.</p>
+              <p><strong>2. MEDICAL DISCLAIMER</strong><br>This software is for educational and entertainment purposes only. It does not provide medical advice, diagnosis, or treatment for cognitive decline or any condition.</p>
+              <p><strong>3. LIMITATION OF LIABILITY</strong><br>To the maximum extent permitted by law, Synaptiq and its developers shall not be liable for any indirect, incidental, or consequential damages arising from the use of this software.</p>
+              <p><strong>4. SUBSCRIPTIONS & REFUNDS</strong><br>Pro Operator upgrades are billed immediately. All digital purchases are final and non-refundable unless required by local law.</p>
+            `;
+          } else if (documentType === "privacy") {
+            title.innerText = "PRIVACY PROTOCOL";
+            title.style.color = C.stable; // Differentiate with Cyan
+            content.innerHTML = `
+              <p><strong>1. DATA COLLECTION</strong><br>We collect local gameplay analytics (reaction times, accuracy) to enhance your training profile. Cloud synchronization requires linking an authenticated profile.</p>
+              <p><strong>2. DATA USAGE</strong><br>Your neural metrics are kept strictly confidential. We do not sell your personal data or gameplay statistics to third-party advertising networks.</p>
+              <p><strong>3. LOCAL STORAGE</strong><br>Free tier profiles store progression data locally on your device. Clearing your browser cache will permanently erase un-synced data.</p>
+            `;
+          }
+
+          overlay.classList.add("active");
+        },
+
+        closeLegal() {
+          const overlay = document.getElementById("overlay-legal");
+          if (overlay) overlay.classList.remove("active");
+        },
+
         saveData() {
           localStorage.setItem(
             "synaptiq_v128",
@@ -2149,6 +2413,41 @@
           }
         },
 
+        openUpgrade() {
+          this.showInstr(); // Pause game to prevent visual bugs
+          const overlay = document.getElementById("overlay-upgrade");
+          if (overlay) overlay.classList.add("active");
+        },
+
+        closeUpgrade() {
+          const overlay = document.getElementById("overlay-upgrade");
+          if (overlay) overlay.classList.remove("active");
+        },
+
+        mockUpgrade() {
+          // 1. Flip the switch
+          this.isPro = true;
+
+          // 2. Play the triumphant level-up sound
+          if (typeof SFX !== "undefined") SFX.play("levelup");
+
+          // 3. Update the dashboard visuals
+          const dashStatus = document.getElementById("dash-status");
+          if (dashStatus) {
+            dashStatus.innerText = "PRO OPERATOR";
+            dashStatus.style.color = C.stable; // Turn it cyan
+          }
+
+          // 4. Save to local storage so it remembers the mock upgrade on refresh
+          this.saveData();
+
+          // 5. Instantly unlock the games on the menu
+          this.updateLockVisuals();
+
+          // 6. Close the paywall
+          this.closeUpgrade();
+        },
+
         handleLogin() {
           this.login(); // Safety redirect
         },
@@ -2162,15 +2461,18 @@
           const id = inputEl.value;
           if (id) {
             this.user = id.toUpperCase();
-            this.isPro = true; // FIXED: Grants access past paywall
+
+            // STRICTLY ENFORCE FREE TIER ON LOGIN
+            this.isPro = false;
 
             const dashUser = document.getElementById("dash-user");
             if (dashUser) dashUser.innerText = this.user;
 
+            // CORRECTED: Show accurate Free Tier status on the dashboard
             const dashStatus = document.getElementById("dash-status");
             if (dashStatus) {
-              dashStatus.innerText = "PRO OPERATOR";
-              dashStatus.style.color = C.stable;
+              dashStatus.innerText = "FREE TIER";
+              dashStatus.style.color = C.gold;
             }
 
             const overlay = document.getElementById("overlay-login");
@@ -2183,7 +2485,7 @@
         },
 
         openLogin() {
-          this.showInstr(); // Pause the game if instructions are open, otherwise it can cause visual bugs with the overlays
+          this.showInstr();
           const l = document.getElementById("overlay-login");
           if (l) l.classList.add("active");
           const sb = document.getElementById("sidebar");
@@ -2192,7 +2494,19 @@
 
         socialLogin(provider) {
           this.user = provider + "_USER";
-          this.isPro = true;
+
+          // STRICTLY ENFORCE FREE TIER ON SOCIAL LOGIN
+          this.isPro = false;
+
+          const dashUser = document.getElementById("dash-user");
+          if (dashUser) dashUser.innerText = this.user;
+
+          const dashStatus = document.getElementById("dash-status");
+          if (dashStatus) {
+            dashStatus.innerText = "FREE TIER";
+            dashStatus.style.color = C.gold;
+          }
+
           this.saveData();
           const overlay = document.getElementById("overlay-login");
           if (overlay) overlay.classList.remove("active");
@@ -2351,7 +2665,12 @@
             !this.isPro &&
             !this.blitzMode
           ) {
-            this.showPaywall();
+            // 1. Play the error buzzer (optional, but good for feedback)
+            if (typeof window.SFX !== "undefined") window.SFX.play("lose");
+
+            // 2. Trigger our new frosted-glass upgrade screen!
+            this.openUpgrade();
+
             return;
           }
 
@@ -2588,18 +2907,27 @@
           safeSet("end-sp", "+" + sp);
           safeSet("end-sp-val", "+" + sp);
 
-          const endTitle = document.getElementById("end-title");
+const endTitle = document.getElementById("end-title");
           if (endTitle) {
+            // 1. Grab their current total XP for this specific game module
+            const currentXP = this.progress[this.mode].xp;
+            
+            // 2. Set the base title
+            let titleHTML = "SESSION COMPLETE";
+
+            // 3. Evaluate the conditions
             if (acc === 100 && total > 0) {
-              endTitle.innerText = "PERFECT SCORE";
-              endTitle.style.color = C.gold;
-            } else if (acc < 50) {
-              endTitle.innerText = "TRY AGAIN";
-              endTitle.style.color = C.chaos;
-            } else {
-              endTitle.innerText = "SESSION COMPLETE";
-              endTitle.style.color = "#fff";
-            }
+              // Priority 1: They nailed it. Add the gold sub-tag.
+              titleHTML += `<br><span style="color: ${C.gold}; font-size: 0.6em; letter-spacing: 2px;">PERFECT SCORE</span>`;
+            } else if (currentXP < 3000) {
+              // Priority 2: They didn't get a perfect score, AND they don't have enough XP to advance yet. Add the red sub-tag.
+              titleHTML += `<br><span style="color: ${C.chaos}; font-size: 0.6em; letter-spacing: 2px;">TRY AGAIN</span>`;
+            } 
+            // If they didn't get a perfect score, BUT they have >= 3000 XP, the titleHTML just stays "SESSION COMPLETE".
+
+            // 4. Inject it into the UI
+            endTitle.innerHTML = titleHTML;
+            endTitle.style.color = "#fff"; // Keeps the main "SESSION COMPLETE" text white
           }
 
           this.renderEndScreenLevels();
@@ -3484,11 +3812,11 @@
             else ctx.rect(cx, cy, s, s);
 
             if (isTargeted) {
-              // Active highlight (WHITE)
+              // Active highlight (YELLOW GLOW)
               ctx.shadowBlur = 25;
               ctx.shadowColor = "#FFF";
               ctx.strokeStyle = "#FFF";
-              ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+              ctx.fillStyle = "rgba(255, 255, 0, 0.5)";
             } else if (isVisited) {
               // Successfully tapped (CYAN)
               ctx.shadowBlur = 15;
@@ -3496,18 +3824,18 @@
               ctx.strokeStyle = C.stable;
               ctx.fillStyle = "rgba(0, 229, 255, 0.2)";
             } else if (isCorrectPath) {
-              // The GHOST HINT (PURPLE)
+              // The GHOST HINT (WHITE DASHED)
               ctx.shadowBlur = 10;
-              ctx.shadowColor = C.focus;
-              ctx.strokeStyle = C.focus;
-              ctx.fillStyle = "rgba(208, 0, 255, 0.2)";
+              ctx.shadowColor = "rgba(255, 255, 0, 0.5)";
+              ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+              ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
               ctx.setLineDash([5, 5]);
             } else {
               // Idle state (CYAN BORDER)
               ctx.shadowBlur = 0;
               ctx.setLineDash([]);
-              ctx.strokeStyle = "rgba(0, 229, 255, 0.8)";
-              ctx.fillStyle = "rgba(0, 229, 255, 0.8)";
+              ctx.strokeStyle = C.gold;
+              ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
             }
 
             ctx.lineWidth = isTargeted || isVisited ? 3 : 2;
