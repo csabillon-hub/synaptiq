@@ -1293,8 +1293,9 @@
         text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
       }
       /* --- ORIENTATION WARNING STYLES --- */
+     /* --- 1. BASE STATE: ALWAYS HIDDEN --- */
       #orientation-warning {
-        display: none; /* Completely hidden normally */
+        display: none; /* Crucial: Keeps it hidden by default */
         position: fixed;
         top: 0; 
         left: 0; 
@@ -1320,21 +1321,27 @@
       .rotate-icon {
         font-size: 4rem; 
         margin-bottom: 20px; 
-        color: #FF2E2E; /* Chaos Red */
+        color: #FF2E2E; 
         animation: rotatePhone 2s infinite ease-in-out;
       }
 
-      /* Creates a smooth tilting animation for the phone icon */
       @keyframes rotatePhone {
         0% { transform: rotate(-90deg); }
         50% { transform: rotate(0deg); }
         100% { transform: rotate(-90deg); }
       }
 
-      /* THE TRIGGER: Only fires on mobile devices held in landscape */
-      @media screen and (max-height: 950px) and (orientation: landscape) {
+      /* --- 2. THE BULLETPROOF TRIGGER --- */
+      /* Only fires if the screen is phone-sized (under 1000px wide AND under 600px tall) AND sideways */
+      @media screen and (max-width: 1000px) and (max-height: 600px) and (orientation: landscape) {
         #orientation-warning {
-          display: flex !important; /* Makes the blackout screen visible */
+          display: flex !important; /* Overrides the display: none */
+        }
+      }
+      /* THE TRIGGER: Fires ONLY on touchscreen devices held sideways */
+      @media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+        #orientation-warning {
+          display: flex !important; 
         }
       }
     </style>
@@ -1884,65 +1891,25 @@
     </main>
  <div id="overlay-legal" class="overlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 999999 !important; background: rgba(0,0,0,0.95);">
         <div class="modal" style="max-width: 600px; max-height: 80vh; display: flex; flex-direction: column; z-index: 999999 !important;">
-          <button
-            onclick="window.App.closeLegal()"
-            style="
-              position: absolute;
-              top: 15px;
-              right: 15px;
-              background: transparent;
-              border: none;
-              color: #666;
-              font-size: 1.5rem;
-              cursor: pointer;
-              transition: 0.2s;
-            "
-            onmouseover="this.style.color = '#fff'"
-            onmouseout="this.style.color = '#666'"
-          >
+          
+          <button onclick="window.App.closeLegal()" style="position: absolute; top: 15px; right: 15px; background: transparent; border: none; color: #666; font-size: 1.5rem; cursor: pointer; transition: 0.2s;" onmouseover="this.style.color = '#fff'" onmouseout="this.style.color = '#666'">
             <i class="fa-solid fa-xmark"></i>
           </button>
 
-          <h1
-            id="legal-title"
-            style="
-              color: var(--stable);
-              margin-bottom: 10px;
-              font-family: &quot;Rajdhani&quot;, sans-serif;
-              letter-spacing: 2px;
-            "
-          >
+          <h1 id="legal-title" style="color: var(--stable); margin-bottom: 10px; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;">
             LEGAL PROTOCOL
           </h1>
 
-          <div
-            id="legal-content"
-            style="
-              text-align: left;
-              color: #ccc;
-              font-size: 0.85rem;
-              line-height: 1.6;
-              overflow-y: auto;
-              padding-right: 15px;
-              margin-bottom: 20px;
-              flex-grow: 1;
-              border-top: 1px solid #333;
-              border-bottom: 1px solid #333;
-              padding-top: 15px;
-              padding-bottom: 15px;
-              font-family: sans-serif;
-            "
-          ></div>
+          <div id="legal-content" style="text-align: left; color: #ccc; font-size: 0.85rem; line-height: 1.6; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; flex-grow: 1; border-top: 1px solid #333; border-bottom: 1px solid #333; padding-top: 15px; padding-bottom: 15px; font-family: sans-serif;">
+            </div>
 
-          <button
-            class="btn-primary"
-            onclick="window.App.closeLegal()"
-            style="margin-top: auto"
-          >
+          <button class="btn-primary" onclick="window.App.closeLegal()" style="margin-top: auto;">
             ACKNOWLEDGE
           </button>
+          
         </div>
-        <div id="orientation-warning">
+      </div>
+      <div id="orientation-warning">
         <div class="warning-content">
           <i class="fa-solid fa-mobile-screen rotate-icon"></i>
           <h2>SYSTEM ALERT</h2>
