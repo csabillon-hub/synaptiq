@@ -1095,13 +1095,19 @@
         color: var(--focus);
       }
       /* Upgrade Overlay Styling */
-      .upgrade-container {
+   .upgrade-container {
         background: rgba(20, 20, 20, 0.95);
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 40px;
         text-align: center;
         max-width: 700px;
+        width: 90%; /* Keeps it from touching the screen edges */
         box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+        
+        /* THE SCROLL FIX */
+        max-height: 90vh; /* Prevents it from being taller than the screen */
+        overflow-y: auto; /* Enables vertical scrolling inside the box */
+        box-sizing: border-box; 
       }
 
       .upgrade-container h2 {
@@ -1117,7 +1123,7 @@
         margin-bottom: 30px;
       }
 
-      .pricing-cards {
+     .pricing-cards {
         display: flex;
         gap: 20px;
         justify-content: center;
@@ -1130,7 +1136,23 @@
         width: 250px;
         position: relative;
         text-align: left;
+        
+      }/* THE MOBILE STACK FIX */
+      @media (max-width: 650px) {
+        .upgrade-container {
+          padding: 25px 15px; /* Tighter padding for mobile */
+        }
+        .pricing-cards {
+          flex-direction: column; /* Stacks the cards vertically */
+          align-items: center;
+        }
+        .tier-card {
+          width: 100%; /* Makes cards fill the mobile screen */
+          max-width: 320px;
+          box-sizing: border-box;
+        }
       }
+
 
       .tier-card.pro-tier {
         background: rgba(0, 229, 255, 0.05);
