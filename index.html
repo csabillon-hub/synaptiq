@@ -244,8 +244,19 @@
         padding: 20px 10px;
         position: relative;
         width: 100%;
-        height: 100%;
+        height: 100dvh;
         overflow: hidden;
+      }
+      #gameCanvas {
+        max-width: 100%;
+        max-height: 100%;
+        /* The magic bullet: Keeps the exact 800x600 (4:3) shape without warping or cutting off */
+        object-fit: contain; 
+        aspect-ratio: 4 / 3;
+        
+        /* Optional: Adds a subtle premium border to the physical game area */
+        border: 1px solid rgba(255, 255, 255, 0.05); 
+        border-radius: 8px;
       }
 
       #game-hud {
@@ -1136,7 +1147,7 @@
         width: 250px;
         position: relative;
         text-align: left;
-        
+
       }/* THE MOBILE STACK FIX */
       @media (max-width: 650px) {
         .upgrade-container {
@@ -1280,6 +1291,51 @@
       .legal-links a:hover {
         color: #00e5ff;
         text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+      }
+      /* --- ORIENTATION WARNING STYLES --- */
+      #orientation-warning {
+        display: none; /* Completely hidden normally */
+        position: fixed;
+        top: 0; 
+        left: 0; 
+        width: 100vw; 
+        height: 100vh;
+        background: rgba(5, 5, 5, 0.98);
+        z-index: 99999999 !important; /* Outranks absolutely everything */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #00E5FF;
+        font-family: "Rajdhani", sans-serif;
+      }
+
+      .warning-content p {
+        color: #ccc;
+        font-size: 1.2rem;
+        max-width: 80%;
+        margin: 10px auto 0;
+      }
+
+      .rotate-icon {
+        font-size: 4rem; 
+        margin-bottom: 20px; 
+        color: #FF2E2E; /* Chaos Red */
+        animation: rotatePhone 2s infinite ease-in-out;
+      }
+
+      /* Creates a smooth tilting animation for the phone icon */
+      @keyframes rotatePhone {
+        0% { transform: rotate(-90deg); }
+        50% { transform: rotate(0deg); }
+        100% { transform: rotate(-90deg); }
+      }
+
+      /* THE TRIGGER: Only fires on mobile devices held in landscape */
+      @media screen and (max-height: 600px) and (orientation: landscape) {
+        #orientation-warning {
+          display: flex; /* Makes the blackout screen visible */
+        }
       }
     </style>
   </head>
@@ -1886,6 +1942,13 @@
             ACKNOWLEDGE
           </button>
         </div>
+        <div id="orientation-warning">
+        <div class="warning-content">
+          <i class="fa-solid fa-mobile-screen rotate-icon"></i>
+          <h2>SYSTEM ALERT</h2>
+          <p>Please rotate your device to portrait mode to resume the neural simulation.</p>
+        </div>
+      </div>
     <script>
       /** SYNAPTIQ v5.0 - THE MASTER BUILD
        * FIXES: LocalStorage Corruption (Undefined), Missing Functions, V6 Polish, UI & Login Locked
@@ -2178,6 +2241,7 @@
         score: 0,
         timer: 60,
         active: false,
+        wasActiveBeforeRotation: false,
         lastTime: 0,
         audioEnabled: true,
         language: "EN",
@@ -2329,6 +2393,22 @@
             { passive: false },
           );
 
+          window.addEventListener("resize", () => {
+            const isLandscape = window.innerWidth > window.innerHeight && window.innerHeight < 600;
+            if (isLandscape) {
+              if (this.active) {
+                this.wasActiveBeforeRotation = true;
+                this.active = false; 
+              }
+            } else {
+              if (this.wasActiveBeforeRotation) {
+                this.active = true;
+                this.lastTime = performance.now();
+                this.wasActiveBeforeRotation = false;
+              }
+            }
+          });
+
           this.loadData();
           this.updateLockVisuals();
           this.renderWelcome();
@@ -2336,6 +2416,7 @@
           this.lastTime = performance.now();
           requestAnimationFrame(this.loop.bind(this));
         },
+        
 
         loadData() {
           const saved = JSON.parse(
